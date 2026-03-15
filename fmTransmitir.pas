@@ -1,4 +1,4 @@
-unit fmTransmitir;
+﻿unit fmTransmitir;
 
 interface
 
@@ -290,6 +290,7 @@ var
   attemptCount: Integer;
   success: Boolean;
   isLocalRequest: Boolean;
+  keyCode: Integer;
 begin
   // Allow cross-origin requests from web applications
   AResponseInfo.CustomHeaders.Values['Access-Control-Allow-Origin'] := '*';
@@ -303,261 +304,251 @@ begin
   // which cannot be spoofed by a remote client.
   isLocalRequest := (AContext.Binding.IP = '127.0.0.1');
 
-  // API: Health check endpoint (used by web apps to detect if LouvorJA is running)
-  if arq = '/api/ping' then
+  if Pos('/api', arq) = 1 then
   begin
     AResponseInfo.ContentType := 'application/json';
     AResponseInfo.CharSet := 'utf-8';
 
+    // Validação de token (somente se não for localhost)
     if (not isLocalRequest) and
-       (ARequestInfo.Params.Values['token'] <> fmIndex.lerParam('Servidor', 'Token','')) then
+      (ARequestInfo.Params.Values['token'] <>
+        fmIndex.lerParam('Servidor', 'Token','')) then
     begin
-      AResponseInfo.ContentText := '{"status":"error","message":"Invalid token","code":"INVALID_TOKEN"}';
-      Exit;
-    end;
-
-    AResponseInfo.ContentText := '{"status":"ok","app":"LouvorJA"}';
-    Exit;
-  end;
-
-  // API: Change to next slide or previous slide and get status slides
-  if arq = '/api/song-slides' then
-  begin
-    AResponseInfo.ContentType := 'application/json';
-    AResponseInfo.CharSet := 'utf-8';
-
-    if (ARequestInfo.Params.Values['token'] <> fmIndex.lerParam('Servidor', 'Token','')) then
-    begin
-      AResponseInfo.ContentText := '{"status":"error","message":"Invalid token","code":"INVALID_TOKEN"}';
-      Exit;
-    end;
-
-    if (ARequestInfo.Params.Values['action'] = 'next') then
-    begin
-      if (fMusica.Visible) then
-      begin
-        fMusica.acaoSlide('prox');
-        AResponseInfo.ContentText := '{"status":"ok","message":"Advanced to the next slide"}';
-        Exit;
-      end
-      else
-      begin
-        AResponseInfo.ContentText := '{"status":"error","message":"No song playing","code":"NO_SONG_PLAYING"}';
-        Exit;
-      end;
-    end
-    else if (ARequestInfo.Params.Values['action'] = 'previous') then
-    begin
-      if (fMusica <> nil) and (fMusica.Visible) then
-      begin
-        fMusica.acaoSlide('ant');
-        AResponseInfo.ContentText :=
-          '{"status":"ok","message":"Reverted to the previous slide"}';
-        Exit;
-      end
-      else
-      begin
-        AResponseInfo.ContentText :=
-          '{"status":"error","message":"No song playing","code":"NO_SONG_PLAYING"}';
-        Exit;
-      end;
-    end
-    else if (ARequestInfo.Params.Values['action'] = 'playing-check') then
-    begin
-      if (fMusica <> nil) and (fMusica.Visible) then
-      begin
-        AResponseInfo.ContentText :=
-          '{"status":"ok","message":"Song playing","code":"SONG_PLAYING"}';
-        Exit;
-      end
-      else
-      begin
-        AResponseInfo.ContentText :=
-          '{"status":"error","message":"No song playing","code":"NO_SONG_PLAYING"}';
-        Exit;
-      end;
-    end
-    else if (ARequestInfo.Params.Values['action'] = 'close') then
-    begin
-      if (fMusica <> nil) and (fMusica.Visible) then
-      begin
-        fMusica.Close;
-        AResponseInfo.ContentText :=
-          '{"status":"ok","message":"Song closed","code":"SONG_CLOSED"}';
-        Exit;
-      end
-      else
-      begin
-        AResponseInfo.ContentText :=
-          '{"status":"error","message":"No song playing","code":"NO_SONG_PLAYING"}';
-        Exit;
-      end;
-    end
-    else
-    begin
-      AResponseInfo.ResponseNo := 400;
       AResponseInfo.ContentText :=
-        '{"status":"error","message":"Missing or invalid action. Usage: /api/song-slides?action=next","code":"MISSING_ACTION"}';
-    end;
-    Exit;
-  end;
-
-  // API: Gets the time of the computer where Louvor JA is
-  if arq = '/api/clock' then
-  begin
-    AResponseInfo.ContentType := 'application/json';
-    AResponseInfo.CharSet := 'utf-8';
-
-    if (ARequestInfo.Params.Values['token'] <> fmIndex.lerParam('Servidor', 'Token','')) then
-    begin
-      AResponseInfo.ContentText := '{"status":"error","message":"Invalid token","code":"INVALID_TOKEN"}';
+        '{"status":"error","message":"Invalid token","code":"INVALID_TOKEN"}';
       Exit;
     end;
 
-    AResponseInfo.ContentText :=
-      '{"status":"ok","hour":"' + formatdatetime('hh:mm:ss', now()) + '"}';
-    Exit;
-  end;
-
-  // API: Control Drawing number
-  if arq = '/api/drawing-number' then
-  begin
-    AResponseInfo.ContentType := 'application/json';
-    AResponseInfo.CharSet := 'utf-8';
-
-    if (ARequestInfo.Params.Values['token'] <> fmIndex.lerParam('Servidor', 'Token','')) then
+    // API: Health check endpoint (used by web apps to detect if LouvorJA is running)
+    if arq = '/api/ping' then
     begin
-      AResponseInfo.ContentText := '{"status":"error","message":"Invalid token","code":"INVALID_TOKEN"}';
+      AResponseInfo.ContentText := '{"status":"ok","app":"LouvorJA"}';
       Exit;
     end;
 
-    if (ARequestInfo.Params.Values['action'] = 'get-last') then
+    // API: Simulate keyboard key press
+    // Usage: /api/keyboard?key=13
+    if arq = '/api/keyboard' then
     begin
-      attemptCount := 0;
-      success := False;
+      keyCode := StrToIntDef(ARequestInfo.Params.Values['key'], -1);
 
-      while (attemptCount < 3) do
+      if keyCode = -1 then
       begin
-        if (fmIndex.btSortear.Enabled) then
-        begin
-          messageDraw := fmIndex.lmdSorteio.Caption;
-          AResponseInfo.ContentText := '{"status":"ok","action":"get-last","message":"' + messageDraw + '"}';
-          success := True;
-          Break;
-        end
-        else
-        begin
-          Inc(attemptCount);
-          Sleep(1000);
-        end;
+        AResponseInfo.ResponseNo := 400;
+        AResponseInfo.ContentText :=
+          '{"status":"error","message":"Missing or invalid key","code":"INVALID_KEY"}';
+        Exit;
       end;
 
-      if not success then
-      begin
-        AResponseInfo.ContentText := '{"status":"error","message":"Failed after 3 attempts, button not enabled","code":"BUTTON_NOT_ENABLED"}';
-      end;
-      Exit;
-    end
-    else if (ARequestInfo.Params.Values['action'] = 'draw') then
-    begin
-      fmIndex.btSortearClick(fmIndex.btSortear);
-      AResponseInfo.ContentText := '{"status":"ok","action":"get-last","message":"Sorteando n�mero"}';
-      Exit;
-    end;
-    Exit;
-  end;
-
-  // API: Control Drawing name
-  if arq = '/api/drawing-name' then
-  begin
-    AResponseInfo.ContentType := 'application/json';
-    AResponseInfo.CharSet := 'utf-8';
-
-    if (ARequestInfo.Params.Values['token'] <> fmIndex.lerParam('Servidor', 'Token','')) then
-    begin
-      AResponseInfo.ContentText := '{"status":"error","message":"Invalid token","code":"INVALID_TOKEN"}';
-      Exit;
-    end;
-
-    if (ARequestInfo.Params.Values['action'] = 'get-last') then
-    begin
-      attemptCount := 0;
-      success := False;
-
-      while (attemptCount < 3) do
-      begin
-        if (fmIndex.btSortearNM.Enabled) then
-        begin
-          messageDraw := fmIndex.lmdSorteioNM.Caption;
-          AResponseInfo.ContentText := '{"status":"ok","action":"get-last","message":"' + messageDraw + '"}';
-          success := True;
-          Break;
-        end
-        else
-        begin
-          Inc(attemptCount);
-          Sleep(1000);
-        end;
-      end;
-
-      if not success then
-      begin
-        AResponseInfo.ContentText := '{"status":"error","message":"Failed after 3 attempts, button not enabled","code":"BUTTON_NOT_ENABLED"}';
-      end;
-      Exit;
-    end
-    else if (ARequestInfo.Params.Values['action'] = 'draw') then
-    begin
-      fmIndex.btSortearNMClick(fmIndex.btSortearNM);
-      AResponseInfo.ContentText := '{"status":"ok","action":"get-last","message":"Sorteando nome"}';
-      Exit;
-    end;
-    Exit;
-  end;
-
-  // API: Open a song slide by its database ID
-  // Usage: GET /api/open-song?id=123
-  if arq = '/api/open-song' then
-  begin
-    AResponseInfo.ContentType := 'application/json';
-    AResponseInfo.CharSet := 'utf-8';
-
-    if (not isLocalRequest) and
-       (ARequestInfo.Params.Values['token'] <> fmIndex.lerParam('Servidor', 'Token','')) then
-    begin
-      AResponseInfo.ContentText := '{"status":"error","message":"Invalid token","code":"INVALID_TOKEN"}';
-      Exit;
-    end;
-
-    if TryStrToInt(ARequestInfo.Params.Values['id'], songId) then
-    begin
-      if not TryStrToInt(ARequestInfo.Params.Values['tag'], tagValue) then
-        tagValue := 1;
-
-      if tagValue = 2 then
-        txtModo := 'PB'
-      else
-        txtModo := '';
-
-      tocarAudio := tagValue < 3;
-
+      // Executa no thread da UI
       TThread.Queue(nil,
         procedure
         begin
-          if Assigned(fmIndex) then
-            fmIndex.abreLetraMusica('BD', txtModo, songId, tocarAudio);
+          // envia a tecla
+          keybd_event(keyCode, 0, 0, 0);
+          keybd_event(keyCode, 0, KEYEVENTF_KEYUP, 0);
         end
       );
+
       AResponseInfo.ContentText :=
-        '{"status":"ok","action":"open-song","id":' + IntToStr(songId) + '}';
-    end
-    else
-    begin
-      AResponseInfo.ResponseNo := 400;
-      AResponseInfo.ContentText :=
-        '{"status":"error","message":"Missing or invalid song ID. Usage: /api/open-song?id=123","code":"MISSING_ID"}';
+        '{"status":"ok","action":"keyboard","key":' + IntToStr(keyCode) + '}';
+
+      Exit;
     end;
-    Exit;
+
+    // API: Change to next slide or previous slide and get status slides
+    if arq = '/api/song-slides' then
+    begin
+      if (ARequestInfo.Params.Values['action'] = 'next') then
+      begin
+        if (fMusica.Visible) then
+        begin
+          fMusica.acaoSlide('prox');
+          AResponseInfo.ContentText := '{"status":"ok","message":"Advanced to the next slide"}';
+          Exit;
+        end
+        else
+        begin
+          AResponseInfo.ContentText := '{"status":"error","message":"No song playing","code":"NO_SONG_PLAYING"}';
+          Exit;
+        end;
+      end
+      else if (ARequestInfo.Params.Values['action'] = 'previous') then
+      begin
+        if (fMusica <> nil) and (fMusica.Visible) then
+        begin
+          fMusica.acaoSlide('ant');
+          AResponseInfo.ContentText :=
+            '{"status":"ok","message":"Reverted to the previous slide"}';
+          Exit;
+        end
+        else
+        begin
+          AResponseInfo.ContentText :=
+            '{"status":"error","message":"No song playing","code":"NO_SONG_PLAYING"}';
+          Exit;
+        end;
+      end
+      else if (ARequestInfo.Params.Values['action'] = 'playing-check') then
+      begin
+        if (fMusica <> nil) and (fMusica.Visible) then
+        begin
+          AResponseInfo.ContentText :=
+            '{"status":"ok","message":"Song playing","code":"SONG_PLAYING"}';
+          Exit;
+        end
+        else
+        begin
+          AResponseInfo.ContentText :=
+            '{"status":"error","message":"No song playing","code":"NO_SONG_PLAYING"}';
+          Exit;
+        end;
+      end
+      else if (ARequestInfo.Params.Values['action'] = 'close') then
+      begin
+        if (fMusica <> nil) and (fMusica.Visible) then
+        begin
+          fMusica.Close;
+          AResponseInfo.ContentText :=
+            '{"status":"ok","message":"Song closed","code":"SONG_CLOSED"}';
+          Exit;
+        end
+        else
+        begin
+          AResponseInfo.ContentText :=
+            '{"status":"error","message":"No song playing","code":"NO_SONG_PLAYING"}';
+          Exit;
+        end;
+      end
+      else
+      begin
+        AResponseInfo.ResponseNo := 400;
+        AResponseInfo.ContentText :=
+          '{"status":"error","message":"Missing or invalid action. Usage: /api/song-slides?action=next","code":"MISSING_ACTION"}';
+      end;
+      Exit;
+    end;
+
+    // API: Gets the time of the computer where Louvor JA is
+    if arq = '/api/clock' then
+    begin
+      AResponseInfo.ContentText :=
+        '{"status":"ok","hour":"' + formatdatetime('hh:mm:ss', now()) + '"}';
+      Exit;
+    end;
+
+    // API: Control Drawing number
+    if arq = '/api/drawing-number' then
+    begin
+      if (ARequestInfo.Params.Values['action'] = 'get-last') then
+      begin
+        attemptCount := 0;
+        success := False;
+
+        while (attemptCount < 3) do
+        begin
+          if (fmIndex.btSortear.Enabled) then
+          begin
+            messageDraw := fmIndex.lmdSorteio.Caption;
+            AResponseInfo.ContentText := '{"status":"ok","action":"get-last","message":"' + messageDraw + '"}';
+            success := True;
+            Break;
+          end
+          else
+          begin
+            Inc(attemptCount);
+            Sleep(1000);
+          end;
+        end;
+
+        if not success then
+        begin
+          AResponseInfo.ContentText := '{"status":"error","message":"Failed after 3 attempts, button not enabled","code":"BUTTON_NOT_ENABLED"}';
+        end;
+        Exit;
+      end
+      else if (ARequestInfo.Params.Values['action'] = 'draw') then
+      begin
+        fmIndex.btSortearClick(fmIndex.btSortear);
+        AResponseInfo.ContentText := '{"status":"ok","action":"get-last","message":"Sorteando n�mero"}';
+        Exit;
+      end;
+      Exit;
+    end;
+
+    // API: Control Drawing name
+    if arq = '/api/drawing-name' then
+    begin
+      if (ARequestInfo.Params.Values['action'] = 'get-last') then
+      begin
+        attemptCount := 0;
+        success := False;
+
+        while (attemptCount < 3) do
+        begin
+          if (fmIndex.btSortearNM.Enabled) then
+          begin
+            messageDraw := fmIndex.lmdSorteioNM.Caption;
+            AResponseInfo.ContentText := '{"status":"ok","action":"get-last","message":"' + messageDraw + '"}';
+            success := True;
+            Break;
+          end
+          else
+          begin
+            Inc(attemptCount);
+            Sleep(1000);
+          end;
+        end;
+
+        if not success then
+        begin
+          AResponseInfo.ContentText := '{"status":"error","message":"Failed after 3 attempts, button not enabled","code":"BUTTON_NOT_ENABLED"}';
+        end;
+        Exit;
+      end
+      else if (ARequestInfo.Params.Values['action'] = 'draw') then
+      begin
+        fmIndex.btSortearNMClick(fmIndex.btSortearNM);
+        AResponseInfo.ContentText := '{"status":"ok","action":"get-last","message":"Sorteando nome"}';
+        Exit;
+      end;
+      Exit;
+    end;
+
+    // API: Open a song slide by its database ID
+    // Usage: GET /api/open-song?id=123
+    if arq = '/api/open-song' then
+    begin
+      if TryStrToInt(ARequestInfo.Params.Values['id'], songId) then
+      begin
+        if not TryStrToInt(ARequestInfo.Params.Values['tag'], tagValue) then
+          tagValue := 1;
+
+        if tagValue = 2 then
+          txtModo := 'PB'
+        else
+          txtModo := '';
+
+        tocarAudio := tagValue < 3;
+
+        TThread.Queue(nil,
+          procedure
+          begin
+            if Assigned(fmIndex) then
+              fmIndex.abreLetraMusica('BD', txtModo, songId, tocarAudio);
+          end
+        );
+        AResponseInfo.ContentText :=
+          '{"status":"ok","action":"open-song","id":' + IntToStr(songId) + '}';
+      end
+      else
+      begin
+        AResponseInfo.ResponseNo := 400;
+        AResponseInfo.ContentText :=
+          '{"status":"error","message":"Missing or invalid song ID. Usage: /api/open-song?id=123","code":"MISSING_ID"}';
+      end;
+      Exit;
+    end;
   end;
 
   // Static file serving (existing behavior)
@@ -594,3 +585,4 @@ begin
 end;
 
 end.
+
