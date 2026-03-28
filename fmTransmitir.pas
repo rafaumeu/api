@@ -344,6 +344,16 @@ begin
       TThread.Queue(nil,
         procedure
         begin
+          // traz a aplicação para frente
+          if (fMusica <> nil) and (fMusica.Visible) and (fMusica.HandleAllocated) then
+          begin
+            SetForegroundWindow(fMusica.Handle);
+          end
+          else if (fmIndex <> nil) and (fmIndex.HandleAllocated) then
+          begin
+            SetForegroundWindow(fmIndex.Handle);
+          end;
+
           // envia a tecla
           keybd_event(keyCode, 0, 0, 0);
           keybd_event(keyCode, 0, KEYEVENTF_KEYUP, 0);
