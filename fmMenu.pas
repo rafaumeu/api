@@ -13404,7 +13404,7 @@ begin
             slide := 'Slide:'+inttostr(DM.qrSLIDE_MUSICA.RecNo);
             arquivo.writeString(slide, 'tipo', DM.qrSLIDE_MUSICA.FieldByName('TIPO').AsString);
             if Trim(DM.qrSLIDE_MUSICA.FieldByName('LETRA').AsString) <> ''
-              then arquivo.writeString(slide, 'letra', StringReplace(DM.qrSLIDE_MUSICA.FieldByName('LETRA').AsString,#13#10,'|',[rfIgnoreCase, rfReplaceAll]));
+              then arquivo.writeString(slide, 'letra', StringReplace(StringReplace(DM.qrSLIDE_MUSICA.FieldByName('LETRA').AsString,#13#10,'|',[rfReplaceAll]),#10,'|',[rfReplaceAll]));
 
             if DM.qrSLIDE_MUSICA.FieldByName('FUNDO_LETRA').AsInteger = 1
               then arquivo.writeString(slide, 'fundo_letra', '1')
@@ -13417,7 +13417,7 @@ begin
               then arquivo.writeString(slide, 'cor_letra', ColorToHtml(StringToColor(DM.qrSLIDE_MUSICA.FieldByName('COR_LETRA').AsString)));
 
             if Trim(DM.qrSLIDE_MUSICA.FieldByName('LETRA_AUX').AsString) <> ''
-              then arquivo.writeString(slide, 'letra_aux', StringReplace(DM.qrSLIDE_MUSICA.FieldByName('LETRA_AUX').AsString,#13#10,'|',[rfIgnoreCase, rfReplaceAll]));
+              then arquivo.writeString(slide, 'letra_aux', StringReplace(StringReplace(DM.qrSLIDE_MUSICA.FieldByName('LETRA_AUX').AsString,#13#10,'|',[rfReplaceAll]),#10,'|',[rfReplaceAll]));
 
             if (Trim(DM.qrSLIDE_MUSICA.FieldByName('TAMANHO_LETRA_AUX').AsString) <> '0') and (Trim(DM.qrSLIDE_MUSICA.FieldByName('TAMANHO_LETRA').AsString) <> '')
               then arquivo.writeString(slide, 'tamanho_letra_aux', DM.qrSLIDE_MUSICA.FieldByName('TAMANHO_LETRA_AUX').AsString);
