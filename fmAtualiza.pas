@@ -85,6 +85,9 @@ begin
       ftp_conecta();
     end;
 
+    if(arquivos[i] = 'config\database.db') then
+      arquivos[i] := 'config\'+lowercase(fIniciando.LANG)+'_database.db';
+
     arquivo_temp := 'arquivo_'+formatdatetime('yyyymmdd_hhnnsszzz', Now())+'.~tmp';
     arquivo_ftp := StringReplace(arquivos[i], '\', '/', [rfIgnoreCase, rfReplaceAll]);
 
@@ -106,7 +109,8 @@ begin
     except
     end;
 
-    //ShowMessage(arquivos[i]+' / '+inttostr(size)+' / '+DM.qrARQUIVOS_SISTEMA.FieldByName('ARQUIVO').asstring);
+
+    //ShowMessage(arquivos[i]+' / '+inttostr(size));
     if (size <= 0) then
       size := IdFTP1.Size(ftp_dir+arquivo_ftp);
 
@@ -228,6 +232,9 @@ begin
   dir := ExtractFilePath(ExtractFilePath(application.ExeName)+arquivos[arq]);
   if not DirectoryExists(dir)
     then ForceDirectories(dir);
+
+  if(arquivos[arq] = 'config\'+lowercase(fIniciando.LANG)+'_database.db') then
+    arquivos[arq] := 'config\database.db';
 
   CopyFile(PChar(fmIndex.dir_temp+arquivo_temp), PChar(ExtractFilePath(application.ExeName)+arquivos[arq]), false);
   DeleteFile(fmIndex.dir_temp+arquivo_temp);

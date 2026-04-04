@@ -21,9 +21,9 @@ object fAtualiza: TfAtualiza
   PixelsPerInch = 96
   TextHeight = 13
   object GridPanel1: TGridPanel
-    Left = 41
+    Left = 128
     Top = 0
-    Width = 512
+    Width = 425
     Height = 122
     Align = alClient
     BevelOuter = bvNone
@@ -91,6 +91,8 @@ object fAtualiza: TfAtualiza
       end>
     ShowCaption = False
     TabOrder = 1
+    ExplicitLeft = 41
+    ExplicitWidth = 512
     object img1: TbsPngImageView
       Left = 0
       Top = 50
@@ -109,7 +111,7 @@ object fAtualiza: TfAtualiza
       AlignWithMargins = True
       Left = 10
       Top = 0
-      Width = 499
+      Width = 412
       Height = 47
       Margins.Left = 10
       Margins.Top = 0
@@ -139,21 +141,23 @@ object fAtualiza: TfAtualiza
       Align = alClient
       Caption = '..........'
       AutoSize = False
+      ExplicitWidth = 499
     end
     object pbProgresso: TProgressBar
       AlignWithMargins = True
       Left = 93
       Top = 57
-      Width = 286
+      Width = 199
       Height = 21
       Margins.Top = 7
       Margins.Bottom = 7
       Align = alClient
       TabOrder = 1
+      ExplicitWidth = 286
     end
     object sProgresso: TbsSkinLabel
       AlignWithMargins = True
-      Left = 385
+      Left = 298
       Top = 57
       Width = 124
       Height = 21
@@ -185,21 +189,23 @@ object fAtualiza: TfAtualiza
       Align = alClient
       Caption = '          '
       AutoSize = False
+      ExplicitLeft = 385
     end
     object pbProgressoT: TProgressBar
       AlignWithMargins = True
       Left = 93
       Top = 92
-      Width = 286
+      Width = 199
       Height = 21
       Margins.Top = 7
       Margins.Bottom = 7
       Align = alClient
       TabOrder = 3
+      ExplicitWidth = 286
     end
     object sProgressoT: TbsSkinLabel
       AlignWithMargins = True
-      Left = 385
+      Left = 298
       Top = 92
       Width = 124
       Height = 21
@@ -231,6 +237,7 @@ object fAtualiza: TfAtualiza
       Align = alClient
       Caption = '          '
       AutoSize = False
+      ExplicitLeft = 385
     end
   end
   object bsSkinPanel1: TbsSkinPanel
@@ -350,14 +357,14 @@ object fAtualiza: TfAtualiza
   object ftp: TValueListEditor
     Left = 0
     Top = 0
-    Width = 41
+    Width = 128
     Height = 122
     Align = alLeft
     TabOrder = 0
     Visible = False
     ColWidths = (
       59
-      -24)
+      63)
   end
   object bsBusinessSkinForm1: TbsBusinessSkinForm
     UseRibbon = False

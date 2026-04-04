@@ -190,6 +190,11 @@ begin
         application.messagebox(PChar(Translate('Não foi possível baixar o Banco de Dados da internet. Favor, instale seu programa novamente!')), TITULO, MB_ok + mb_iconerror);
         application.terminate;
         Exit;
+      end
+      else
+      begin
+        fmIndex.RestartApplication;
+        exit;
       end;
     end;
     Exit;

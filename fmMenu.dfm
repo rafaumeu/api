@@ -13815,7 +13815,7 @@ object fmIndex: TfmIndex
     Top = 146
     Width = 1370
     Height = 502
-    ActivePage = bsSkinTabSheet3
+    ActivePage = tsHinario
     Align = alClient
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
@@ -13855,6 +13855,10 @@ object fmIndex: TfmIndex
       ImageIndex = 14
       ParentShowHint = False
       ShowHint = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object bsButtonModel: TbsSkinButtonEx
         Left = 74
         Top = 19
@@ -15763,6 +15767,10 @@ object fmIndex: TfmIndex
       Caption = 'Hin'#225'rio Adventista 1996'
       ImageIndex = 105
       OnShow = tsHinarioNShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnlHinario1996Ativo: TPanel
         Left = 0
         Top = 161
@@ -16107,7 +16115,7 @@ object fmIndex: TfmIndex
             ScrollBars = ssVertical
             Align = alClient
             Color = clWhite
-            Font.Charset = ANSI_CHARSET
+            Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
             Font.Height = -12
             Font.Name = 'Tahoma'
@@ -16275,7 +16283,7 @@ object fmIndex: TfmIndex
           AlignWithMargins = True
           Left = 16
           Top = 16
-          Width = 1351
+          Width = 156
           Height = 23
           Margins.Left = 15
           Margins.Top = 15
@@ -16300,13 +16308,12 @@ object fmIndex: TfmIndex
           Caption = #193'lbum Desativado!'
           ParentFont = False
           Layout = tlCenter
-          ExplicitWidth = 156
         end
         object bsSkinStdLabel176: TbsSkinStdLabel
           AlignWithMargins = True
           Left = 16
           Top = 72
-          Width = 1351
+          Width = 619
           Height = 13
           Margins.Left = 15
           Margins.Top = 10
@@ -16334,13 +16341,12 @@ object fmIndex: TfmIndex
             '.'
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 619
         end
         object bsSkinStdLabel177: TbsSkinStdLabel
           AlignWithMargins = True
           Left = 16
           Top = 49
-          Width = 1351
+          Width = 686
           Height = 13
           Margins.Left = 15
           Margins.Top = 10
@@ -16368,7 +16374,6 @@ object fmIndex: TfmIndex
             't'#227'o abaixo.'
           ParentFont = False
           WordWrap = True
-          ExplicitWidth = 686
         end
         object bsSkinButton46: TbsSkinButton
           AlignWithMargins = True
@@ -16423,6 +16428,8 @@ object fmIndex: TfmIndex
       ImageIndex = 21
       ParentFont = False
       OnShow = tsJAShow
+      ExplicitTop = 61
+      ExplicitHeight = 440
       object sbColJA: TbsSkinScrollBox
         Left = 0
         Top = 0
@@ -16486,6 +16493,8 @@ object fmIndex: TfmIndex
       Caption = 'Colet'#226'neas Diversas'
       ImageIndex = 22
       OnShow = tsDiversasShow
+      ExplicitTop = 61
+      ExplicitHeight = 440
       object sbColDIV: TbsSkinScrollBox
         Left = 0
         Top = 0
@@ -16547,6 +16556,8 @@ object fmIndex: TfmIndex
       Caption = 'Colet'#226'neas Personalizadas'
       ImageIndex = 37
       OnShow = tsPersonalizadasShow
+      ExplicitTop = 61
+      ExplicitHeight = 440
       object pnlAltColPerso: TbsSkinExPanel
         Left = 273
         Top = 0
@@ -16761,6 +16772,7 @@ object fmIndex: TfmIndex
             DlgSkinData = DM.bsSkinData1
             DlgCtrlSkinData = DM.bsSkinData1
             LVHeaderSkinDataName = 'header'
+            ExplicitHeight = 20
           end
           object bsSkinStdLabel29: TbsSkinStdLabel
             Left = 5
@@ -16848,6 +16860,7 @@ object fmIndex: TfmIndex
             DlgSkinData = DM.bsSkinData1
             DlgCtrlSkinData = DM.bsSkinData1
             LVHeaderSkinDataName = 'header'
+            ExplicitHeight = 20
           end
           object txtImgInfoColet2: TbsSkinEdit
             Left = 266
@@ -17213,8 +17226,8 @@ object fmIndex: TfmIndex
           object bsSkinStdLabel24: TbsSkinStdLabel
             Left = 5
             Top = 2
-            Width = 261
-            Height = 19
+            Width = 86
+            Height = 13
             EllipsType = bsetNone
             UseSkinFont = True
             UseSkinColor = True
@@ -17229,14 +17242,12 @@ object fmIndex: TfmIndex
             Caption = 'Arquivo/Diret'#243'rio:'
             Layout = tlBottom
             WordWrap = True
-            ExplicitWidth = 86
-            ExplicitHeight = 13
           end
           object txtAbrirColet: TbsSkinFileEdit
             Left = 5
             Top = 21
             Width = 261
-            Height = 19
+            Height = 20
             Text = ''
             DefaultColor = clWindow
             DefaultFont.Charset = DEFAULT_CHARSET
@@ -17278,8 +17289,8 @@ object fmIndex: TfmIndex
           object bsSkinStdLabel25: TbsSkinStdLabel
             Left = 5
             Top = 40
-            Width = 261
-            Height = 19
+            Width = 85
+            Height = 13
             EllipsType = bsetNone
             UseSkinFont = True
             UseSkinColor = True
@@ -17294,14 +17305,12 @@ object fmIndex: TfmIndex
             Caption = 'Imagem de Capa:'
             Layout = tlBottom
             WordWrap = True
-            ExplicitWidth = 85
-            ExplicitHeight = 13
           end
           object bsSkinStdLabel26: TbsSkinStdLabel
             Left = 5
             Top = 78
-            Width = 261
-            Height = 19
+            Width = 98
+            Height = 13
             EllipsType = bsetNone
             UseSkinFont = True
             UseSkinColor = True
@@ -17316,14 +17325,12 @@ object fmIndex: TfmIndex
             Caption = 'Nome da Colet'#226'nea:'
             Layout = tlBottom
             WordWrap = True
-            ExplicitWidth = 98
-            ExplicitHeight = 13
           end
           object txtCapaColet: TbsSkinFileEdit
             Left = 5
             Top = 59
             Width = 261
-            Height = 19
+            Height = 20
             Text = ''
             DefaultColor = clWindow
             DefaultFont.Charset = DEFAULT_CHARSET
@@ -17581,6 +17588,7 @@ object fmIndex: TfmIndex
         Spacing = 2
         Caption = 'bsSkinPanel16'
         Align = alClient
+        ExplicitHeight = 440
         object bsSkinScrollBar9: TbsSkinScrollBar
           Left = 803
           Top = 57
@@ -17723,8 +17731,8 @@ object fmIndex: TfmIndex
           object bsSkinStdLabel57: TbsSkinStdLabel
             Left = 30
             Top = 0
-            Width = 762
-            Height = 19
+            Width = 45
+            Height = 13
             EllipsType = bsetNone
             UseSkinFont = True
             UseSkinColor = True
@@ -17738,8 +17746,6 @@ object fmIndex: TfmIndex
             Align = alClient
             Caption = 'Localizar:'
             Layout = tlCenter
-            ExplicitWidth = 45
-            ExplicitHeight = 13
           end
         end
         object stColetPerso: TbsSkinStatusBar
@@ -17851,6 +17857,10 @@ object fmIndex: TfmIndex
       Caption = 'B'#237'blia'
       ImageIndex = 28
       OnShow = tsBibliaShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnlFormatBiblia: TbsSkinExPanel
         Tag = 1
         Left = 0
@@ -19038,7 +19048,7 @@ object fmIndex: TfmIndex
             AlignWithMargins = True
             Left = 4
             Top = 24
-            Width = 288
+            Width = 45
             Height = 13
             Margins.Bottom = 0
             EllipsType = bsetNone
@@ -19054,7 +19064,6 @@ object fmIndex: TfmIndex
             Align = alTop
             Caption = 'Localizar:'
             Layout = tlCenter
-            ExplicitWidth = 45
           end
           object DBCtrlGridBibliaLivro: TbsSkinDBCtrlGrid
             Left = 1
@@ -19363,7 +19372,7 @@ object fmIndex: TfmIndex
             AlignWithMargins = True
             Left = 4
             Top = 24
-            Width = 286
+            Width = 45
             Height = 13
             Margins.Bottom = 0
             EllipsType = bsetNone
@@ -19379,7 +19388,6 @@ object fmIndex: TfmIndex
             Align = alTop
             Caption = 'Localizar:'
             Layout = tlCenter
-            ExplicitWidth = 45
           end
           object DBCtrlGridBibliaCapitulo: TbsSkinDBCtrlGrid
             Left = 1
@@ -19608,7 +19616,7 @@ object fmIndex: TfmIndex
             AlignWithMargins = True
             Left = 4
             Top = 24
-            Width = 286
+            Width = 45
             Height = 13
             Margins.Bottom = 0
             EllipsType = bsetNone
@@ -19624,7 +19632,6 @@ object fmIndex: TfmIndex
             Align = alTop
             Caption = 'Localizar:'
             Layout = tlCenter
-            ExplicitWidth = 45
           end
           object DBCtrlGridBibliaVersiculo: TbsSkinDBCtrlGrid
             Left = 1
@@ -20078,6 +20085,10 @@ object fmIndex: TfmIndex
       Caption = 'Busca B'#237'blica'
       ImageIndex = 29
       OnShow = tsBuscaBiblicaShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnLivros: TbsSkinExPanel
         Left = 1135
         Top = 0
@@ -21787,8 +21798,8 @@ object fmIndex: TfmIndex
           object bsSkinStdLabel20: TbsSkinStdLabel
             Left = 3
             Top = 0
-            Width = 268
-            Height = 16
+            Width = 84
+            Height = 13
             EllipsType = bsetNone
             UseSkinFont = True
             UseSkinColor = True
@@ -21802,8 +21813,6 @@ object fmIndex: TfmIndex
             Align = alClient
             Caption = 'Localizar Palavra:'
             Layout = tlCenter
-            ExplicitWidth = 84
-            ExplicitHeight = 13
           end
           object btBibLocaliza: TbsSkinButton
             Left = 274
@@ -21992,10 +22001,14 @@ object fmIndex: TfmIndex
       Caption = 'Cron'#244'metro de Culto'
       ImageIndex = 44
       OnShow = tsCronoCultoShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object mpMusica: TMediaPlayer
         Left = 0
         Top = 409
-        Width = 1367
+        Width = 1368
         Height = 25
         Align = alBottom
         VisibleButtons = [btPlay, btStop]
@@ -22003,6 +22016,7 @@ object fmIndex: TfmIndex
         Visible = False
         ParentDoubleBuffered = False
         TabOrder = 2
+        ExplicitWidth = -1
       end
       object pnlFormatEscSB: TbsSkinExPanel
         Tag = 3
@@ -23321,6 +23335,10 @@ object fmIndex: TfmIndex
       Caption = 'Sorteio Num'#233'rico'
       ImageIndex = 42
       OnShow = tsSorteioShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnlSorteio: TPanel
         Left = 362
         Top = 0
@@ -24826,6 +24844,10 @@ object fmIndex: TfmIndex
       Caption = 'Sorteio de Nomes'
       ImageIndex = 43
       OnShow = tsSorteioNMShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnlFormatSorteioNM: TbsSkinExPanel
         Tag = 6
         Left = 0
@@ -26327,6 +26349,10 @@ object fmIndex: TfmIndex
       Caption = 'Cron'#244'metro'
       ImageIndex = 44
       OnShow = tsCronometroShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnlCrono: TPanel
         Left = 233
         Top = 0
@@ -27463,6 +27489,10 @@ object fmIndex: TfmIndex
       Caption = 'Texto Din'#226'mico'
       ImageIndex = 45
       OnShow = tsPainelDShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnlFormatPainelD: TbsSkinExPanel
         Tag = 7
         Left = 0
@@ -28433,6 +28463,10 @@ object fmIndex: TfmIndex
       Caption = 'Texto Interativo'
       ImageIndex = 46
       OnShow = tsTextoInterativoShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object RichEdit0: TbsSkinRichEdit
         Left = 0
         Top = 0
@@ -28441,7 +28475,7 @@ object fmIndex: TfmIndex
         ScrollBars = ssBoth
         Align = alClient
         Color = clWhite
-        Font.Charset = ANSI_CHARSET
+        Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -19
         Font.Name = 'Arial Rounded MT Bold'
@@ -28538,19 +28572,18 @@ object fmIndex: TfmIndex
     object bsSkinTabSheet3: TbsSkinTabSheet
       Caption = 'MENU DO PROGRAMA'
       ImageIndex = 62
-      ExplicitLeft = 2
-      ExplicitTop = 66
       DesignSize = (
         1368
         434)
       object bsAppMenu1: TbsAppMenu
-        Left = 0
+        Left = -110
         Top = 0
-        Width = 1097
-        Height = 417
+        Width = 100
+        Height = 100
         HintImageIndex = 0
         Anchors = []
         TabOrder = 0
+        Visible = False
         SkinData = DM.bsSkinData1
         SkinDataName = 'appmenu'
         UseSkinFont = True
@@ -28726,7 +28759,7 @@ object fmIndex: TfmIndex
                 Left = 15
                 Top = 0
                 Width = 355
-                Height = 113
+                Height = 48
                 Margins.Left = 15
                 Margins.Top = 0
                 Margins.Right = 0
@@ -28750,7 +28783,6 @@ object fmIndex: TfmIndex
                 Caption = 'Sincronizar Arquivos'
                 ParentFont = False
                 Layout = tlCenter
-                ExplicitHeight = 48
               end
             end
             object ScrollBox7: TScrollBox
@@ -28802,8 +28834,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 762
-                  Height = 29
+                  Width = 218
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -28827,8 +28859,6 @@ object fmIndex: TfmIndex
                   Caption = 'Verificar arquivos em falta'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 218
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel70: TbsSkinPanel
@@ -29075,8 +29105,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 762
-                  Height = 29
+                  Width = 246
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -29100,8 +29130,6 @@ object fmIndex: TfmIndex
                   Caption = 'Verificar arquivos em excesso'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 246
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel69: TbsSkinPanel
@@ -29435,7 +29463,7 @@ object fmIndex: TfmIndex
                 Left = 15
                 Top = 0
                 Width = 467
-                Height = 113
+                Height = 48
                 Margins.Left = 15
                 Margins.Top = 0
                 Margins.Right = 0
@@ -29459,7 +29487,6 @@ object fmIndex: TfmIndex
                 Caption = 'Importar / Exportar Dados'
                 ParentFont = False
                 Layout = tlCenter
-                ExplicitHeight = 48
               end
             end
             object ScrollBox3: TScrollBox
@@ -30728,8 +30755,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 1158
-                  Height = 29
+                  Width = 118
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -30753,8 +30780,6 @@ object fmIndex: TfmIndex
                   Caption = 'Configura'#231#245'es'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 118
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel117: TbsSkinPanel
@@ -30797,8 +30822,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 1158
-                  Height = 29
+                  Width = 217
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -30822,8 +30847,6 @@ object fmIndex: TfmIndex
                   Caption = 'Colet'#226'neas Personalizadas'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 217
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel118: TbsSkinPanel
@@ -30866,8 +30889,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 1158
-                  Height = 29
+                  Width = 240
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -30891,8 +30914,6 @@ object fmIndex: TfmIndex
                   Caption = 'V'#237'deos Online Personalizados'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 240
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel119: TbsSkinPanel
@@ -30935,8 +30956,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 1158
-                  Height = 29
+                  Width = 62
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -30960,8 +30981,6 @@ object fmIndex: TfmIndex
                   Caption = 'Liturgia'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 62
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel120: TbsSkinPanel
@@ -31004,8 +31023,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 1158
-                  Height = 29
+                  Width = 74
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -31029,8 +31048,6 @@ object fmIndex: TfmIndex
                   Caption = 'Favoritos'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 74
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel121: TbsSkinPanel
@@ -31073,8 +31090,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 1158
-                  Height = 29
+                  Width = 247
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -31098,8 +31115,6 @@ object fmIndex: TfmIndex
                   Caption = 'Itens Agendados - Categorias'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 247
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel122: TbsSkinPanel
@@ -31142,8 +31157,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 1158
-                  Height = 29
+                  Width = 141
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -31167,8 +31182,6 @@ object fmIndex: TfmIndex
                   Caption = 'Itens Agendados'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 141
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel129: TbsSkinPanel
@@ -31262,7 +31275,7 @@ object fmIndex: TfmIndex
               Left = 15
               Top = 0
               Width = 465
-              Height = 113
+              Height = 48
               Margins.Left = 15
               Margins.Top = 0
               Margins.Right = 0
@@ -31286,7 +31299,6 @@ object fmIndex: TfmIndex
               Caption = 'Ativar ou Desativar '#193'lbuns'
               ParentFont = False
               Layout = tlCenter
-              ExplicitHeight = 48
             end
           end
           object bsSkinPanel63: TbsSkinPanel
@@ -31365,8 +31377,8 @@ object fmIndex: TfmIndex
                 AlignWithMargins = True
                 Left = 36
                 Top = 36
-                Width = 550
-                Height = 44
+                Width = 542
+                Height = 26
                 Margins.Left = 36
                 Margins.Top = 10
                 Margins.Right = 0
@@ -31392,14 +31404,12 @@ object fmIndex: TfmIndex
                   ' arquivos em falta para verificar se os arquivos est'#227'o em ordem.'
                 ParentFont = False
                 WordWrap = True
-                ExplicitWidth = 542
-                ExplicitHeight = 26
               end
               object bsSkinStdLabel162: TbsSkinStdLabel
                 AlignWithMargins = True
                 Left = 36
                 Top = 0
-                Width = 550
+                Width = 549
                 Height = 26
                 Margins.Left = 36
                 Margins.Top = 0
@@ -31427,7 +31437,6 @@ object fmIndex: TfmIndex
                   'arquivos.'
                 ParentFont = False
                 WordWrap = True
-                ExplicitWidth = 549
               end
             end
             object GridPanel7: TGridPanel
@@ -31849,7 +31858,7 @@ object fmIndex: TfmIndex
               Left = 15
               Top = 0
               Width = 299
-              Height = 113
+              Height = 48
               Margins.Left = 15
               Margins.Top = 0
               Margins.Right = 0
@@ -31873,7 +31882,6 @@ object fmIndex: TfmIndex
               Caption = 'Fa'#231'a sua Doa'#231#227'o'
               ParentFont = False
               Layout = tlCenter
-              ExplicitHeight = 48
             end
           end
           object ScrollBox6: TScrollBox
@@ -31924,8 +31932,8 @@ object fmIndex: TfmIndex
                 AlignWithMargins = True
                 Left = 36
                 Top = 0
-                Width = 501
-                Height = 80
+                Width = 499
+                Height = 39
                 Margins.Left = 36
                 Margins.Top = 0
                 Margins.Right = 0
@@ -31953,8 +31961,6 @@ object fmIndex: TfmIndex
                   'os de desenvolvimento e manuten'#231#227'o do programa.'
                 ParentFont = False
                 WordWrap = True
-                ExplicitWidth = 499
-                ExplicitHeight = 39
               end
             end
             object bsSkinPanel133: TbsSkinPanel
@@ -32201,7 +32207,7 @@ object fmIndex: TfmIndex
               Left = 15
               Top = 0
               Width = 318
-              Height = 113
+              Height = 48
               Margins.Left = 15
               Margins.Top = 0
               Margins.Right = 0
@@ -32225,7 +32231,6 @@ object fmIndex: TfmIndex
               Caption = 'DESENVOLVEDOR'
               ParentFont = False
               Layout = tlCenter
-              ExplicitHeight = 48
             end
           end
           object ScrollBox4: TbsSkinPanel
@@ -32300,18 +32305,14 @@ object fmIndex: TfmIndex
               DefaultItemHeight = 20
               SkinData = DM.bsSkinData1
               SkinDataName = 'tab'
-              ExplicitWidth = 100
               object bsSkinTabSheet4: TbsSkinTabSheet
                 Caption = 'Logs'
                 ImageIndex = 8
-                ExplicitTop = 550
-                ExplicitWidth = 98
-                ExplicitHeight = 244
                 object mmLog: TbsSkinMemo
                   Left = 0
                   Top = 0
                   Width = 869
-                  Height = 151
+                  Height = 155
                   Align = alClient
                   BorderStyle = bsNone
                   Font.Charset = ANSI_CHARSET
@@ -32337,8 +32338,6 @@ object fmIndex: TfmIndex
                   VScrollBar = bsSkinScrollBar22
                   SkinData = DM.bsSkinData1
                   SkinDataName = 'memo'
-                  ExplicitWidth = 79
-                  ExplicitHeight = 244
                 end
                 object bsSkinScrollBar22: TbsSkinScrollBar
                   Left = 869
@@ -32378,6 +32377,10 @@ object fmIndex: TfmIndex
                 Caption = 'Arquivo config.ja'
                 ImageIndex = -1
                 OnShow = sTabSheet13Show
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object mmConfigJA: TbsSkinMemo
                   Left = 0
                   Top = 0
@@ -32578,13 +32581,14 @@ object fmIndex: TfmIndex
                 Caption = 'Banco de Dados'
                 ImageIndex = -1
                 OnShow = sTabSheet18Show
+                ExplicitLeft = 0
                 ExplicitTop = 550
                 ExplicitWidth = 98
                 ExplicitHeight = 244
                 object Splitter1: TSplitter
                   Left = 153
                   Top = 0
-                  Height = 108
+                  Height = 112
                   ExplicitLeft = 150
                   ExplicitHeight = 323
                 end
@@ -32592,7 +32596,7 @@ object fmIndex: TfmIndex
                   Left = 0
                   Top = 0
                   Width = 153
-                  Height = 108
+                  Height = 112
                   HintImageIndex = 0
                   TabOrder = 0
                   SkinData = DM.bsSkinData1
@@ -32643,7 +32647,6 @@ object fmIndex: TfmIndex
                   Font.Style = [fsBold]
                   Align = alLeft
                   OnListBoxClick = slbTabelasListBoxClick
-                  ExplicitHeight = 201
                 end
                 object bsSkinPanel11: TbsSkinPanel
                   Left = 156
@@ -32913,6 +32916,10 @@ object fmIndex: TfmIndex
                 Caption = 'Tabela - Hist'#243'rico B'#237'blia'
                 ImageIndex = 28
                 OnShow = bsSkinTabSheet5Show
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object bsSkinDBGrid1: TbsSkinDBGrid
                   Left = 0
                   Top = 0
@@ -33014,6 +33021,10 @@ object fmIndex: TfmIndex
                 Caption = 'Monitores'
                 ImageIndex = 33
                 OnShow = sTabSheet15Show
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object lvMonitores: TbsSkinListView
                   Left = 0
                   Top = 0
@@ -33059,6 +33070,10 @@ object fmIndex: TfmIndex
               object sTabSheet9: TbsSkinTabSheet
                 Caption = 'Par'#226'metros Abas'
                 ImageIndex = 10
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object loadCol: TValueListEditor
                   Left = 0
                   Top = 0
@@ -33083,6 +33098,10 @@ object fmIndex: TfmIndex
               object bsSkinTabSheet1: TbsSkinTabSheet
                 Caption = 'Par'#226'metros Sorteio Num'#233'rico'
                 ImageIndex = 42
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object GridPanel71: TGridPanel
                   Left = 0
                   Top = 0
@@ -33134,27 +33153,22 @@ object fmIndex: TfmIndex
                   object Label5: TLabel
                     Left = 1
                     Top = 1
-                    Width = 443
-                    Height = 20
+                    Width = 51
+                    Height = 13
                     Align = alClient
                     Alignment = taCenter
                     Caption = 'Pendentes'
                     Layout = tlCenter
-                    ExplicitWidth = 51
-                    ExplicitHeight = 13
                   end
                   object Label6: TLabel
                     Left = 444
                     Top = 1
-                    Width = 443
-                    Height = 20
+                    Width = 49
+                    Height = 13
                     Align = alClient
                     Alignment = taCenter
                     Caption = 'Sorteados'
                     Layout = tlCenter
-                    ExplicitLeft = 49
-                    ExplicitWidth = 49
-                    ExplicitHeight = 13
                   end
                   object vlSorteio: TValueListEditor
                     Left = 1
@@ -33187,6 +33201,10 @@ object fmIndex: TfmIndex
               object bsSkinTabSheet2: TbsSkinTabSheet
                 Caption = 'Par'#226'metros Sorteio de Nomes'
                 ImageIndex = 43
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object GridPanel72: TGridPanel
                   Left = 0
                   Top = 0
@@ -33238,27 +33256,22 @@ object fmIndex: TfmIndex
                   object Label7: TLabel
                     Left = 1
                     Top = 1
-                    Width = 443
-                    Height = 20
+                    Width = 51
+                    Height = 13
                     Align = alClient
                     Alignment = taCenter
                     Caption = 'Pendentes'
                     Layout = tlCenter
-                    ExplicitWidth = 51
-                    ExplicitHeight = 13
                   end
                   object Label8: TLabel
                     Left = 444
                     Top = 1
-                    Width = 443
-                    Height = 20
+                    Width = 49
+                    Height = 13
                     Align = alClient
                     Alignment = taCenter
                     Caption = 'Sorteados'
                     Layout = tlCenter
-                    ExplicitLeft = 49
-                    ExplicitWidth = 49
-                    ExplicitHeight = 13
                   end
                   object vlSorteioNM: TValueListEditor
                     Left = 1
@@ -33291,6 +33304,10 @@ object fmIndex: TfmIndex
               object sTabSheet17: TbsSkinTabSheet
                 Caption = 'Par'#226'metros Tempor'#225'rios'
                 ImageIndex = -1
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object paramtemp: TbsSkinMemo
                   Left = 0
                   Top = 0
@@ -33324,6 +33341,10 @@ object fmIndex: TfmIndex
               object sTabSheet10: TbsSkinTabSheet
                 Caption = 'Par'#226'metros Web'
                 ImageIndex = 67
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object param: TValueListEditor
                   Left = 0
                   Top = 0
@@ -33348,6 +33369,10 @@ object fmIndex: TfmIndex
               object sTabSheet11: TbsSkinTabSheet
                 Caption = 'Par'#226'metros de Atualiza'#231#227'o'
                 ImageIndex = 76
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object paramAtualiz: TValueListEditor
                   Left = 0
                   Top = 0
@@ -33373,6 +33398,10 @@ object fmIndex: TfmIndex
                 Caption = 'Par'#226'metros de Execu'#231#227'o'
                 ImageIndex = 8
                 OnShow = sTabSheet16Show
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object mmParam: TbsSkinMemo
                   Left = 0
                   Top = 0
@@ -33420,6 +33449,10 @@ object fmIndex: TfmIndex
                 Caption = 'Tabela Colet'#226'neas Personalizadas'
                 ImageIndex = 37
                 OnShow = sTabSheet12Show
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object DBGrid3: TbsSkinDBGrid
                   Left = 0
                   Top = 0
@@ -33512,7 +33545,7 @@ object fmIndex: TfmIndex
                   PageSize = 1
                   Min = 1
                   Max = 0
-                  Position = 0
+                  Position = 1
                   SmallChange = 1
                   LargeChange = 1
                 end
@@ -33521,6 +33554,10 @@ object fmIndex: TfmIndex
                 Caption = 'Tabela Favoritos'
                 ImageIndex = 9
                 OnShow = bsSkinTabSheet7Show
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object bsSkinDBGrid4: TbsSkinDBGrid
                   Left = 0
                   Top = 0
@@ -33622,6 +33659,10 @@ object fmIndex: TfmIndex
                 Caption = 'Arquivo liturgia.ja'
                 ImageIndex = 39
                 OnShow = sTabSheet14Show
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object mmLiturgia: TbsSkinMemo
                   Left = 0
                   Top = 0
@@ -33779,6 +33820,10 @@ object fmIndex: TfmIndex
                 Caption = 'Tabela V'#237'deos Online Personalizados'
                 ImageIndex = 83
                 OnShow = bsSkinTabSheet6Show
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object bsSkinDBGrid3: TbsSkinDBGrid
                   Left = 0
                   Top = 0
@@ -33840,7 +33885,7 @@ object fmIndex: TfmIndex
                   PageSize = 1
                   Min = 1
                   Max = 0
-                  Position = 1
+                  Position = 0
                   SmallChange = 1
                   LargeChange = 1
                 end
@@ -33848,12 +33893,13 @@ object fmIndex: TfmIndex
               object bsSkinTabSheet8: TbsSkinTabSheet
                 Caption = 'Sincronizar Arquivos Help'
                 ImageIndex = 66
+                ExplicitLeft = 0
                 ExplicitTop = 550
                 ExplicitWidth = 98
                 ExplicitHeight = 244
                 object bsSkinPanel72: TbsSkinPanel
                   Left = 0
-                  Top = 108
+                  Top = 112
                   Width = 888
                   Height = 43
                   HintImageIndex = 0
@@ -33886,16 +33932,15 @@ object fmIndex: TfmIndex
                   NumGlyphs = 1
                   Spacing = 2
                   Align = alBottom
+                  ExplicitTop = 108
                   object lblStatusHlp: TLabel
                     AlignWithMargins = True
                     Left = 3
                     Top = 3
-                    Width = 741
-                    Height = 37
+                    Width = 3
+                    Height = 13
                     Align = alClient
                     Layout = tlCenter
-                    ExplicitWidth = 3
-                    ExplicitHeight = 13
                   end
                   object bsSkinButton43: TbsSkinButton
                     Tag = 4
@@ -33945,7 +33990,7 @@ object fmIndex: TfmIndex
                   Left = 89
                   Top = 0
                   Width = 799
-                  Height = 108
+                  Height = 112
                   Align = alClient
                   Caption = 'GridPanel68'
                   ColumnCollection = <
@@ -34007,27 +34052,22 @@ object fmIndex: TfmIndex
                   object Label3: TLabel
                     Left = 1
                     Top = 1
-                    Width = 267
-                    Height = 20
+                    Width = 66
+                    Height = 13
                     Align = alClient
                     Alignment = taCenter
                     Caption = 'Arquivos Help'
                     Layout = tlCenter
-                    ExplicitWidth = 66
-                    ExplicitHeight = 13
                   end
                   object Label1: TLabel
                     Left = 268
                     Top = 1
-                    Width = 265
-                    Height = 20
+                    Width = 41
+                    Height = 13
                     Align = alClient
                     Alignment = taCenter
                     Caption = 'Imagens'
                     Layout = tlCenter
-                    ExplicitLeft = 3
-                    ExplicitWidth = 41
-                    ExplicitHeight = 13
                   end
                   object lbHlpArquivos: TListBox
                     Left = 1
@@ -34038,8 +34078,6 @@ object fmIndex: TfmIndex
                     ItemHeight = 13
                     Sorted = True
                     TabOrder = 0
-                    ExplicitWidth = 2
-                    ExplicitHeight = 179
                   end
                   object lbHlpImagens: TListBox
                     Left = 268
@@ -34050,9 +34088,6 @@ object fmIndex: TfmIndex
                     ItemHeight = 13
                     Sorted = True
                     TabOrder = 1
-                    ExplicitLeft = 3
-                    ExplicitWidth = 2
-                    ExplicitHeight = 179
                   end
                   object Label4: TLabel
                     Left = 533
@@ -34069,7 +34104,6 @@ object fmIndex: TfmIndex
                     Font.Style = []
                     ParentFont = False
                     Layout = tlCenter
-                    ExplicitLeft = 5
                     ExplicitWidth = 41
                     ExplicitHeight = 13
                   end
@@ -34082,9 +34116,6 @@ object fmIndex: TfmIndex
                     ItemHeight = 13
                     Sorted = True
                     TabOrder = 2
-                    ExplicitLeft = 5
-                    ExplicitWidth = 3
-                    ExplicitHeight = 179
                   end
                 end
                 object lbHlpTemp: TMemo
@@ -34098,12 +34129,15 @@ object fmIndex: TfmIndex
                   ScrollBars = ssBoth
                   TabOrder = 0
                   Visible = False
-                  ExplicitHeight = 201
                 end
               end
               object bsSkinTabSheet9: TbsSkinTabSheet
                 Caption = 'Atualizar Tamanhos dos Arquivos'
                 ImageIndex = -1
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object bsSkinPanel86: TbsSkinPanel
                   Left = 0
                   Top = 108
@@ -34143,12 +34177,10 @@ object fmIndex: TfmIndex
                     AlignWithMargins = True
                     Left = 3
                     Top = 3
-                    Width = 234
-                    Height = 37
+                    Width = 3
+                    Height = 13
                     Align = alClient
                     Layout = tlCenter
-                    ExplicitWidth = 3
-                    ExplicitHeight = 13
                   end
                   object bsSkinButton21: TbsSkinButton
                     AlignWithMargins = True
@@ -34400,6 +34432,7 @@ object fmIndex: TfmIndex
               object bsSkinTabSheet10: TbsSkinTabSheet
                 Caption = 'Importar LJA para BD'
                 ImageIndex = -1
+                ExplicitLeft = 0
                 ExplicitTop = 550
                 ExplicitWidth = 98
                 ExplicitHeight = 244
@@ -34413,8 +34446,6 @@ object fmIndex: TfmIndex
                   ItemHeight = 13
                   TabOrder = 2
                   Visible = False
-                  ExplicitLeft = -40
-                  ExplicitHeight = 219
                 end
                 object Panel37: TPanel
                   Left = 0
@@ -34523,7 +34554,7 @@ object fmIndex: TfmIndex
                     Left = 47
                     Top = 1
                     Width = 440
-                    Height = 23
+                    Height = 19
                     Text = '0'
                     DefaultColor = clWindow
                     DefaultFont.Charset = DEFAULT_CHARSET
@@ -34593,7 +34624,7 @@ object fmIndex: TfmIndex
                     Left = 530
                     Top = 1
                     Width = 128
-                    Height = 23
+                    Height = 19
                     Text = '0'
                     DefaultColor = clWindow
                     DefaultFont.Charset = DEFAULT_CHARSET
@@ -34627,7 +34658,7 @@ object fmIndex: TfmIndex
                     Left = 684
                     Top = 1
                     Width = 128
-                    Height = 23
+                    Height = 19
                     Text = '0'
                     DefaultColor = clWindow
                     DefaultFont.Charset = DEFAULT_CHARSET
@@ -34695,6 +34726,7 @@ object fmIndex: TfmIndex
               object bsSkinTabSheet11: TbsSkinTabSheet
                 Caption = 'Clipboard'
                 ImageIndex = -1
+                ExplicitLeft = 0
                 ExplicitTop = 550
                 ExplicitWidth = 98
                 ExplicitHeight = 244
@@ -34706,13 +34738,15 @@ object fmIndex: TfmIndex
                   Align = alClient
                   ItemHeight = 13
                   TabOrder = 0
-                  ExplicitWidth = 98
-                  ExplicitHeight = 244
                 end
               end
               object bsSkinTabSheet12: TbsSkinTabSheet
                 Caption = 'Par'#226'metros de Layout'
                 ImageIndex = -1
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object layoutValue: TValueListEditor
                   Left = 0
                   Top = 0
@@ -34730,6 +34764,10 @@ object fmIndex: TfmIndex
               object bsSkinTabSheet13: TbsSkinTabSheet
                 Caption = 'Log de Erros'
                 ImageIndex = -1
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object erro_log: TbsSkinMemo
                   Left = 0
                   Top = 41
@@ -34782,6 +34820,10 @@ object fmIndex: TfmIndex
               object bsSkinTabSheet14: TbsSkinTabSheet
                 Caption = 'Ajusta Banco de Dados para Exporta'#231#227'o'
                 ImageIndex = -1
+                ExplicitLeft = 0
+                ExplicitTop = 0
+                ExplicitWidth = 0
+                ExplicitHeight = 0
                 object bsSkinPanel194: TbsSkinPanel
                   Left = 0
                   Top = 108
@@ -34960,7 +35002,7 @@ object fmIndex: TfmIndex
                 Left = 15
                 Top = 0
                 Width = 129
-                Height = 113
+                Height = 48
                 Margins.Left = 15
                 Margins.Top = 0
                 Margins.Right = 0
@@ -34984,7 +35026,6 @@ object fmIndex: TfmIndex
                 Caption = 'Op'#231#245'es'
                 ParentFont = False
                 Layout = tlCenter
-                ExplicitHeight = 48
               end
             end
             object ScrollBox2: TScrollBox
@@ -35111,7 +35152,7 @@ object fmIndex: TfmIndex
                   Left = 36
                   Top = 0
                   Width = 69
-                  Height = 24
+                  Height = 13
                   Margins.Left = 36
                   Margins.Top = 0
                   Margins.Right = 10
@@ -35135,7 +35176,6 @@ object fmIndex: TfmIndex
                   Caption = 'Cor do Fundo:'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitHeight = 13
                 end
                 object corCapaPrograma: TbsSkinColorButton
                   Tag = 12
@@ -35241,7 +35281,7 @@ object fmIndex: TfmIndex
                   Left = 36
                   Top = 0
                   Width = 42
-                  Height = 24
+                  Height = 13
                   Margins.Left = 36
                   Margins.Top = 0
                   Margins.Right = 10
@@ -35265,14 +35305,13 @@ object fmIndex: TfmIndex
                   Caption = 'Imagem:'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitHeight = 13
                 end
                 object imgCapaPrograma: TbsSkinFileEdit
                   AlignWithMargins = True
                   Left = 88
                   Top = 1
                   Width = 430
-                  Height = 22
+                  Height = 20
                   Margins.Left = 0
                   Margins.Top = 1
                   Margins.Right = 0
@@ -35326,7 +35365,7 @@ object fmIndex: TfmIndex
                   Left = 518
                   Top = 0
                   Width = 35
-                  Height = 24
+                  Height = 19
                   Text = ''
                   DefaultColor = clWindow
                   DefaultFont.Charset = DEFAULT_CHARSET
@@ -35399,7 +35438,7 @@ object fmIndex: TfmIndex
                   Left = 36
                   Top = 0
                   Width = 63
-                  Height = 24
+                  Height = 13
                   Margins.Left = 36
                   Margins.Top = 0
                   Margins.Right = 10
@@ -35423,7 +35462,6 @@ object fmIndex: TfmIndex
                   Caption = 'Alinhamento:'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitHeight = 13
                 end
                 object cbAlinhamentoCapaPrograma: TbsSkinComboBox
                   AlignWithMargins = True
@@ -35574,7 +35612,7 @@ object fmIndex: TfmIndex
                   Left = 36
                   Top = 0
                   Width = 81
-                  Height = 24
+                  Height = 13
                   Margins.Left = 36
                   Margins.Top = 0
                   Margins.Right = 0
@@ -35598,7 +35636,6 @@ object fmIndex: TfmIndex
                   Caption = 'Abrir no monitor:'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitHeight = 13
                 end
                 object sbVideoOnAreaExtendida: TbsSkinComboBox
                   AlignWithMargins = True
@@ -35783,7 +35820,7 @@ object fmIndex: TfmIndex
                   Left = 36
                   Top = 0
                   Width = 218
-                  Height = 24
+                  Height = 13
                   Margins.Left = 36
                   Margins.Top = 0
                   Margins.Right = 0
@@ -35807,7 +35844,6 @@ object fmIndex: TfmIndex
                   Caption = 'Ao executar link do Youtube na liturgia, abrir:'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitHeight = 13
                 end
                 object sbVideoOnAbreLiturgia: TbsSkinComboBox
                   AlignWithMargins = True
@@ -35915,7 +35951,7 @@ object fmIndex: TfmIndex
                   Left = 36
                   Top = 0
                   Width = 81
-                  Height = 24
+                  Height = 13
                   Margins.Left = 36
                   Margins.Top = 0
                   Margins.Right = 0
@@ -35939,7 +35975,6 @@ object fmIndex: TfmIndex
                   Caption = 'Abrir no monitor:'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitHeight = 13
                 end
                 object sbMusicaAreaExtendida: TbsSkinComboBox
                   AlignWithMargins = True
@@ -36453,7 +36488,7 @@ object fmIndex: TfmIndex
                       Left = 154
                       Top = 0
                       Width = 32
-                      Height = 24
+                      Height = 13
                       Margins.Left = 0
                       Margins.Top = 0
                       Margins.Bottom = 0
@@ -36476,7 +36511,6 @@ object fmIndex: TfmIndex
                       Caption = 'Texto:'
                       ParentFont = False
                       Layout = tlCenter
-                      ExplicitHeight = 13
                     end
                     object bsRibbonDivider51: TbsRibbonDivider
                       Left = 248
@@ -36496,7 +36530,7 @@ object fmIndex: TfmIndex
                       Left = 263
                       Top = 0
                       Width = 58
-                      Height = 24
+                      Height = 13
                       Margins.Left = 0
                       Margins.Top = 0
                       Margins.Bottom = 0
@@ -36519,14 +36553,13 @@ object fmIndex: TfmIndex
                       Caption = 'Texto Aux.:'
                       ParentFont = False
                       Layout = tlCenter
-                      ExplicitHeight = 13
                     end
                     object bsSkinStdLabel61: TbsSkinStdLabel
                       AlignWithMargins = True
                       Left = 0
                       Top = 0
                       Width = 77
-                      Height = 24
+                      Height = 13
                       Margins.Left = 0
                       Margins.Top = 0
                       Margins.Bottom = 0
@@ -36549,7 +36582,6 @@ object fmIndex: TfmIndex
                       Caption = 'Tamanho T'#237'tulo:'
                       ParentFont = False
                       Layout = tlCenter
-                      ExplicitHeight = 13
                     end
                     object bsRibbonDivider54: TbsRibbonDivider
                       Left = 139
@@ -36746,7 +36778,7 @@ object fmIndex: TfmIndex
                       Left = 0
                       Top = 0
                       Width = 50
-                      Height = 24
+                      Height = 13
                       Margins.Left = 0
                       Margins.Top = 0
                       Margins.Bottom = 0
@@ -36769,14 +36801,13 @@ object fmIndex: TfmIndex
                       Caption = 'Cor T'#237'tulo:'
                       ParentFont = False
                       Layout = tlCenter
-                      ExplicitHeight = 13
                     end
                     object bsSkinStdLabel68: TbsSkinStdLabel
                       AlignWithMargins = True
                       Left = 117
                       Top = 0
                       Width = 32
-                      Height = 24
+                      Height = 13
                       Margins.Left = 0
                       Margins.Top = 0
                       Margins.Bottom = 0
@@ -36799,7 +36830,6 @@ object fmIndex: TfmIndex
                       Caption = 'Texto:'
                       ParentFont = False
                       Layout = tlCenter
-                      ExplicitHeight = 13
                     end
                     object bsRibbonDivider67: TbsRibbonDivider
                       Left = 102
@@ -36832,7 +36862,7 @@ object fmIndex: TfmIndex
                       Left = 351
                       Top = 0
                       Width = 58
-                      Height = 24
+                      Height = 13
                       Margins.Left = 0
                       Margins.Top = 0
                       Margins.Bottom = 0
@@ -36855,7 +36885,6 @@ object fmIndex: TfmIndex
                       Caption = 'Texto Aux.:'
                       ParentFont = False
                       Layout = tlCenter
-                      ExplicitHeight = 13
                     end
                     object bsRibbonDivider69: TbsRibbonDivider
                       Left = 461
@@ -37064,7 +37093,7 @@ object fmIndex: TfmIndex
                       Left = 216
                       Top = 0
                       Width = 68
-                      Height = 24
+                      Height = 13
                       Margins.Left = 0
                       Margins.Top = 0
                       Margins.Bottom = 0
@@ -37087,7 +37116,6 @@ object fmIndex: TfmIndex
                       Caption = 'Texto Repet.:'
                       ParentFont = False
                       Layout = tlCenter
-                      ExplicitHeight = 13
                     end
                     object bsRibbonDivider71: TbsRibbonDivider
                       Left = 201
@@ -37315,7 +37343,7 @@ object fmIndex: TfmIndex
                   Left = 36
                   Top = 0
                   Width = 116
-                  Height = 24
+                  Height = 13
                   Margins.Left = 36
                   Margins.Top = 0
                   Margins.Right = 0
@@ -37339,7 +37367,6 @@ object fmIndex: TfmIndex
                   Caption = 'Apar'#234'ncia do programa:'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitHeight = 13
                 end
                 object cbLayout: TbsSkinComboBox
                   AlignWithMargins = True
@@ -37444,8 +37471,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 858
-                  Height = 29
+                  Width = 75
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -37469,8 +37496,6 @@ object fmIndex: TfmIndex
                   Caption = 'Utilit'#225'rios'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 75
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel96: TbsSkinPanel
@@ -37513,8 +37538,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 858
-                  Height = 29
+                  Width = 44
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -37538,8 +37563,6 @@ object fmIndex: TfmIndex
                   Caption = 'Geral'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 44
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel98: TbsSkinPanel
@@ -37837,8 +37860,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 858
-                  Height = 29
+                  Width = 146
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -37862,8 +37885,6 @@ object fmIndex: TfmIndex
                   Caption = 'Slides de M'#250'sicas'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 146
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel103: TbsSkinPanel
@@ -37906,8 +37927,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 858
-                  Height = 29
+                  Width = 120
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -37931,8 +37952,6 @@ object fmIndex: TfmIndex
                   Caption = 'V'#237'deos On-line'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 120
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel104: TbsSkinPanel
@@ -37975,8 +37994,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 858
-                  Height = 29
+                  Width = 156
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -38000,8 +38019,6 @@ object fmIndex: TfmIndex
                   Caption = 'Imagem de Fundo'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 156
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel131: TbsSkinPanel
@@ -38257,7 +38274,7 @@ object fmIndex: TfmIndex
                         Left = 15
                         Top = 0
                         Width = 54
-                        Height = 24
+                        Height = 13
                         Margins.Left = 0
                         Margins.Top = 0
                         Margins.Bottom = 0
@@ -38280,14 +38297,13 @@ object fmIndex: TfmIndex
                         Caption = 'Cor Fundo:'
                         ParentFont = False
                         Layout = tlCenter
-                        ExplicitHeight = 13
                       end
                       object bsSkinStdLabel55: TbsSkinStdLabel
                         AlignWithMargins = True
                         Left = 136
                         Top = 0
                         Width = 42
-                        Height = 24
+                        Height = 13
                         Margins.Left = 0
                         Margins.Top = 0
                         Margins.Bottom = 0
@@ -38310,14 +38326,13 @@ object fmIndex: TfmIndex
                         Caption = 'Imagem:'
                         ParentFont = False
                         Layout = tlCenter
-                        ExplicitHeight = 13
                       end
                       object bsSkinStdLabel62: TbsSkinStdLabel
                         AlignWithMargins = True
                         Left = 392
                         Top = 0
                         Width = 40
-                        Height = 24
+                        Height = 13
                         Margins.Left = 0
                         Margins.Top = 0
                         Margins.Bottom = 0
@@ -38340,7 +38355,6 @@ object fmIndex: TfmIndex
                         Caption = 'Posi'#231#227'o:'
                         ParentFont = False
                         Layout = tlCenter
-                        ExplicitHeight = 13
                       end
                       object corFundoMusica: TbsSkinColorButton
                         Tag = 12
@@ -38420,7 +38434,7 @@ object fmIndex: TfmIndex
                         Left = 181
                         Top = 1
                         Width = 196
-                        Height = 22
+                        Height = 20
                         Margins.Left = 0
                         Margins.Top = 1
                         Margins.Right = 0
@@ -38735,8 +38749,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 858
-                  Height = 29
+                  Width = 183
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -38760,8 +38774,6 @@ object fmIndex: TfmIndex
                   Caption = 'Player de '#193'udio/V'#237'deo'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 183
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel160: TbsSkinPanel
@@ -38805,7 +38817,7 @@ object fmIndex: TfmIndex
                   Left = 36
                   Top = 0
                   Width = 81
-                  Height = 24
+                  Height = 13
                   Margins.Left = 36
                   Margins.Top = 0
                   Margins.Right = 0
@@ -38829,7 +38841,6 @@ object fmIndex: TfmIndex
                   Caption = 'Abrir no monitor:'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitHeight = 13
                 end
                 object sbPlayerAreaExtendida: TbsSkinComboBox
                   AlignWithMargins = True
@@ -39162,7 +39173,7 @@ object fmIndex: TfmIndex
                   Left = 36
                   Top = 0
                   Width = 457
-                  Height = 24
+                  Height = 13
                   Margins.Left = 36
                   Margins.Top = 0
                   Margins.Right = 0
@@ -39188,7 +39199,6 @@ object fmIndex: TfmIndex
                     'ser'#225' automaticamente aberto.'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitHeight = 13
                 end
               end
               object bsSkinPanel166: TbsSkinPanel
@@ -39307,7 +39317,7 @@ object fmIndex: TfmIndex
                   Left = 36
                   Top = 0
                   Width = 103
-                  Height = 24
+                  Height = 13
                   Margins.Left = 36
                   Margins.Top = 0
                   Margins.Right = 0
@@ -39331,7 +39341,6 @@ object fmIndex: TfmIndex
                   Caption = 'Alinhamento da letra:'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitHeight = 13
                 end
                 object sbAlinhMusica: TbsSkinComboBox
                   AlignWithMargins = True
@@ -39732,7 +39741,7 @@ object fmIndex: TfmIndex
                       Left = 0
                       Top = 0
                       Width = 79
-                      Height = 24
+                      Height = 13
                       Margins.Left = 0
                       Margins.Top = 0
                       Margins.Bottom = 0
@@ -39755,7 +39764,6 @@ object fmIndex: TfmIndex
                       Caption = 'Tamanho Texto:'
                       ParentFont = False
                       Layout = tlCenter
-                      ExplicitHeight = 13
                     end
                     object seTamanhoTextoRetorno: TbsSkinSpinEdit
                       Tag = 9999
@@ -40002,8 +40010,8 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 15
                   Top = 0
-                  Width = 858
-                  Height = 29
+                  Width = 81
+                  Height = 23
                   Margins.Left = 15
                   Margins.Top = 0
                   Margins.Right = 0
@@ -40027,8 +40035,6 @@ object fmIndex: TfmIndex
                   Caption = 'Monitores'
                   ParentFont = False
                   Layout = tlCenter
-                  ExplicitWidth = 81
-                  ExplicitHeight = 23
                 end
               end
               object bsSkinPanel197: TbsSkinPanel
@@ -40071,7 +40077,7 @@ object fmIndex: TfmIndex
                   AlignWithMargins = True
                   Left = 10
                   Top = 0
-                  Width = 853
+                  Width = 852
                   Height = 117
                   Margins.Left = 10
                   Margins.Top = 0
@@ -40085,6 +40091,7 @@ object fmIndex: TfmIndex
                   PanelWidth = 426
                   TabOrder = 0
                   RowCount = 1
+                  ExplicitWidth = 853
                   object Panel39: TPanel
                     AlignWithMargins = True
                     Left = 6
@@ -40360,8 +40367,8 @@ object fmIndex: TfmIndex
         object ampAbout: TbsAppMenuPage
           Left = 150
           Top = 25
-          Width = 922
-          Height = 367
+          Width = 100
+          Height = 100
           HotScroll = False
           ScrollOffset = 0
           ScrollTimerInterval = 50
@@ -40478,7 +40485,7 @@ object fmIndex: TfmIndex
                 Left = 89
                 Top = 0
                 Width = 223
-                Height = 113
+                Height = 58
                 Margins.Left = 15
                 Margins.Top = 0
                 Margins.Right = 0
@@ -40502,7 +40509,6 @@ object fmIndex: TfmIndex
                 Caption = 'Louvor JA '
                 ParentFont = False
                 Layout = tlCenter
-                ExplicitHeight = 58
               end
             end
             object bsSkinPanel36: TbsSkinPanel
@@ -40546,7 +40552,7 @@ object fmIndex: TfmIndex
                 Left = 66
                 Top = 0
                 Width = 36
-                Height = 24
+                Height = 13
                 EllipsType = bsetNone
                 UseSkinFont = True
                 UseSkinColor = True
@@ -40560,14 +40566,13 @@ object fmIndex: TfmIndex
                 Align = alLeft
                 Caption = '0.0.0.0'
                 Layout = tlCenter
-                ExplicitHeight = 13
               end
               object bsSkinStdLabel85: TbsSkinStdLabel
                 AlignWithMargins = True
                 Left = 20
                 Top = 3
                 Width = 43
-                Height = 18
+                Height = 13
                 Margins.Left = 20
                 EllipsType = bsetNone
                 UseSkinFont = True
@@ -40588,7 +40593,6 @@ object fmIndex: TfmIndex
                 Caption = 'Vers'#227'o:  '
                 ParentFont = False
                 Layout = tlCenter
-                ExplicitHeight = 13
               end
             end
             object gpSobre: TGridPanel
@@ -40671,8 +40675,8 @@ object fmIndex: TfmIndex
                     AlignWithMargins = True
                     Left = 20
                     Top = 0
-                    Width = 256
-                    Height = 24
+                    Width = 157
+                    Height = 13
                     Margins.Left = 20
                     Margins.Top = 0
                     Margins.Right = 0
@@ -40696,8 +40700,6 @@ object fmIndex: TfmIndex
                     Caption = 'Contato / Sites / Redes Sociais:  '
                     ParentFont = False
                     Layout = tlCenter
-                    ExplicitWidth = 157
-                    ExplicitHeight = 13
                   end
                 end
                 object bsSkinPanel38: TbsSkinPanel
@@ -43483,7 +43485,7 @@ object fmIndex: TfmIndex
                     AlignWithMargins = True
                     Left = 20
                     Top = 0
-                    Width = 250
+                    Width = 82
                     Height = 13
                     Margins.Left = 20
                     Margins.Top = 0
@@ -43508,7 +43510,6 @@ object fmIndex: TfmIndex
                     Caption = 'LouvorJA On-line'
                     ParentFont = False
                     Layout = tlCenter
-                    ExplicitWidth = 82
                   end
                 end
               end
@@ -48377,7 +48378,7 @@ object fmIndex: TfmIndex
                 Left = 20
                 Top = 3
                 Width = 181
-                Height = 14
+                Height = 13
                 Margins.Left = 20
                 EllipsType = bsetNone
                 UseSkinFont = True
@@ -48398,7 +48399,6 @@ object fmIndex: TfmIndex
                 Caption = 'Este programa n'#227'o pode ser vendido!'
                 ParentFont = False
                 Layout = tlCenter
-                ExplicitHeight = 13
               end
             end
           end
@@ -48409,6 +48409,10 @@ object fmIndex: TfmIndex
       Caption = 'Rel'#243'gio'
       ImageIndex = 75
       OnShow = tsRelogioShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnlFormatRelogio: TbsSkinExPanel
         Tag = 9
         Left = 0
@@ -49376,6 +49380,10 @@ object fmIndex: TfmIndex
       Caption = 'V'#237'deos On-line'
       ImageIndex = 82
       OnShow = tsColetaneasOnlineShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object imgYoutubeCapa: TImage
         Left = 488
         Top = 0
@@ -50811,6 +50819,10 @@ object fmIndex: TfmIndex
       Caption = 'V'#237'deos On-line Personalizadados'
       ImageIndex = 83
       OnShow = tsColetaneasOnlinePersoShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object DBGrid4: TbsSkinDBGrid
         Left = 0
         Top = 0
@@ -50905,7 +50917,7 @@ object fmIndex: TfmIndex
         PageSize = 1
         Min = 1
         Max = 0
-        Position = 0
+        Position = 1
         SmallChange = 1
         LargeChange = 1
       end
@@ -50984,6 +50996,10 @@ object fmIndex: TfmIndex
       Caption = 'Doxologia'
       ImageIndex = 88
       OnShow = tsDoxologiaShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object bsSkinExPanel1: TbsSkinExPanel
         AlignWithMargins = True
         Left = 3
@@ -51459,6 +51475,8 @@ object fmIndex: TfmIndex
       Caption = 'Liturgia'
       ImageIndex = 39
       OnShow = tsLiturgiaShow
+      ExplicitTop = 61
+      ExplicitHeight = 440
       object sbLiturgia: TbsSkinScrollBox
         Left = 0
         Top = 49
@@ -52490,6 +52508,7 @@ object fmIndex: TfmIndex
         Align = alRight
         Caption = 'Anota'#231#245'es'
         OnClose = pnlAnotacoesLiturgiaClose
+        ExplicitHeight = 296
         object RichEdit1: TbsSkinRichEdit
           Tag = 1
           Left = 1
@@ -52502,7 +52521,7 @@ object fmIndex: TfmIndex
           Margins.Bottom = 10
           ScrollBars = ssBoth
           Align = alClient
-          Font.Charset = ANSI_CHARSET
+          Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -16
           Font.Name = 'Tahoma'
@@ -53532,13 +53551,17 @@ object fmIndex: TfmIndex
       Caption = 'M'#250'sicas Infantis'
       ImageIndex = 91
       OnShow = tsMusicasInfantisShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object dbctrlMusicasInfantis: TbsSkinDBCtrlGrid
         Tag = 10
         AlignWithMargins = True
         Left = 0
         Top = 10
         Width = 1368
-        Height = 424
+        Height = 420
         Cursor = crHandPoint
         Margins.Left = 0
         Margins.Top = 10
@@ -53555,6 +53578,7 @@ object fmIndex: TfmIndex
         RowCount = 7
         ShowFocus = False
         OnClick = dbctrlMusicasClick
+        ExplicitHeight = 424
         object Panel1: TPanel
           Tag = 10
           AlignWithMargins = True
@@ -53741,6 +53765,10 @@ object fmIndex: TfmIndex
       Caption = 'Itens Agendados'
       ImageIndex = 101
       OnShow = tsItensAgendadosShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object bsSkinExPanel4: TbsSkinExPanel
         AlignWithMargins = True
         Left = 3
@@ -53780,7 +53808,7 @@ object fmIndex: TfmIndex
           Left = 1
           Top = 21
           Width = 292
-          Height = 412
+          Height = 410
           Cursor = crHandPoint
           Align = alClient
           AllowDelete = False
@@ -53794,6 +53822,7 @@ object fmIndex: TfmIndex
           TabOrder = 0
           RowCount = 5
           ShowFocus = False
+          ExplicitHeight = 412
           object Panel30: TPanel
             Left = 0
             Top = 0
@@ -53983,7 +54012,7 @@ object fmIndex: TfmIndex
             Left = 0
             Top = 41
             Width = 835
-            Height = 371
+            Height = 370
             Cursor = crHandPoint
             Align = alClient
             AllowDelete = False
@@ -53997,6 +54026,7 @@ object fmIndex: TfmIndex
             TabOrder = 1
             RowCount = 5
             ShowFocus = False
+            ExplicitHeight = 371
             object Panel32: TPanel
               Left = 0
               Top = 0
@@ -54279,7 +54309,7 @@ object fmIndex: TfmIndex
             AlignWithMargins = True
             Left = 6
             Top = 6
-            Width = 213
+            Width = 202
             Height = 26
             Margins.Left = 6
             Margins.Top = 6
@@ -54308,7 +54338,6 @@ object fmIndex: TfmIndex
             ParentColor = False
             ParentFont = False
             WordWrap = True
-            ExplicitWidth = 202
           end
           object MonthCalendar1: TMonthCalendar
             Left = 0
@@ -54316,7 +54345,7 @@ object fmIndex: TfmIndex
             Width = 225
             Height = 374
             Align = alClient
-            Date = 43344.396575138890000000
+            Date = 43344.577948680560000000
             DoubleBuffered = False
             ParentDoubleBuffered = False
             TabOrder = 0
@@ -54330,6 +54359,10 @@ object fmIndex: TfmIndex
       Caption = 'Localizar M'#250'sicas'
       ImageIndex = 27
       OnShow = tsBuscaMusicaShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object tabLetras: TbsSkinTabControl
         Left = 0
         Top = 57
@@ -54538,6 +54571,7 @@ object fmIndex: TfmIndex
           Spacing = 2
           Caption = 'pnlreBusca'
           Align = alBottom
+          ExplicitTop = 302
           object bsSkinScrollBar10: TbsSkinScrollBar
             Left = 1347
             Top = 0
@@ -54576,7 +54610,7 @@ object fmIndex: TfmIndex
             Height = 59
             ScrollBars = ssVertical
             Align = alClient
-            Font.Charset = ANSI_CHARSET
+            Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -12
             Font.Name = 'Tahoma'
@@ -54687,8 +54721,8 @@ object fmIndex: TfmIndex
         object bsSkinStdLabel5: TbsSkinStdLabel
           Left = 30
           Top = 0
-          Width = 1308
-          Height = 19
+          Width = 80
+          Height = 13
           EllipsType = bsetNone
           UseSkinFont = True
           UseSkinColor = True
@@ -54702,8 +54736,6 @@ object fmIndex: TfmIndex
           Align = alClient
           Caption = 'Localizar M'#250'sica:'
           Layout = tlCenter
-          ExplicitWidth = 80
-          ExplicitHeight = 13
         end
         object txtIDMusica: TbsSkinDBText
           AlignWithMargins = True

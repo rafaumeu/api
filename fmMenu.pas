@@ -2239,6 +2239,7 @@ type
     function removeTagsHTML(texto: string): string;
     procedure SaveBase64ImageToFile(const Base64String, FilePath: string);
     function ExtractBase64Data(const Base64String: string): string;
+    procedure RestartApplication;
   private
     { Private declarations }
     move_x,move_y:integer;
@@ -4367,6 +4368,25 @@ end;
 procedure TfmIndex.RichEditMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   RichEditEnter(Sender);
+end;
+
+procedure TfmIndex.RestartApplication;
+var
+  ExeName, Params: string;
+  I: Integer;
+begin
+  ExeName := ParamStr(0);
+  Params := '';
+
+  for I := 1 to ParamCount do
+  begin
+    Params := Params + ' "' + ParamStr(I) + '"';
+  end;
+
+  ShellExecute(0, 'open', PChar(ExeName), PChar(Params), nil, SW_SHOWNORMAL);
+
+  DM.tmrSair.enabled := true;
+  Halt;
 end;
 
 procedure TfmIndex.RE_SetSelBgColor(RichEdit: TbsSkinRichEdit; AColor: TColor);
