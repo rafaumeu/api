@@ -18,7 +18,7 @@ uses
   BusinessSkinForm, bsSkinMenus, bsSkinCtrls, bsSkinTabs, bsButtonGroup,
   bsSkinBoxCtrls, bsSkinExCtrls, bsribbon, bsdbctrls, bsSkinShellCtrls,
   bsSkinGrids, bsDBGrids, bsColorCtrls, bsPngImageList;
-  (*"MidasLib" NECESSÁRIA PARA EVITAR ERRO DE ACCESS VIOLATION NO DM.cds*)
+  (*"MidasLib" NECESSï¿½RIA PARA EVITAR ERRO DE ACCESS VIOLATION NO DM.cds*)
 
 type
   TMonitorInfo = record
@@ -2256,7 +2256,7 @@ type
     //Define tamanho da tel maximizada (evita que form fique embaixo da barra de tarefas)
     procedure WMGetMinmaxInfo(var Msg: TWMGetMinmaxInfo); message WM_GETMINMAXINFO;
 
-    //Define as ações para quando perder ou receber o foco
+    //Define as aï¿½ï¿½es para quando perder ou receber o foco
     procedure ApplicationDeactivate(Sender: TObject);
     procedure ApplicationActivate(Sender: TObject);
     procedure ForceDirectoriesRecursive(const Path: string);
@@ -2713,15 +2713,15 @@ begin
         InputStream.Position := 0;
         Image.Picture.LoadFromStream(InputStream);
 
-        // Determina o tipo de imagem com base na extensão do arquivo
+        // Determina o tipo de imagem com base na extensï¿½o do arquivo
         if ExtractFileExt(FilePath).ToLower = '.jpg' then
           Graphic := TJPEGImage.Create
         else if ExtractFileExt(FilePath).ToLower = '.png' then
           Graphic := TPngImage.Create
         else
-          raise Exception.Create('Formato de imagem não suportado');
+          raise Exception.Create('Formato de imagem nï¿½o suportado');
 
-        // Cria o diretório recursivamente, se não existir
+        // Cria o diretï¿½rio recursivamente, se nï¿½o existir
         ForceDirectoriesRecursive(ExtractFilePath(FilePath));
 
         try
@@ -2796,7 +2796,7 @@ end;
 
 procedure TfmIndex.FormActivate(Sender: TObject);
 begin
-  //ROTINAS DE INICIALIZAÇÃO NO FORM FMINICANDO....
+  //ROTINAS DE INICIALIZAï¿½ï¿½O NO FORM FMINICANDO....
 end;
 
 procedure TfmIndex.tsHinarioNShow(Sender: TObject);
@@ -2909,7 +2909,7 @@ begin
     val(txtHino.Text, nr, c);
     if c = 0 then
     begin
-      stHinos0.Caption := fIniciando.Translate('Buscando nº: ') + valor;
+      stHinos0.Caption := fIniciando.Translate('Buscando nï¿½: ') + valor;
     end
     else
     begin
@@ -3061,7 +3061,7 @@ begin
     val(txtHinoN.Text, nr, c);
     if c = 0 then
     begin
-      stHinos0N.Caption := fIniciando.Translate('Buscando nº: ') + valor;
+      stHinos0N.Caption := fIniciando.Translate('Buscando nï¿½: ') + valor;
     end
     else
     begin
@@ -3143,7 +3143,7 @@ begin
   musica := dir_config+'musicas\'+album+'\'+url;
   if not (FileExists(musica)) then
   begin
-    if (application.MessageBox(PChar('Arquivo "'+musica+'" não encontrado! Deseja baixar este arquivo agora?'), fmIndex.titulo, mb_yesno + mb_iconerror) = 6) then
+    if (application.MessageBox(PChar('Arquivo "'+musica+'" nï¿½o encontrado! Deseja baixar este arquivo agora?'), fmIndex.titulo, mb_yesno + mb_iconerror) = 6) then
     begin
       lista := TStringList.Create;
       lista.Clear;
@@ -3154,7 +3154,7 @@ begin
       fAtualiza.ShowModal;
 
       if not (FileExists(musica))
-        then application.MessageBox(PChar('Não foi possível baixar o arquivo "'+ExtractFilePath(application.ExeName)+musica+'"!'), fmIndex.titulo, mb_ok + mb_iconerror)
+        then application.MessageBox(PChar('Nï¿½o foi possï¿½vel baixar o arquivo "'+ExtractFilePath(application.ExeName)+musica+'"!'), fmIndex.titulo, mb_ok + mb_iconerror)
         else fmIndex.abrirArquivo(musica);
     end;
   end
@@ -3409,7 +3409,7 @@ var
 begin
   if not InternetGetConnectedState(@Flags, 0) then
   begin
-    application.messagebox(PChar('Não foi possível conectar à internet! Verifique sua conexão e tente novamente.'), TITULO, MB_OK + mb_iconerror);
+    application.messagebox(PChar('Nï¿½o foi possï¿½vel conectar ï¿½ internet! Verifique sua conexï¿½o e tente novamente.'), TITULO, MB_OK + mb_iconerror);
     Exit;
   end;
 
@@ -3493,7 +3493,7 @@ begin
   if (DM.cdsVideosOnPerso.Active = false) or
     (DM.cdsVideosOnPerso.RecordCount <= 0) then
   begin
-    application.messagebox(PChar('Nenhum vídeo selecionado!'), TITULO, mb_ok + MB_ICONEXCLAMATION);
+    application.messagebox(PChar('Nenhum vï¿½deo selecionado!'), TITULO, mb_ok + MB_ICONEXCLAMATION);
     Exit;
   end;
 
@@ -3601,7 +3601,7 @@ begin
     cbBloqItens.Checked := (lerParam('Liturgia', 'BloquearItens', '0') = '1');
     cbAnotacoesLiturgia.Checked := (lerParam('Liturgia', 'ExibirAnotacoes', '1') = '1');
 
-//    LiturgiaCalendarClick(nil); //ESTÁ DENTRO DE BLOQUEAR ITENS
+//    LiturgiaCalendarClick(nil); //ESTï¿½ DENTRO DE BLOQUEAR ITENS
   end;
 end;
 
@@ -3660,7 +3660,7 @@ begin
     btVidOnlPExec.Enabled := ((DM.cdsVideosOnPerso.Active = true) and (DM.cdsVideosOnPerso.RecordCount > 0));
 
 
-    stVideosOnPerso_1.caption := qtItens(TFDQuery(DM.cdsVideosOnPerso),'vídeo encontrado','vídeos encontrados','Nenhum vídeo encontrado');
+    stVideosOnPerso_1.caption := qtItens(TFDQuery(DM.cdsVideosOnPerso),'vï¿½deo encontrado','vï¿½deos encontrados','Nenhum vï¿½deo encontrado');
   end;
   carrega_opc := False;
 end;
@@ -3780,8 +3780,8 @@ begin
           utf8Stream.CopyFrom(fileStream, 0);
           lista.Text := utf8Stream.DataString;
         except
-          // Se ocorrer uma exceção durante a conversão para UTF-8, carregue o arquivo sem a conversão
-          fileStream.Position := 0; // Volte ao início do arquivo
+          // Se ocorrer uma exceï¿½ï¿½o durante a conversï¿½o para UTF-8, carregue o arquivo sem a conversï¿½o
+          fileStream.Position := 0; // Volte ao inï¿½cio do arquivo
           lista.LoadFromStream(fileStream);
         end;
       finally
@@ -3862,11 +3862,11 @@ var
 begin
   if not InternetGetConnectedState(@Flags, 0) then
   begin
-    application.messagebox(PChar('Não foi possível conectar à internet! Verifique sua conexão e tente novamente.'), TITULO, MB_OK + mb_iconerror);
+    application.messagebox(PChar('Nï¿½o foi possï¿½vel conectar ï¿½ internet! Verifique sua conexï¿½o e tente novamente.'), TITULO, MB_OK + mb_iconerror);
     Exit;
   end;
 
-  DM.progressDialog.Caption := 'Coletânea JA';
+  DM.progressDialog.Caption := 'Coletï¿½nea JA';
   DM.progressDialog.LabelCaption := 'Atualizando... Aguarde...';
   DM.progressDialog.Value := 0;
   DM.progressDialog.MaxValue := 100;
@@ -3882,7 +3882,7 @@ begin
   url_conexao := Trim(param.Strings.Values['coletaneas_online']);
   if (url_conexao = '') then
   begin
-    application.messagebox(PChar('Não foi possível atualizar coletâneas on-line! Algum firewall ou antivírus pode estar impedidno o programa de se conectar a internet!'), TITULO, MB_OK + mb_iconerror);
+    application.messagebox(PChar('Nï¿½o foi possï¿½vel atualizar coletï¿½neas on-line! Algum firewall ou antivï¿½rus pode estar impedidno o programa de se conectar a internet!'), TITULO, MB_OK + mb_iconerror);
     DM.progressDialog.MaxValue := 1;
     DM.progressDialog.Value := DM.progressDialog.MaxValue;
     DM.progressDialog.Close;
@@ -3902,7 +3902,7 @@ begin
       url_conexao := StringReplace(url_conexao, 'https://', 'http://', [rfIgnoreCase, rfReplaceAll]);
       sql := DM.IdHTTP1.Get(url_conexao + '?tipo=' + p + '&id=' + id + '&atualiza_playlist=1');
     except
-      application.messagebox(PChar('O sistema não conseguiu se conectar ao servidor! Tente novamente mais tarde.'), TITULO, MB_OK + mb_iconerror);
+      application.messagebox(PChar('O sistema nï¿½o conseguiu se conectar ao servidor! Tente novamente mais tarde.'), TITULO, MB_OK + mb_iconerror);
       DM.progressDialog.MaxValue := 1;
       DM.progressDialog.Value := DM.progressDialog.MaxValue;
       DM.progressDialog.Close;
@@ -3936,11 +3936,11 @@ begin
   if (p = 'canais') then
     application.messagebox(PChar('Canais atualizados com sucesso!'), TITULO, MB_OK + mb_iconinformation);
   if (p = 'playlists') then
-    application.messagebox(PChar('Listas de Reprodução atualizadas com sucesso!'), TITULO, MB_OK + mb_iconinformation);
+    application.messagebox(PChar('Listas de Reproduï¿½ï¿½o atualizadas com sucesso!'), TITULO, MB_OK + mb_iconinformation);
   if (p = 'videos') then
-    application.messagebox(PChar('Vídeos atualizadas com sucesso!'), TITULO, MB_OK + mb_iconinformation);
+    application.messagebox(PChar('Vï¿½deos atualizadas com sucesso!'), TITULO, MB_OK + mb_iconinformation);
   if (p = 'tudo') then
-    application.messagebox(PChar('Vídeos atualizadas com sucesso!'), TITULO, MB_OK + mb_iconinformation);
+    application.messagebox(PChar('Vï¿½deos atualizadas com sucesso!'), TITULO, MB_OK + mb_iconinformation);
 
   DM.progressDialog.MaxValue := 1;
   DM.progressDialog.Value := DM.progressDialog.MaxValue;
@@ -4172,7 +4172,7 @@ begin
   if (DM.cdsVideosOnPerso.Active = false) or
     (DM.cdsVideosOnPerso.RecordCount <= 0) then
   begin
-    application.messagebox(PChar('Nenhum vídeo selecionado!'), TITULO, mb_ok + MB_ICONEXCLAMATION);
+    application.messagebox(PChar('Nenhum vï¿½deo selecionado!'), TITULO, mb_ok + MB_ICONEXCLAMATION);
     Exit;
   end;
 
@@ -4199,7 +4199,7 @@ end;
 
 function TfmIndex.RemoveAcento(Str: string): string;
 const
-  ComAcento = 'áàâãäéèêëíìîïóòôõöúùûüçÁÀÂÃÄÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÇ';
+  ComAcento = 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½';
   SemAcento = 'aaaaaeeeeiiiiooooouuuucAAAAAEEEEIIIIOOOOOUUUUC';
 var
    x: Integer;
@@ -4405,10 +4405,10 @@ end;
 
 procedure TfmIndex.SorteioContador;
 begin
-  lblNumSortDisp.Caption := 'Disponíveis: ' + IntToStr(vlSorteio.Strings.Count);
+  lblNumSortDisp.Caption := 'Disponï¿½veis: ' + IntToStr(vlSorteio.Strings.Count);
   lblNumSortSort.Caption := 'Sorteados: ' + IntToStr(vlSorteados.Strings.Count);
 
-  lblNumSortDispNM.Caption := 'Disponíveis: ' + IntToStr(vlSorteioNM.Strings.Count);
+  lblNumSortDispNM.Caption := 'Disponï¿½veis: ' + IntToStr(vlSorteioNM.Strings.Count);
   lblNumSortSortNM.Caption := 'Sorteados: ' + IntToStr(vlSorteadosNM.Strings.Count);
 end;
 
@@ -4424,12 +4424,12 @@ begin
   busca_ori := busca;
   busca := RemoveAcento(busca);
   busca := StringReplace(busca,'*','%',[rfIgnoreCase, rfReplaceAll]);
-//  busca := StringReplace(busca,'a','[aáàâãä]',[rfIgnoreCase, rfReplaceAll]);
-//  busca := StringReplace(busca,'e','[eéèêë]',[rfIgnoreCase, rfReplaceAll]);
-//  busca := StringReplace(busca,'i','[iíìîï]',[rfIgnoreCase, rfReplaceAll]);
-//  busca := StringReplace(busca,'o','[oóòôõö]',[rfIgnoreCase, rfReplaceAll]);
-//  busca := StringReplace(busca,'u','[uúùûü]',[rfIgnoreCase, rfReplaceAll]);
-//  busca := StringReplace(busca,'c','[cç]',[rfIgnoreCase, rfReplaceAll]);
+//  busca := StringReplace(busca,'a','[aï¿½ï¿½ï¿½ï¿½ï¿½]',[rfIgnoreCase, rfReplaceAll]);
+//  busca := StringReplace(busca,'e','[eï¿½ï¿½ï¿½ï¿½]',[rfIgnoreCase, rfReplaceAll]);
+//  busca := StringReplace(busca,'i','[iï¿½ï¿½ï¿½ï¿½]',[rfIgnoreCase, rfReplaceAll]);
+//  busca := StringReplace(busca,'o','[oï¿½ï¿½ï¿½ï¿½ï¿½]',[rfIgnoreCase, rfReplaceAll]);
+//  busca := StringReplace(busca,'u','[uï¿½ï¿½ï¿½ï¿½]',[rfIgnoreCase, rfReplaceAll]);
+//  busca := StringReplace(busca,'c','[cï¿½]',[rfIgnoreCase, rfReplaceAll]);
 //  loadCol.Strings.Values['BUSCA:'+busca_ori] := busca;
   busca := LowerCase(busca);
   Result := busca;
@@ -4453,14 +4453,14 @@ begin
   begin
     nome_aba := DM.cdsFavoritos.FieldByName('NOME_ABA').AsString;
     nome := DM.cdsFavoritos.FieldByName('NOME').AsString;
-    if (application.MessageBox(PChar('Esta página não existe ou foi removida nesta versão! Deseja remover '''+nome+''' dos favoritos?'), titulo, mb_yesno + mb_iconquestion) = 6) then
+    if (application.MessageBox(PChar('Esta pï¿½gina nï¿½o existe ou foi removida nesta versï¿½o! Deseja remover '''+nome+''' dos favoritos?'), titulo, mb_yesno + mb_iconquestion) = 6) then
     begin
       DM.cdsFavoritos.Locate('NOME_ABA', nome_aba, []);
       DM.cdsFavoritos.Delete;
 
       carregaFavoritos();
       botoesFavoritos('add');
-      application.messagebox(PChar('Página '''+nome+''' removida com sucesso dos favoritos!'), fmIndex.TITULO, MB_OK + MB_ICONINFORMATION);
+      application.messagebox(PChar('Pï¿½gina '''+nome+''' removida com sucesso dos favoritos!'), fmIndex.TITULO, MB_OK + MB_ICONINFORMATION);
       exit;
     end
     else
@@ -4497,8 +4497,8 @@ begin
   else
   if (tipo = 'musica_mp3') then
   begin
-    titulo_dialog_def := 'Abrir música';
-    filtros_def := 'Arquivos de Áudio MP3 (*.mp3)|*.mp3';
+    titulo_dialog_def := 'Abrir mï¿½sica';
+    filtros_def := 'Arquivos de ï¿½udio MP3 (*.mp3)|*.mp3';
     param_def := 'GeralAudio';
   end
   else
@@ -4511,7 +4511,7 @@ begin
   else
   if (tipo = 'pasta') then
   begin
-    titulo_dialog_def := 'Selecione o Diretório';
+    titulo_dialog_def := 'Selecione o Diretï¿½rio';
     filtros_def := '';
     param_def := 'GeralPasta';
   end
@@ -4562,7 +4562,7 @@ begin
         if not FileExists(a) then
         begin
           if DM.OpenPictureDialog.Files.Count = 1
-            then application.messagebox(PChar('Imagem '+arq+' não localizada!'), TITULO, MB_ok + mb_iconerror);
+            then application.messagebox(PChar('Imagem '+arq+' nï¿½o localizada!'), TITULO, MB_ok + mb_iconerror);
           a := '';
         end;
 
@@ -4595,7 +4595,7 @@ begin
         if not FileExists(a) then
         begin
           if DM.OpenTextFileDialog.Files.Count = 1
-            then application.messagebox(PChar('Arquivo '+arq+' não localizado!'), TITULO, MB_ok + mb_iconerror);
+            then application.messagebox(PChar('Arquivo '+arq+' nï¿½o localizado!'), TITULO, MB_ok + mb_iconerror);
           a := '';
         end;
 
@@ -4620,7 +4620,7 @@ begin
 
       if not DirectoryExists(a) then
       begin
-        application.messagebox(PChar('Diretório '+arq+' não localizado!'), TITULO, MB_ok + mb_iconerror);
+        application.messagebox(PChar('Diretï¿½rio '+arq+' nï¿½o localizado!'), TITULO, MB_ok + mb_iconerror);
         a := '';
       end;
 
@@ -4650,7 +4650,7 @@ begin
         if not FileExists(a) then
         begin
           if DM.OpenDialog.Files.Count = 1
-            then application.messagebox(PChar('Arquivo '+arq+' não localizado!'), TITULO, MB_ok + mb_iconerror);
+            then application.messagebox(PChar('Arquivo '+arq+' nï¿½o localizado!'), TITULO, MB_ok + mb_iconerror);
           a := '';
         end;
 
@@ -4754,7 +4754,7 @@ begin
       end;
 
       if FileExists(arq) then
-        if application.messagebox(PChar('Já existe uma imagem com este nome neste diretório. Deseja substituir a imagem?'), TITULO, mb_yesno + mb_iconquestion) <> 6 then
+        if application.messagebox(PChar('Jï¿½ existe uma imagem com este nome neste diretï¿½rio. Deseja substituir a imagem?'), TITULO, mb_yesno + mb_iconquestion) <> 6 then
           arq := '';
 
       if arq <> '' then
@@ -4786,7 +4786,7 @@ begin
       end;
 
       if FileExists(arq) then
-        if application.messagebox(PChar('Já existe um arquivo com este nome neste diretório. Deseja substituir o arquivo?'), TITULO, mb_yesno + mb_iconquestion) <> 6 then
+        if application.messagebox(PChar('Jï¿½ existe um arquivo com este nome neste diretï¿½rio. Deseja substituir o arquivo?'), TITULO, mb_yesno + mb_iconquestion) <> 6 then
           arq := '';
 
       if arq <> '' then
@@ -4817,7 +4817,7 @@ begin
       end;
 
       if FileExists(arq) then
-        if application.messagebox(PChar('Já existe um arquivo com este nome neste diretório. Deseja substituir o arquivo?'), TITULO, mb_yesno + mb_iconquestion) <> 6 then
+        if application.messagebox(PChar('Jï¿½ existe um arquivo com este nome neste diretï¿½rio. Deseja substituir o arquivo?'), TITULO, mb_yesno + mb_iconquestion) <> 6 then
           arq := '';
 
       if arq <> '' then
@@ -5547,7 +5547,7 @@ begin
     //
   end
   else
-    application.MessageBox(PChar('Não localizado parâmetro ''' + pagina + ''' para a função ''carregaConfiguracoes''!'), titulo, mb_ok + mb_iconerror);
+    application.MessageBox(PChar('Nï¿½o localizado parï¿½metro ''' + pagina + ''' para a funï¿½ï¿½o ''carregaConfiguracoes''!'), titulo, mb_ok + mb_iconerror);
 
   copiaDadosTelaExtendida;
   carrega_opc := False;
@@ -5684,7 +5684,7 @@ begin
       DM.cdsItensAgendados.Filtered := false;
       if (DM.cdsItensAgendados.Locate('CATEGORIA;DATA', VarArrayOf([lerParam(item, 'id', '', arq_liturgia),IncDay(now(),strtoint(loadCol.Strings.Values['LITURGIA:SEMANA']) - dayofweek(now()))]), []))
         then slabel.Caption := 'Arquivo '+DM.cdsItensAgendados.FieldByName('ARQUIVO').AsString
-        else slabel.Caption := 'Não há arquivo agendado para esta data!';
+        else slabel.Caption := 'Nï¿½o hï¿½ arquivo agendado para esta data!';
     end
     else slabel.Caption := lerParam(item, 'subitem', '', arq_liturgia);
     slabel := TbsSkinStdLabel(CopyComponent(lit_modItem_titulo,panel2,item+'_titulo'));
@@ -5808,10 +5808,36 @@ begin
 end;
 
 procedure TfmIndex.carregaLiturgia(semana: Integer);
+  procedure MigrarParaUtf8;
+  var
+    path: string;
+    fs: TFileStream;
+    bom: array[0..2] of Byte;
+    sl: TStringList;
+  begin
+    path := dir_dados + arq_liturgia;
+    if not FileExists(path) then Exit;
+    FillChar(bom, SizeOf(bom), 0);
+    fs := TFileStream.Create(path, fmOpenRead or fmShareDenyWrite);
+    try
+      if fs.Size >= 3 then fs.Read(bom, 3);
+    finally
+      fs.Free;
+    end;
+    if (bom[0] = $EF) and (bom[1] = $BB) and (bom[2] = $BF) then Exit;
+    sl := TStringList.Create;
+    try
+      sl.LoadFromFile(path);
+      sl.SaveToFile(path, TEncoding.UTF8);
+    finally
+      sl.Free;
+    end;
+  end;
 var
   itens: TStringList;
   i: integer;
 begin
+  MigrarParaUtf8;
   itens := TStringList.Create;
   itens.Delimiter := ';';
   itens.DelimitedText := lerParam('Geral', IntToStr(semana), '', arq_liturgia);
@@ -5876,13 +5902,13 @@ begin
   versao_atu.DelimitedText := VersaoExe;
 
   lblVersao.Caption := versao_atu[0] + '.' + versao_atu[1] + '.' + DM.qrVERSAO.fieldbyname('VERSAO_BD').AsString;
-  spVersao.Caption := 'versão '+lblVersao.Caption+' ';
+  spVersao.Caption := 'versï¿½o '+lblVersao.Caption+' ';
 
   if (DM.qrVERSAO.fieldbyname('VERSAO_BD').AsInteger < VERSAO_MIN_BD) then
   begin
     Result := false;
 
-    if (application.messagebox(PChar(fIniciando.Translate('Esta versão do sistema exige o banco de dados mais recente! Deseja se conectar para fazer o download do banco de dados?')), TITULO, MB_yesno + mb_iconquestion) <> 6) then
+    if (application.messagebox(PChar(fIniciando.Translate('Esta versï¿½o do sistema exige o banco de dados mais recente! Deseja se conectar para fazer o download do banco de dados?')), TITULO, MB_yesno + mb_iconquestion) <> 6) then
     begin
       application.terminate;
       DM.tmrSair.enabled := true;
@@ -5892,7 +5918,7 @@ begin
     begin
       if not (InternetGetConnectedState(@Flags, 0)) then
       begin
-        application.messagebox(PChar(fIniciando.Translate('Não foi possível conectar à internet! Verifique sua conexão e tente novamente.')), TITULO, MB_OK + mb_iconerror);
+        application.messagebox(PChar(fIniciando.Translate('Nï¿½o foi possï¿½vel conectar ï¿½ internet! Verifique sua conexï¿½o e tente novamente.')), TITULO, MB_OK + mb_iconerror);
         DM.tmrSair.enabled := true;
         application.terminate;
         Exit;
@@ -5907,7 +5933,7 @@ begin
 
       if not FileExists(dir_config + 'database.db') then
       begin
-        application.messagebox(PChar(fIniciando.Translate('Não foi possível baixar o Banco de Dados da internet. Favor, instale seu programa novamente!')), TITULO, MB_ok + mb_iconerror);
+        application.messagebox(PChar(fIniciando.Translate('Nï¿½o foi possï¿½vel baixar o Banco de Dados da internet. Favor, instale seu programa novamente!')), TITULO, MB_ok + mb_iconerror);
         DM.tmrSair.enabled := true;
         application.terminate;
         Exit;
@@ -5964,7 +5990,7 @@ begin
   begin
     Result := false;
 
-    if (application.messagebox(PChar(fIniciando.Translate('Uma versão mais recente do banco de dados foi encontrada. Deseja baixar agora?')), TITULO, MB_yesno + mb_iconquestion) <> 6) then
+    if (application.messagebox(PChar(fIniciando.Translate('Uma versï¿½o mais recente do banco de dados foi encontrada. Deseja baixar agora?')), TITULO, MB_yesno + mb_iconquestion) <> 6) then
     begin
       Result := false;
       Exit;
@@ -5973,7 +5999,7 @@ begin
     begin
       if not (InternetGetConnectedState(@Flags, 0)) then
       begin
-        application.messagebox(PChar(fIniciando.Translate('Não foi possível conectar à internet! Verifique sua conexão e tente novamente.')), TITULO, MB_OK + mb_iconerror);
+        application.messagebox(PChar(fIniciando.Translate('Nï¿½o foi possï¿½vel conectar ï¿½ internet! Verifique sua conexï¿½o e tente novamente.')), TITULO, MB_OK + mb_iconerror);
         Result := false;
         Exit;
       end;
@@ -5987,7 +6013,7 @@ begin
 
       if not FileExists(dir_config + 'database.db') then
       begin
-        application.messagebox(PChar(fIniciando.Translate('Não foi possível baixar o Banco de Dados da internet. Favor, instale seu programa novamente!')), TITULO, MB_ok + mb_iconerror);
+        application.messagebox(PChar(fIniciando.Translate('Nï¿½o foi possï¿½vel baixar o Banco de Dados da internet. Favor, instale seu programa novamente!')), TITULO, MB_ok + mb_iconerror);
         Result := false;
         Exit;
       end;
@@ -6103,7 +6129,7 @@ begin
   try
     StrToTime(txtDecr.Text)
   except
-    application.MessageBox('Tempo inválido!', TITULO, mb_ok + mb_iconerror);
+    application.MessageBox('Tempo invï¿½lido!', TITULO, mb_ok + mb_iconerror);
     txtDecr.text := '00:01:00';
     txtDecr.SetFocus;
   end;
@@ -6113,7 +6139,7 @@ end;
 
 function TfmIndex.lerParam(Grupo, Param, Valor, Arquivo, Diretorio:string): string;
 var
-  ArqIni: TIniFile;
+  ArqIni: TCustomIniFile;
   vl: string;
   dir: string;
 begin
@@ -6126,7 +6152,10 @@ begin
     else dir := dir_dados;
 
   try
-    ArqIni := TIniFile.Create(dir + Arquivo);
+    if Arquivo = arq_liturgia then
+      ArqIni := TMemIniFile.Create(dir + Arquivo, TEncoding.UTF8)
+    else
+      ArqIni := TIniFile.Create(dir + Arquivo);
     try
       vl := ArqIni.ReadString(Grupo, Param, Valor);
     finally
@@ -6159,15 +6188,19 @@ end;
 
 procedure TfmIndex.gravaParam(Grupo, Param, Valor, Arquivo: string);
 var
-  ArqIni: TIniFile;
+  ArqIni: TCustomIniFile;
 begin
   if Arquivo = '' then
     Arquivo := 'config'+fIniciando.LANG+'.ja';
 
   try
-    ArqIni := TIniFile.Create(dir_dados + Arquivo);
+    if Arquivo = arq_liturgia then
+      ArqIni := TMemIniFile.Create(dir_dados + Arquivo, TEncoding.UTF8)
+    else
+      ArqIni := TIniFile.Create(dir_dados + Arquivo);
     try
       ArqIni.WriteString(Grupo, Param, Valor);
+      ArqIni.UpdateFile;
     finally
       ArqIni.Free;
     end;
@@ -6315,17 +6348,21 @@ end;
 
 procedure TfmIndex.apagaParam(Grupo, Param, Arquivo: string);
 var
-  ArqIni: TIniFile;
+  ArqIni: TCustomIniFile;
 begin
   if Arquivo = '' then
     Arquivo := 'config'+fIniciando.LANG+'.ja';
 
-  ArqIni := TIniFile.Create(dir_dados + Arquivo);
+  if Arquivo = arq_liturgia then
+    ArqIni := TMemIniFile.Create(dir_dados + Arquivo, TEncoding.UTF8)
+  else
+    ArqIni := TIniFile.Create(dir_dados + Arquivo);
   try
     if (trim(Param) <> '') then
       ArqIni.DeleteKey(Grupo, Param)
     else
       ArqIni.EraseSection(Grupo);
+    ArqIni.UpdateFile;
   finally
     ArqIni.Free;
   end;
@@ -6671,7 +6708,7 @@ begin
   try
     StrToTime(meESHora.Text)
   except
-    application.MessageBox('Hora inválida!', TITULO, mb_ok + mb_iconerror);
+    application.MessageBox('Hora invï¿½lida!', TITULO, mb_ok + mb_iconerror);
     meESHora.Text := '00:00';
     meESHora.SetFocus;
     Exit;
@@ -6711,11 +6748,11 @@ begin
 
     if (fIniciando.LANG='ES') then
     begin
-      loadCol.Strings.Values['BIBLIA_BUSCA_VERSAO'] := lerParam('Busca Biblica', 'Versão', 'RV');
+      loadCol.Strings.Values['BIBLIA_BUSCA_VERSAO'] := lerParam('Busca Biblica', 'Versï¿½o', 'RV');
     end
     else
     begin
-      loadCol.Strings.Values['BIBLIA_BUSCA_VERSAO'] := lerParam('Busca Biblica', 'Versão', 'ARA');
+      loadCol.Strings.Values['BIBLIA_BUSCA_VERSAO'] := lerParam('Busca Biblica', 'Versï¿½o', 'ARA');
     end;
 
     loadCol.Strings.Values['BIBLIA_BUSCA_INFO'] := '';
@@ -6786,7 +6823,7 @@ begin
 
   if DM.qrBUSCA.RecordCount <= 0 then
   begin
-    application.MessageBox('Música não encontrada!', TITULO, mb_ok + mb_iconerror);
+    application.MessageBox('Mï¿½sica nï¿½o encontrada!', TITULO, mb_ok + mb_iconerror);
     txtHino.SetFocus;
     Exit;
   end;
@@ -6794,17 +6831,17 @@ begin
   if (DM.qrBUSCA.fieldbyname('TIPO_WEB').AsString = 'S') then
   begin
     if (TComponent(Sender).Tag) = 2
-      then application.MessageBox('Não é possível abrir side playback de coletâneas na web!', TITULO, mb_ok + MB_ICONEXCLAMATION)
+      then application.MessageBox('Nï¿½o ï¿½ possï¿½vel abrir side playback de coletï¿½neas na web!', TITULO, mb_ok + MB_ICONEXCLAMATION)
     else if (TComponent(Sender).Tag) = 3
-      then application.MessageBox('Não é possível abrir slide sem música de coletâneas na web!', TITULO, mb_ok + MB_ICONEXCLAMATION)
+      then application.MessageBox('Nï¿½o ï¿½ possï¿½vel abrir slide sem mï¿½sica de coletï¿½neas na web!', TITULO, mb_ok + MB_ICONEXCLAMATION)
     else abreVideoOn(DM.qrBUSCA.fieldbyname('ID').AsString, DM.qrBUSCA.fieldbyname('NOME').AsString);
   end
   else if (DM.qrBUSCA.fieldbyname('TIPO_PERSO').AsString = 'S') then
   begin
     if (TComponent(Sender).Tag) = 2
-      then application.MessageBox('Não é possível abrir side playback de coletâneas personalizadas!', TITULO, mb_ok + MB_ICONEXCLAMATION)
+      then application.MessageBox('Nï¿½o ï¿½ possï¿½vel abrir side playback de coletï¿½neas personalizadas!', TITULO, mb_ok + MB_ICONEXCLAMATION)
     else if (TComponent(Sender).Tag) = 3
-      then application.MessageBox('Não é possível abrir slide sem música de coletâneas personalizadas!', TITULO, mb_ok + MB_ICONEXCLAMATION)
+      then application.MessageBox('Nï¿½o ï¿½ possï¿½vel abrir slide sem mï¿½sica de coletï¿½neas personalizadas!', TITULO, mb_ok + MB_ICONEXCLAMATION)
     else
     begin
       if FileExists(DM.qrBUSCA.fieldbyname('URL').AsString) then
@@ -6828,7 +6865,7 @@ begin
       end
       else
       begin
-        application.MessageBox(PChar('Arquivo "'+DM.qrBUSCA.fieldbyname('URL').AsString+' não localizado"!'), fmIndex.titulo, mb_ok + mb_iconerror)
+        application.MessageBox(PChar('Arquivo "'+DM.qrBUSCA.fieldbyname('URL').AsString+' nï¿½o localizado"!'), fmIndex.titulo, mb_ok + mb_iconerror)
       end;
     end;
   end
@@ -6909,7 +6946,7 @@ begin
       DM.qrMUSICA.Open;
 
       if (DM.qrMUSICA.FieldByName('URL_INSTRUMENTAL').AsString = '')
-        then application.MessageBox(PChar('Esta música não possui playback!'), titulo, mb_ok + MB_ICONEXCLAMATION)
+        then application.MessageBox(PChar('Esta mï¿½sica nï¿½o possui playback!'), titulo, mb_ok + MB_ICONEXCLAMATION)
         else abreArquivoMusica(id,DM.qrMUSICA.FieldByName('ALBUM').AsString,DM.qrMUSICA.FieldByName('URL_INSTRUMENTAL').AsString);
     end
     else if (tag = 6) then
@@ -6955,7 +6992,7 @@ begin
 
       abrirArquivo(openDialog('arquivo', '', '.',false,subitem));
     end
-    else application.MessageBox('Arquivo ou diretório não encotrado!',TITULO,mb_ok+mb_iconerror);
+    else application.MessageBox('Arquivo ou diretï¿½rio nï¿½o encotrado!',TITULO,mb_ok+mb_iconerror);
   end
   else if (lerParam(item, 'tipo', '', arq_liturgia) = 'itensagendados') then
   begin
@@ -6989,8 +7026,8 @@ begin
       DM.cdsCategoriasItensAgendados.Open;
 
       if not (DM.cdsCategoriasItensAgendados.Locate('ID', subitem, []))
-        then application.MessageBox(PChar('Categoria '''+lerParam(item, 'item', '', arq_liturgia)+''' não encontrada. Será necessário corrigir este item!'),TITULO,mb_ok+MB_ICONERROR)
-        else application.MessageBox(PChar('Não foi encontrado '''+lerParam(item, 'item', '', arq_liturgia)+''' agendado para esta data!'),TITULO,mb_ok+MB_ICONEXCLAMATION);
+        then application.MessageBox(PChar('Categoria '''+lerParam(item, 'item', '', arq_liturgia)+''' nï¿½o encontrada. Serï¿½ necessï¿½rio corrigir este item!'),TITULO,mb_ok+MB_ICONERROR)
+        else application.MessageBox(PChar('Nï¿½o foi encontrado '''+lerParam(item, 'item', '', arq_liturgia)+''' agendado para esta data!'),TITULO,mb_ok+MB_ICONEXCLAMATION);
     end
     else if (DM.cdsItensAgendados.Locate('CATEGORIA;DATA', VarArrayOf([subitem,IncDay(now(),strtoint(loadCol.Strings.Values['LITURGIA:SEMANA']) - dayofweek(now()))]), [])) then
     begin
@@ -7003,7 +7040,7 @@ begin
         then abrirArquivo(subitem)
       else
       begin
-        application.MessageBox('Arquivo não encotrado!',TITULO,mb_ok+mb_iconerror);
+        application.MessageBox('Arquivo nï¿½o encotrado!',TITULO,mb_ok+mb_iconerror);
         if DirectoryExists(ExtractFileDir(subitem))
           then subitem := ExtractFileDir(subitem)
         else subitem := '';
@@ -7012,7 +7049,7 @@ begin
       end;
 
     end
-    else application.MessageBox(PChar('Não foi encontrado '''+lerParam(item, 'item', '', arq_liturgia)+''' agendado para esta data!'),TITULO,mb_ok+MB_ICONEXCLAMATION);
+    else application.MessageBox(PChar('Nï¿½o foi encontrado '''+lerParam(item, 'item', '', arq_liturgia)+''' agendado para esta data!'),TITULO,mb_ok+MB_ICONEXCLAMATION);
     DM.cdsItensAgendados.Filtered := true;
   end;
 
@@ -7068,7 +7105,7 @@ var
 begin
   letra := TStringList.Create;
 
-  fmIndex.openDialog('geral', 'Apresentação LouvorJA (*.slja;*.lja)|*.slja;*.lja', '', true);
+  fmIndex.openDialog('geral', 'Apresentaï¿½ï¿½o LouvorJA (*.slja;*.lja)|*.slja;*.lja', '', true);
   for i := 0 to DM.OpenDialog.Files.Count - 1 do
   begin
 
@@ -7121,7 +7158,7 @@ begin
 
     if (idMusica.Text = '') or (idMusica.Text = '0') then
     begin
-      application.MessageBox('Não foi possível inserir!', TITULO, mb_ok + mb_iconerror);
+      application.MessageBox('Nï¿½o foi possï¿½vel inserir!', TITULO, mb_ok + mb_iconerror);
       Exit;
     end;
 
@@ -7227,7 +7264,7 @@ begin
 
   if not (InternetGetConnectedState(@Flags, 0)) then
   begin
-    application.messagebox(PChar('Não foi possível conectar à internet! Verifique sua conexão e tente novamente.'), fmIndex.TITULO, MB_OK + mb_iconerror);
+    application.messagebox(PChar('Nï¿½o foi possï¿½vel conectar ï¿½ internet! Verifique sua conexï¿½o e tente novamente.'), fmIndex.TITULO, MB_OK + mb_iconerror);
     Exit;
   end;
 
@@ -7578,7 +7615,7 @@ begin
       stColetPerso_0.Caption := '';
     end;
 
-    stColetPerso_1.Caption := qtItens(TFDQuery(DM.cdsCOLETANEAS_PERSO),'álbum encontrado','álbuns encontrados','Nenhum álbum encontrado');
+    stColetPerso_1.Caption := qtItens(TFDQuery(DM.cdsCOLETANEAS_PERSO),'ï¿½lbum encontrado','ï¿½lbuns encontrados','Nenhum ï¿½lbum encontrado');
 
     corCampoBusca(TFDQuery(DM.cdsCOLETANEAS_PERSO),txtBuscaColetPeso,nil);
     fExibeColetaneasPerso(sbColPERSO);
@@ -7678,11 +7715,11 @@ begin
           end
           else
           begin
-            Caption := 'Imagem de capa não localizada!';
+            Caption := 'Imagem de capa nï¿½o localizada!';
             ImageIndex := 0;
           end;
         except
-          Caption := 'Tamanho ou formato de imagem inválido!';
+          Caption := 'Tamanho ou formato de imagem invï¿½lido!';
           ImageIndex := 0;
           bitmap.Free;
         end;
@@ -7692,7 +7729,7 @@ begin
         if ((not FileExists(DM.cdsCOLETANEAS_PERSO.FieldByName('URL').AsString)) and
            (not DirectoryExists(DM.cdsCOLETANEAS_PERSO.FieldByName('URL').AsString))) then
         begin
-          Caption := 'Coletânea não localizada! Clique para corrigir.';
+          Caption := 'Coletï¿½nea nï¿½o localizada! Clique para corrigir.';
         end;
 
         Width := gWidth;
@@ -7887,7 +7924,7 @@ begin
       try
         StrToTime(meESHora.Text)
       except
-        application.MessageBox('Hora inválida!', TITULO, mb_ok + mb_iconerror);
+        application.MessageBox('Hora invï¿½lida!', TITULO, mb_ok + mb_iconerror);
         btOuvir.Down := False;
         meESHora.SetFocus;
         Exit;
@@ -8300,7 +8337,7 @@ begin
 
   DM.qrBUSCA.Open;
 
-  pnlStatusBuscaMusicas1.Caption := qtItens(DM.qrBUSCA,'música encontrada','músicas encontradas','Nenhuma música encontrada');
+  pnlStatusBuscaMusicas1.Caption := qtItens(DM.qrBUSCA,'mï¿½sica encontrada','mï¿½sicas encontradas','Nenhuma mï¿½sica encontrada');
   loadCol.Strings.Values['BUSCA:STATUS'] := '';
 
 
@@ -8341,7 +8378,7 @@ begin
 //  bsErroMusica.Visible := pnlreBusca.Visible;
 
   corCampoBusca(DM.qrBUSCA, txtBusca, DBGrid2);
-  pnlStatusBuscaMusicas1.Caption := qtItens(DM.qrBUSCA,'música encontrada','músicas encontradas','Nenhuma música encontrada');;
+  pnlStatusBuscaMusicas1.Caption := qtItens(DM.qrBUSCA,'mï¿½sica encontrada','mï¿½sicas encontradas','Nenhuma mï¿½sica encontrada');;
   dbGrid2.Columns[2].Width := dbGrid2.Width - dbGrid2.Columns[0].Width - dbGrid2.Columns[1].Width - dbGrid2.Columns[3].Width;
   loadCol.Strings.Values['BUSCA:STATUS'] := '';
 
@@ -8450,7 +8487,7 @@ var
 begin
   url := fmIndex.param.Strings.Values['form'+fIniciando.LANG];
   if (url = '') then
-    Application.MessageBox(PChar('Não foi possível acessar o formulário de contato! Acesse o formulário em https://louovorja.com.br!'), fmIndex.TITULO, mb_ok + mb_iconinformation)
+    Application.MessageBox(PChar('Nï¿½o foi possï¿½vel acessar o formulï¿½rio de contato! Acesse o formulï¿½rio em https://louovorja.com.br!'), fmIndex.TITULO, mb_ok + mb_iconinformation)
   else
     ShellExecute(handle, nil, PChar(url), nil, nil, SW_MAXIMIZE);
 //  fIniciando.AppCreateForm(TfEnviaMensagem, fEnviaMensagem);
@@ -8466,12 +8503,12 @@ var
 begin
   if not (InternetGetConnectedState(@Flags, 0)) then
   begin
-    application.messagebox(PChar('Não foi possível conectar à internet! Verifique sua conexão e tente novamente.'), fmIndex.TITULO, MB_OK + mb_iconerror);
+    application.messagebox(PChar('Nï¿½o foi possï¿½vel conectar ï¿½ internet! Verifique sua conexï¿½o e tente novamente.'), fmIndex.TITULO, MB_OK + mb_iconerror);
     Exit;
   end;
 
-  DM.progressDialog.Caption := 'Coletânea JA';
-  DM.progressDialog.LabelCaption := 'Procurando atualizações... aguarde...';
+  DM.progressDialog.Caption := 'Coletï¿½nea JA';
+  DM.progressDialog.LabelCaption := 'Procurando atualizaï¿½ï¿½es... aguarde...';
   DM.progressDialog.Value := 0;
   DM.progressDialog.MaxValue := 2;
   DM.progressDialog.Execute;
@@ -8486,7 +8523,7 @@ begin
   if verVersao() = false then
   begin
     Sleep(1000);
-    application.messagebox(PChar('Não foram encontradas novas versões do programa!'), fmIndex.TITULO, MB_OK + mb_iconinformation);
+    application.messagebox(PChar('Nï¿½o foram encontradas novas versï¿½es do programa!'), fmIndex.TITULO, MB_OK + mb_iconinformation);
     application.ProcessMessages;
   end;
   DM.progressDialog.MaxValue := 1;
@@ -8554,7 +8591,7 @@ var
 begin
   url := fmIndex.param.Strings.Values['form'+fIniciando.LANG];
   if (url = '') then
-    Application.MessageBox(PChar('Não foi possível acessar o formulário de contato! Acesse o formulário em https://louovorja.com.br!'), fmIndex.TITULO, mb_ok + mb_iconinformation)
+    Application.MessageBox(PChar('Nï¿½o foi possï¿½vel acessar o formulï¿½rio de contato! Acesse o formulï¿½rio em https://louovorja.com.br!'), fmIndex.TITULO, mb_ok + mb_iconinformation)
   else
     ShellExecute(handle, nil, PChar(url), nil, nil, SW_MAXIMIZE);
 end;
@@ -8695,7 +8732,7 @@ begin
 
   if cbColetaneasPerso.KeyValue <= 0 then
   begin
-    application.messagebox('Escolha uma coletânea para aterar!', TITULO, MB_OK + mb_iconexclamation);
+    application.messagebox('Escolha uma coletï¿½nea para aterar!', TITULO, MB_OK + mb_iconexclamation);
     cbColetaneasPerso.SetFocus;
     cbColetaneasPerso.DropDown;
     exit;
@@ -8703,7 +8740,7 @@ begin
 
   if (trim(txtColetanea2.Text) = '') then
   begin
-    application.messagebox('Digite o nome da coletânea!', TITULO, MB_OK + mb_iconexclamation);
+    application.messagebox('Digite o nome da coletï¿½nea!', TITULO, MB_OK + mb_iconexclamation);
     txtColetanea2.SetFocus;
     exit;
   end;
@@ -8713,7 +8750,7 @@ begin
   DM.cdsCOLETANEAS_PERSO.Filtered := True;
   if (DM.cdsCOLETANEAS_PERSO.RecordCount > 0) then
   begin
-    application.messagebox('Já existe uma coletânea com este nome!', TITULO, MB_OK + mb_iconexclamation);
+    application.messagebox('Jï¿½ existe uma coletï¿½nea com este nome!', TITULO, MB_OK + mb_iconexclamation);
     txtColetanea2.SetFocus;
     DM.cdsCOLETANEAS_PERSO.Filtered := false;
     exit;
@@ -8788,7 +8825,7 @@ begin
       Item.SubItems.Add(url);
 //      a_nao := a_nao + 1;
       Item.SubItems.Add('0');
-      Item.SubItems.Add('Não encontrado');
+      Item.SubItems.Add('Nï¿½o encontrado');
     end
     else
     begin
@@ -8860,7 +8897,7 @@ end;
 
 procedure TfmIndex.bsSkinButton2Click(Sender: TObject);
 begin
-  if (application.MessageBox(PChar('Deseja restaurar a formatação do texto?'), titulo, mb_yesno + mb_iconquestion) <> 6) then
+  if (application.MessageBox(PChar('Deseja restaurar a formataï¿½ï¿½o do texto?'), titulo, mb_yesno + mb_iconquestion) <> 6) then
     Exit;
 
   apagaParam('Musicas', 'Cor Titulo');
@@ -8890,14 +8927,14 @@ begin
   txtAbrirColetExit(Sender);
   if (trim(txtColetanea.Text) = '') then
   begin
-    application.messagebox('Digite o nome da coletânea!', fmIndex.TITULO, MB_OK + mb_iconexclamation);
+    application.messagebox('Digite o nome da coletï¿½nea!', fmIndex.TITULO, MB_OK + mb_iconexclamation);
     txtColetanea.SetFocus;
     exit;
   end;
 
   if (DM.cdsCOLETANEAS_PERSO.Locate('NOME', txtColetanea.text, [])) then
   begin
-    application.messagebox('Já existe uma coletânea com este nome!', fmIndex.TITULO, MB_OK + mb_iconexclamation);
+    application.messagebox('Jï¿½ existe uma coletï¿½nea com este nome!', fmIndex.TITULO, MB_OK + mb_iconexclamation);
     txtColetanea.SetFocus;
     exit;
   end;
@@ -8905,7 +8942,7 @@ begin
   id := FormatDateTime('ddmmyyyyhhnnsszzz', Now);
   if (DM.cdsCOLETANEAS_PERSO.Locate('ID', id, [])) then
   begin
-    application.messagebox('Não foi possível salvar. Clique em salvar novamente!', fmIndex.TITULO, MB_OK + mb_iconerror);
+    application.messagebox('Nï¿½o foi possï¿½vel salvar. Clique em salvar novamente!', fmIndex.TITULO, MB_OK + mb_iconerror);
     exit;
   end;
 
@@ -8977,7 +9014,7 @@ begin
   lbHlpImagens.Items.Clear;
   lbHlpFalta.Items.Clear;
 
-  lblStatusHlp.Caption := 'Inicando Verificação...';
+  lblStatusHlp.Caption := 'Inicando Verificaï¿½ï¿½o...';
   Application.ProcessMessages;
   //Sleep(500);
 
@@ -8991,7 +9028,7 @@ begin
   if not FileExists(dir_config+'help\menu.hja') then
   begin
     lbHlpFalta.Items.Add('menu.hja');
-    lblStatusHlp.Caption := 'Arquivo de Menu não encontrado. Finalizado!';
+    lblStatusHlp.Caption := 'Arquivo de Menu nï¿½o encontrado. Finalizado!';
     Exit;
   end;
 
@@ -9294,7 +9331,7 @@ end;
 
 procedure TfmIndex.bsSkinButton47Click(Sender: TObject);
 begin
-  if (application.MessageBox(PChar('Deseja restaurar a formatação do texto na tela de retorno?'), titulo, mb_yesno + mb_iconquestion) <> 6) then
+  if (application.MessageBox(PChar('Deseja restaurar a formataï¿½ï¿½o do texto na tela de retorno?'), titulo, mb_yesno + mb_iconquestion) <> 6) then
     Exit;
 
   apagaParam('Musicas', 'Tamanho Texto Retorno');
@@ -9569,7 +9606,7 @@ begin
        fmIndex.gravaParamServer('BIBLIA', 'info', lmdBibliaInfo.Caption);
     end;
 
-    gravaParam('Biblia', 'Versão',loadCol.Strings.Values['BIBLIA_P_VERSAO']);
+    gravaParam('Biblia', 'Versï¿½o',loadCol.Strings.Values['BIBLIA_P_VERSAO']);
     gravaParam('Biblia', 'Livro',loadCol.Strings.Values['BIBLIA_P_LIVRO']);
     gravaParam('Biblia', 'Livro Sigla',loadCol.Strings.Values['BIBLIA_P_LIVRO_SIGLA']);
     gravaParam('Biblia', 'Livro Nome',loadCol.Strings.Values['BIBLIA_P_LIVRO_NOME']);
@@ -9635,7 +9672,7 @@ begin
     if (FileExists(arquivo)) then
       abrirArquivo(arquivo)
     else
-      application.MessageBox(PChar('Arquivo '''+arquivo+''' não encontrado!'),TITULO,mb_ok+mb_iconerror);
+      application.MessageBox(PChar('Arquivo '''+arquivo+''' nï¿½o encontrado!'),TITULO,mb_ok+mb_iconerror);
   end;
 end;
 
@@ -9755,7 +9792,7 @@ begin
       imgImagemCapa.Picture.LoadFromFile(imgCapaPrograma.Text);
       imgCapaPrograma.Text := verificaURL(imgCapaPrograma.Text, txtImgCapaProgramaInfo);
     except
-      application.messagebox(PChar('Arquivo de imagem ''' + imgCapaPrograma.Text + ''' inválido!'), TITULO, MB_OK + mb_iconerror);
+      application.messagebox(PChar('Arquivo de imagem ''' + imgCapaPrograma.Text + ''' invï¿½lido!'), TITULO, MB_OK + mb_iconerror);
       imgImagemCapa.Picture := imgImagemCapaModel.Picture;
       imgCapaPrograma.Text := '';
       txtImgCapaProgramaInfo.Text := '';
@@ -10141,7 +10178,7 @@ procedure TfmIndex.bsSkinSpeedButton12Click(Sender: TObject);
 begin
   if DM.qrHINOS.RecordCount <= 0 then
   begin
-    application.MessageBox('Hino não encontrado!', TITULO, mb_ok + mb_iconerror);
+    application.MessageBox('Hino nï¿½o encontrado!', TITULO, mb_ok + mb_iconerror);
     Exit;
   end;
   abreLetra(DM.qrHINOS.FieldByName('ID').AsInteger, txtHino.Text);
@@ -10151,7 +10188,7 @@ procedure TfmIndex.bsSkinSpeedButton12NClick(Sender: TObject);
 begin
   if DM.qrHINOSN.RecordCount <= 0 then
   begin
-    application.MessageBox('Hino não encontrado!', TITULO, mb_ok + mb_iconerror);
+    application.MessageBox('Hino nï¿½o encontrado!', TITULO, mb_ok + mb_iconerror);
     Exit;
   end;
   abreLetra(DM.qrHINOSN.FieldByName('ID').AsInteger, txtHino.Text);
@@ -10161,7 +10198,7 @@ procedure TfmIndex.bsSkinSpeedButton13Click(Sender: TObject);
 begin
   if DM.qrHINOS.RecordCount <= 0 then
   begin
-    application.MessageBox('Hino não encontrado!', TITULO, mb_ok + mb_iconerror);
+    application.MessageBox('Hino nï¿½o encontrado!', TITULO, mb_ok + mb_iconerror);
     Exit;
   end;
 
@@ -10174,7 +10211,7 @@ procedure TfmIndex.bsSkinSpeedButton13NClick(Sender: TObject);
 begin
   if DM.qrHINOSN.RecordCount <= 0 then
   begin
-    application.MessageBox('Hino não encontrado!', TITULO, mb_ok + mb_iconerror);
+    application.MessageBox('Hino nï¿½o encontrado!', TITULO, mb_ok + mb_iconerror);
     Exit;
   end;
 
@@ -10307,7 +10344,7 @@ var
 begin
   url := fmIndex.param.Strings.Values['form'+fIniciando.LANG];
   if (url = '') then
-    Application.MessageBox(PChar('Não foi possível acessar o formulário de contato! Acesse o formulário em https://louovorja.com.br!'), fmIndex.TITULO, mb_ok + mb_iconinformation)
+    Application.MessageBox(PChar('Nï¿½o foi possï¿½vel acessar o formulï¿½rio de contato! Acesse o formulï¿½rio em https://louovorja.com.br!'), fmIndex.TITULO, mb_ok + mb_iconinformation)
   else
     ShellExecute(handle, nil, PChar(url), nil, nil, SW_MAXIMIZE);
 (*
@@ -10452,7 +10489,7 @@ procedure TfmIndex.btAbreSaveVideoOn(campo: TbsSkinEdit);
 begin
   if (campo.Text = '') then
   begin
-    application.MessageBox(PChar('Digite a URL ou ID do vídeo do Youtube!'), titulo, mb_ok + MB_ICONEXCLAMATION);
+    application.MessageBox(PChar('Digite a URL ou ID do vï¿½deo do Youtube!'), titulo, mb_ok + MB_ICONEXCLAMATION);
     campo.SetFocus;
     exit;
   end;
@@ -10480,7 +10517,7 @@ var
 begin
   url := fmIndex.param.Strings.Values['form'+fIniciando.LANG];
   if (url = '') then
-    Application.MessageBox(PChar('Não foi possível acessar o formulário de contato! Acesse o formulário em https://louovorja.com.br!'), fmIndex.TITULO, mb_ok + mb_iconinformation)
+    Application.MessageBox(PChar('Nï¿½o foi possï¿½vel acessar o formulï¿½rio de contato! Acesse o formulï¿½rio em https://louovorja.com.br!'), fmIndex.TITULO, mb_ok + mb_iconinformation)
   else
     ShellExecute(handle, nil, PChar(url), nil, nil, SW_MAXIMIZE);
 end;
@@ -10491,13 +10528,13 @@ url:string;
 begin
   url := fmIndex.param.Strings.Values['form'+fIniciando.LANG];
   if (url = '') then
-    Application.MessageBox(PChar('Não foi possível acessar o formulário de contato! Acesse o formulário em https://louovorja.com.br!'), fmIndex.TITULO, mb_ok + mb_iconinformation)
+    Application.MessageBox(PChar('Nï¿½o foi possï¿½vel acessar o formulï¿½rio de contato! Acesse o formulï¿½rio em https://louovorja.com.br!'), fmIndex.TITULO, mb_ok + mb_iconinformation)
   else
     ShellExecute(handle, nil, PChar(url), nil, nil, SW_MAXIMIZE);
 (*  fIniciando.AppCreateForm(TfEnviaMensagem, fEnviaMensagem);
-  fEnviaMensagem.edAssunto.Text := 'Sugestão de Música para a Categoria "' + lblDoxologiaCate.Caption + '"';
+  fEnviaMensagem.edAssunto.Text := 'Sugestï¿½o de Mï¿½sica para a Categoria "' + lblDoxologiaCate.Caption + '"';
   fEnviaMensagem.param := 'DOXOLOGIA=' + lblDoxologiaCate.Caption;
-  fEnviaMensagem.mmMensagem.Lines.Add('Música a ser sugerida para esta categoria: [Especifique]');
+  fEnviaMensagem.mmMensagem.Lines.Add('Mï¿½sica a ser sugerida para esta categoria: [Especifique]');
   fEnviaMensagem.ShowModal;    *)
 end;
 
@@ -10519,7 +10556,7 @@ begin
 
   if (videoID = '') then
   begin
-    application.MessageBox(PChar('Digite a URL ou ID do vídeo do Youtube!'), titulo, mb_ok + MB_ICONEXCLAMATION);
+    application.MessageBox(PChar('Digite a URL ou ID do vï¿½deo do Youtube!'), titulo, mb_ok + MB_ICONEXCLAMATION);
     campo.SetFocus;
     exit;
   end;
@@ -10528,7 +10565,7 @@ begin
 
   if (limpa = True) then
     campo.Text := '';
-  abreVideoOn(videoID, 'Vídeo do Youtube');
+  abreVideoOn(videoID, 'Vï¿½deo do Youtube');
 end;
 
 procedure TfmIndex.btExibeTxtPainelDClick(Sender: TObject);
@@ -10565,7 +10602,7 @@ procedure TfmIndex.bsSkinSpeedButton3NClick(Sender: TObject);
 begin
   if DM.qrHINOSN.RecordCount <= 0 then
   begin
-    application.MessageBox('Hino não encontrado!', TITULO, mb_ok + mb_iconerror);
+    application.MessageBox('Hino nï¿½o encontrado!', TITULO, mb_ok + mb_iconerror);
     Exit;
   end;
 
@@ -10589,7 +10626,7 @@ begin
     lmdSorteioNM.Caption := '----';
     if fMonitorSorteioNomes <> nil then
       fMonitorSorteioNomes.lmdSorteioNM.Caption := lmdSorteioNM.Caption;
-    application.messagebox('Não há nomes disponíveis para serem sorteados!', TITULO, mb_ok + mb_iconexclamation);
+    application.messagebox('Nï¿½o hï¿½ nomes disponï¿½veis para serem sorteados!', TITULO, mb_ok + mb_iconexclamation);
     opSort_NM.SetFocus;
     exit;
   end;
@@ -10613,7 +10650,7 @@ begin
 
     if Trim(pwd) <> '' then
     begin
-      application.MessageBox('O administrador do sistema bloqueou o acesso à este recurso! Para continuar, será necessário colocar a senha de acesso!', titulo, mb_ok + MB_ICONINFORMATION);
+      application.MessageBox('O administrador do sistema bloqueou o acesso ï¿½ este recurso! Para continuar, serï¿½ necessï¿½rio colocar a senha de acesso!', titulo, mb_ok + MB_ICONINFORMATION);
 
       DM.pwd.Password := '';
       DM.pwd.Execute;
@@ -10726,7 +10763,7 @@ procedure TfmIndex.btLitClipBoardClick(Sender: TObject);
 var
   i: Integer;
 begin
-  if (application.MessageBox('Colar itens da área de transferência?', fmIndex.titulo, mb_yesno + mb_iconquestion) <> 6) then Exit;
+  if (application.MessageBox('Colar itens da ï¿½rea de transferï¿½ncia?', fmIndex.titulo, mb_yesno + mb_iconquestion) <> 6) then Exit;
 
   for i := 0 to cboard.Items.Count-1 do
   begin
@@ -10736,14 +10773,14 @@ begin
     fLiturgia.Show;
     if (FileExists(cboard.Items[i])) or (DirectoryExists(cboard.Items[i])) then
     begin
-      fLiturgia.cbItens.ItemIndex := fLiturgia.cbItens.Items.IndexOf('Arquivo/Diretório');
+      fLiturgia.cbItens.ItemIndex := fLiturgia.cbItens.Items.IndexOf('Arquivo/Diretï¿½rio');
       fLiturgia.txtItem.Text := ChangeFileExt(ExtractFileName(cboard.Items[i]),'');
       fLiturgia.edtDiretorio.Text := cboard.Items[i];
       fLiturgia.btAddClick(Sender);
     end
     else
     begin
-      fLiturgia.cbItens.ItemIndex := fLiturgia.cbItens.Items.IndexOf('Anotação');
+      fLiturgia.cbItens.ItemIndex := fLiturgia.cbItens.Items.IndexOf('Anotaï¿½ï¿½o');
       fLiturgia.txtItem.Text := cboard.Items[i];
       fLiturgia.edtAnotacao.Text := cboard.Items[i];
       fLiturgia.btAddClick(Sender);
@@ -10797,7 +10834,7 @@ var
   i, linha: integer;
   item: string;
 begin
-  if application.messagebox(PChar('Deseja realmente zerar o sorteio?' + #13 + 'Todos os números serão apagados!'), TITULO, mb_yesno + mb_iconquestion) <> 6 then
+  if application.messagebox(PChar('Deseja realmente zerar o sorteio?' + #13 + 'Todos os nï¿½meros serï¿½o apagados!'), TITULO, mb_yesno + mb_iconquestion) <> 6 then
     exit;
 
   if DM.tmrSorteio.Enabled = false then
@@ -10832,7 +10869,7 @@ var
   i, linha: integer;
   item: string;
 begin
-  if application.messagebox(PChar('Deseja realmente zerar o sorteio?' + #13 + 'Todos os nomes serão apagados!'), TITULO, mb_yesno + mb_iconquestion) <> 6 then
+  if application.messagebox(PChar('Deseja realmente zerar o sorteio?' + #13 + 'Todos os nomes serï¿½o apagados!'), TITULO, mb_yesno + mb_iconquestion) <> 6 then
     exit;
 
   if DM.tmrSorteio.Enabled = false then
@@ -10903,7 +10940,7 @@ begin
     if (trim(opSort_Fin.text) = '') then
     begin
       if (Sender <> nil) then
-        application.MessageBox('Coloque o número para ser adicionado!', TITULO, mb_ok + mb_iconexclamation);
+        application.MessageBox('Coloque o nï¿½mero para ser adicionado!', TITULO, mb_ok + mb_iconexclamation);
       opSort_Ini.SetFocus;
       Exit;
     end;
@@ -11127,7 +11164,7 @@ end;
 
 procedure TfmIndex.bsSkinSpeedButton46Click(Sender: TObject);
 begin
-  Application.MessageBox('Para excluir uma coletânea, clique com o botão direito sobre ela, e em seguida, opção "Excluir".', TITULO, mb_ok + mb_iconinformation);
+  Application.MessageBox('Para excluir uma coletï¿½nea, clique com o botï¿½o direito sobre ela, e em seguida, opï¿½ï¿½o "Excluir".', TITULO, mb_ok + mb_iconinformation);
 end;
 
 procedure TfmIndex.bttaLeftJustifyClick(Sender: TObject);
@@ -11259,7 +11296,7 @@ end;
 
 procedure TfmIndex.bsSkinSpeedButton60Click(Sender: TObject);
 begin
-  if (application.MessageBox(PChar('A atualização de todos os vídeos pode demorar um pouco!' + #13 + #10 + 'Deseja continuar?'), titulo, mb_yesno + mb_iconquestion) <> 6) then
+  if (application.MessageBox(PChar('A atualizaï¿½ï¿½o de todos os vï¿½deos pode demorar um pouco!' + #13 + #10 + 'Deseja continuar?'), titulo, mb_yesno + mb_iconquestion) <> 6) then
     Exit;
   atualiza_coletaneas_web('tudo');
 end;
@@ -11274,19 +11311,19 @@ begin
   if (fVideoOn <> nil) and (fVideoOn.Visible) then
     fVideoOn.Close
   else
-    application.MessageBox(PChar('Não há nenhum vídeo aberto para ser encerrado!'), titulo, mb_ok + mb_iconinformation);
+    application.MessageBox(PChar('Nï¿½o hï¿½ nenhum vï¿½deo aberto para ser encerrado!'), titulo, mb_ok + mb_iconinformation);
 end;
 
 procedure TfmIndex.btMusicaLetraClick(Sender: TObject);
 begin
   if DM.qrBUSCA.RecordCount <= 0 then
   begin
-    application.MessageBox('Música não encontrada!', TITULO, mb_ok + mb_iconerror);
+    application.MessageBox('Mï¿½sica nï¿½o encontrada!', TITULO, mb_ok + mb_iconerror);
     Exit;
   end;
   if DM.qrBUSCA.FieldByName('TIPO_WEB').AsString = 'S' then
   begin
-    application.MessageBox('Não há letras cadastradas para músicas da web!', TITULO, mb_ok + MB_ICONEXCLAMATION);
+    application.MessageBox('Nï¿½o hï¿½ letras cadastradas para mï¿½sicas da web!', TITULO, mb_ok + MB_ICONEXCLAMATION);
     exit;
   end;
   abreLetra(DM.qrBUSCA.FieldByName('ID').AsInteger, txtBusca.Text);
@@ -11296,13 +11333,13 @@ procedure TfmIndex.btOrdFavClick(Sender: TObject);
 begin
   if DM.cdsFavoritos.RecordCount <= 0 then
   begin
-    application.messagebox(PChar('Não há nenhuma página nos favoritos para alterar a ordem!'), TITULO, MB_OK + MB_ICONEXCLAMATION);
+    application.messagebox(PChar('Nï¿½o hï¿½ nenhuma pï¿½gina nos favoritos para alterar a ordem!'), TITULO, MB_OK + MB_ICONEXCLAMATION);
     Exit;
   end;
 
   if DM.cdsFavoritos.RecordCount = 1 then
   begin
-    application.messagebox(PChar('É necessário pelo menos, duas páginas nos favoritos para alterar a ordem!'), TITULO, MB_OK + MB_ICONEXCLAMATION);
+    application.messagebox(PChar('ï¿½ necessï¿½rio pelo menos, duas pï¿½ginas nos favoritos para alterar a ordem!'), TITULO, MB_OK + MB_ICONEXCLAMATION);
     Exit;
   end;
 
@@ -11332,7 +11369,7 @@ begin
 
   if PageControl1.Visible = false then
   begin
-    application.messagebox(PChar('Não há nenhuma página aberta para adicionar aos favoritos!'+#13#10+'Clique neste botão após abrir uma página.'), TITULO, MB_OK + MB_ICONEXCLAMATION);
+    application.messagebox(PChar('Nï¿½o hï¿½ nenhuma pï¿½gina aberta para adicionar aos favoritos!'+#13#10+'Clique neste botï¿½o apï¿½s abrir uma pï¿½gina.'), TITULO, MB_OK + MB_ICONEXCLAMATION);
     Exit;
   end;
 
@@ -11342,7 +11379,7 @@ begin
 
   if (DM.cdsFavoritos.Locate('NOME_ABA', nome_aba, [])) then
   begin
-    application.messagebox(PChar('A página '''+nome+''' já está nos favoritos!'), fmIndex.TITULO, MB_OK + MB_ICONEXCLAMATION);
+    application.messagebox(PChar('A pï¿½gina '''+nome+''' jï¿½ estï¿½ nos favoritos!'), fmIndex.TITULO, MB_OK + MB_ICONEXCLAMATION);
     DM.cdsFavoritos.Locate('NOME_ABA', nome_aba, []);
     DM.cdsFavoritos.Edit;
     DM.cdsFavoritos.FieldByName('NOME').Value := nome;
@@ -11354,7 +11391,7 @@ begin
   id := FormatDateTime('ddmmyyyyhhnnsszzz', Now);
   if (DM.cdsFavoritos.Locate('ID', id, [])) then
   begin
-    application.messagebox('Não foi possível adicionar. Clique novamente!', TITULO, MB_OK + mb_iconerror);
+    application.messagebox('Nï¿½o foi possï¿½vel adicionar. Clique novamente!', TITULO, MB_OK + mb_iconerror);
     exit;
   end;
 
@@ -11374,7 +11411,7 @@ begin
 
   carregaFavoritos();
   botoesFavoritos('del');
-  application.messagebox(PChar('Página '''+nome+''' adicionada com sucesso aos favoritos!'), fmIndex.TITULO, MB_OK + MB_ICONINFORMATION);
+  application.messagebox(PChar('Pï¿½gina '''+nome+''' adicionada com sucesso aos favoritos!'), fmIndex.TITULO, MB_OK + MB_ICONINFORMATION);
 end;
 
 procedure TfmIndex.btDelFavClick(Sender: TObject);
@@ -11383,7 +11420,7 @@ var
 begin
   if PageControl1.Visible = false then
   begin
-    application.messagebox(PChar('Não há nenhuma página aberta para remover dos favoritos!'), TITULO, MB_OK + MB_ICONEXCLAMATION);
+    application.messagebox(PChar('Nï¿½o hï¿½ nenhuma pï¿½gina aberta para remover dos favoritos!'), TITULO, MB_OK + MB_ICONEXCLAMATION);
     Exit;
   end;
 
@@ -11392,7 +11429,7 @@ begin
 
   if not (DM.cdsFavoritos.Locate('NOME_ABA', nome_aba, [])) then
   begin
-    application.messagebox(PChar('A página '''+nome+''' não está nos favoritos!'), fmIndex.TITULO, MB_OK + MB_ICONEXCLAMATION);
+    application.messagebox(PChar('A pï¿½gina '''+nome+''' nï¿½o estï¿½ nos favoritos!'), fmIndex.TITULO, MB_OK + MB_ICONEXCLAMATION);
     exit;
   end;
 
@@ -11401,7 +11438,7 @@ begin
 
   carregaFavoritos();
   botoesFavoritos('add');
-  application.messagebox(PChar('Página '''+nome+''' removida com sucesso dos favoritos!'), fmIndex.TITULO, MB_OK + MB_ICONINFORMATION);
+  application.messagebox(PChar('Pï¿½gina '''+nome+''' removida com sucesso dos favoritos!'), fmIndex.TITULO, MB_OK + MB_ICONINFORMATION);
 end;
 
 procedure TfmIndex.btwsCloseClick(Sender: TObject);
@@ -11472,13 +11509,13 @@ procedure TfmIndex.btMusicaAudioMusicaClick(Sender: TObject);
 begin
   if DM.qrBUSCA.RecordCount <= 0 then
   begin
-    application.MessageBox('Música não encontrada!', TITULO, mb_ok + mb_iconerror);
+    application.MessageBox('Mï¿½sica nï¿½o encontrada!', TITULO, mb_ok + mb_iconerror);
     Exit;
   end;
 
   if DM.qrBUSCA.FieldByName('TIPO_WEB').AsString = 'S' then
   begin
-    application.MessageBox('Não é possível abrir arquivo da músicas de músicas na web!', TITULO, mb_ok + MB_ICONEXCLAMATION);
+    application.MessageBox('Nï¿½o ï¿½ possï¿½vel abrir arquivo da mï¿½sicas de mï¿½sicas na web!', TITULO, mb_ok + MB_ICONEXCLAMATION);
     exit;
   end;
 
@@ -11499,7 +11536,7 @@ begin
 
   if (videoID = '') then
   begin
-    application.MessageBox(PChar('Digite a URL ou ID do vídeo do Youtube!'), titulo, mb_ok + MB_ICONEXCLAMATION);
+    application.MessageBox(PChar('Digite a URL ou ID do vï¿½deo do Youtube!'), titulo, mb_ok + MB_ICONEXCLAMATION);
     txtUrlVideoOn3.SetFocus;
     exit;
   end;
@@ -11511,7 +11548,7 @@ begin
   id := FormatDateTime('ddmmyyyyhhnnsszzz', Now);
   if (DM.cdsVideosOnPerso.Locate('ID', id, [])) then
   begin
-    application.messagebox('Não foi possível adicionar vídeo. Tente novamente!', TITULO, MB_OK + mb_iconerror);
+    application.messagebox('Nï¿½o foi possï¿½vel adicionar vï¿½deo. Tente novamente!', TITULO, MB_OK + mb_iconerror);
     exit;
   end;
 
@@ -11524,7 +11561,7 @@ begin
 
   txtNomeVideoOn3.Text := '';
   txtUrlVideoOn3.Text := '';
-  stVideosOnPerso_1.Caption := qtItens(TFDQuery(DM.cdsVideosOnPerso),'vídeo encontrado','vídeos encontrados','Nenhum vídeo encontrado');
+  stVideosOnPerso_1.Caption := qtItens(TFDQuery(DM.cdsVideosOnPerso),'vï¿½deo encontrado','vï¿½deos encontrados','Nenhum vï¿½deo encontrado');
 
   btVidOnlPExcluir.Enabled := ((DM.cdsVideosOnPerso.Active = true) and (DM.cdsVideosOnPerso.RecordCount > 0));
   btVidOnlPCopiarLink.Enabled := ((DM.cdsVideosOnPerso.Active = true) and (DM.cdsVideosOnPerso.RecordCount > 0));
@@ -11569,7 +11606,7 @@ begin
   if pnlAltColPerso.Visible then exit;
   if txtBuscaColetPeso.Focused then Exit;
 
-  if (application.MessageBox('Colar itens da área de transferência?', fmIndex.titulo, mb_yesno + mb_iconquestion) <> 6) then Exit;
+  if (application.MessageBox('Colar itens da ï¿½rea de transferï¿½ncia?', fmIndex.titulo, mb_yesno + mb_iconquestion) <> 6) then Exit;
 
   for i := 0 to cboard.Items.Count-1 do
   begin
@@ -11594,7 +11631,7 @@ begin
   id := FormatDateTime('ddmmyyyyhhnnsszzz', Now);
   if (DM.cdsCategoriasItensAgendados.Locate('ID', id, [])) then
   begin
-    application.messagebox('Não foi possível criar categoria. Tente novamente!', TITULO, MB_OK + mb_iconerror);
+    application.messagebox('Nï¿½o foi possï¿½vel criar categoria. Tente novamente!', TITULO, MB_OK + mb_iconerror);
     exit;
   end;
 
@@ -11632,7 +11669,7 @@ var
 begin
   if DM.qrHINOS.RecordCount <= 0 then
   begin
-    application.MessageBox('Hino não encontrado!', TITULO, mb_ok + mb_iconerror);
+    application.MessageBox('Hino nï¿½o encontrado!', TITULO, mb_ok + mb_iconerror);
     txtHino.SetFocus;
     Exit;
   end;
@@ -11649,7 +11686,7 @@ var
 begin
   if DM.qrHINOSN.RecordCount <= 0 then
   begin
-    application.MessageBox('Hino não encontrado!', TITULO, mb_ok + mb_iconerror);
+    application.MessageBox('Hino nï¿½o encontrado!', TITULO, mb_ok + mb_iconerror);
     txtHinoN.SetFocus;
     Exit;
   end;
@@ -11747,7 +11784,7 @@ begin
     lmdSorteio.Caption := '0000';
     if fMonitorSorteio <> nil then
       fMonitorSorteio.lmdSorteio.Caption := lmdSorteio.Caption;
-    application.messagebox('Não há números disponíveis para serem sorteados!', TITULO, mb_ok + mb_iconexclamation);
+    application.messagebox('Nï¿½o hï¿½ nï¿½meros disponï¿½veis para serem sorteados!', TITULO, mb_ok + mb_iconexclamation);
     opSort_Ini.SetFocus;
     exit;
   end;
@@ -11924,7 +11961,7 @@ end;
 procedure TfmIndex.dblBibVersao2Click(Sender: TObject);
 begin
   loadCol.Strings.Values['BIBLIA_BUSCA_VERSAO'] := DM.qrBIBLIA_VERSAO_2.FieldByName('SIGLA').AsString;
-  gravaParam('Busca Biblica', 'Versão', loadCol.Strings.Values['BIBLIA_BUSCA_VERSAO']);
+  gravaParam('Busca Biblica', 'Versï¿½o', loadCol.Strings.Values['BIBLIA_BUSCA_VERSAO']);
 end;
 
 procedure TfmIndex.dblBibVersaoClick(Sender: TObject);
@@ -12139,7 +12176,7 @@ begin
     lmdBibliainfo.Caption := '';
 
     DM.qrBUSCA_VERSAO.Close;
-    DM.qrBUSCA_VERSAO.ParamByName('SIGLA').AsString := lerParam('Biblia', 'Versão', '.');
+    DM.qrBUSCA_VERSAO.ParamByName('SIGLA').AsString := lerParam('Biblia', 'Versï¿½o', '.');
     DM.qrBUSCA_VERSAO.Open;
     if (DM.qrBUSCA_VERSAO.RecordCount <= 0) then
     begin
@@ -12156,7 +12193,7 @@ begin
     end
     else
     begin
-      loadCol.Strings.Values['BIBLIA_VERSAO'] := lerParam('Biblia', 'Versão', '');
+      loadCol.Strings.Values['BIBLIA_VERSAO'] := lerParam('Biblia', 'Versï¿½o', '');
       loadCol.Strings.Values['BIBLIA_LIVRO_SIGLA'] := lerParam('Biblia', 'Livro Sigla', '');
       loadCol.Strings.Values['BIBLIA_LIVRO_NOME'] := lerParam('Biblia', 'Livro Nome', '');
     end;
@@ -12232,13 +12269,13 @@ const
 var
   PrefixPos: Integer;
 begin
-  // Encontra a posição do prefixo 'base64,'
+  // Encontra a posiï¿½ï¿½o do prefixo 'base64,'
   PrefixPos := Pos(Base64Prefix, Base64String);
   if PrefixPos > 0 then
-    // Retorna a parte da string após o prefixo 'base64,'
+    // Retorna a parte da string apï¿½s o prefixo 'base64,'
     Result := Copy(Base64String, PrefixPos + Length(Base64Prefix), MaxInt)
   else
-    // Se não houver prefixo, retorna a string original
+    // Se nï¿½o houver prefixo, retorna a string original
     Result := Base64String;
 end;
 
@@ -12251,7 +12288,7 @@ begin
   // Pega o Texto Restante, iniciando ao final da variavel Str1;
   Fim := Copy(Inicio, 0, Pos(Str2, Inicio) - 1);
 
-  // Copia o Texto da posição inicial '0' até o Final, que é determinado pela posição inicial da variavel str2 menos '1' para corrigir;
+  // Copia o Texto da posiï¿½ï¿½o inicial '0' atï¿½ o Final, que ï¿½ determinado pela posiï¿½ï¿½o inicial da variavel str2 menos '1' para corrigir;
   Result := Fim;
 end;
 
@@ -12423,7 +12460,7 @@ begin
   id := Copy(mComponente, Pos('_', mComponente) + 1, Length(mComponente));
 
   DM.cdsCOLETANEAS_PERSO.Locate('ID', id, []);
-  if (application.messagebox(PChar('Deseja realmente remover a coletânea ''' + DM.cdsCOLETANEAS_PERSO.FieldByName('NOME').AsString + ''' do Menu?' + #13#10 + #13#10 + 'Nota: Isto não irá excluir os arquivos desta coletânea, somente o link que aponta para ela.'), fmIndex.TITULO, MB_YESNO + mb_iconquestion)) <> 6 then
+  if (application.messagebox(PChar('Deseja realmente remover a coletï¿½nea ''' + DM.cdsCOLETANEAS_PERSO.FieldByName('NOME').AsString + ''' do Menu?' + #13#10 + #13#10 + 'Nota: Isto nï¿½o irï¿½ excluir os arquivos desta coletï¿½nea, somente o link que aponta para ela.'), fmIndex.TITULO, MB_YESNO + mb_iconquestion)) <> 6 then
     exit;
 
   DM.cdsCOLETANEAS_PERSO.Locate('ID', id, []);
@@ -12442,7 +12479,7 @@ begin
   if (DM.cdsVideosOnPerso.Active = false) or
     (DM.cdsVideosOnPerso.RecordCount <= 0) then
   begin
-    application.messagebox(PChar('Nenhum vídeo selecionado!'), TITULO, mb_ok + MB_ICONEXCLAMATION);
+    application.messagebox(PChar('Nenhum vï¿½deo selecionado!'), TITULO, mb_ok + MB_ICONEXCLAMATION);
     Exit;
   end;
 
@@ -12453,7 +12490,7 @@ begin
 
   DM.cdsVideosOnPerso.Locate('ID', id, []);
   DM.cdsVideosOnPerso.Delete;
-  stVideosOnPerso_1.Caption := qtItens(TFDQuery(DM.cdsVideosOnPerso),'vídeo encontrado','vídeos encontrados','Nenhum vídeo encontrado');
+  stVideosOnPerso_1.Caption := qtItens(TFDQuery(DM.cdsVideosOnPerso),'vï¿½deo encontrado','vï¿½deos encontrados','Nenhum vï¿½deo encontrado');
 
   btVidOnlPExcluir.Enabled := ((DM.cdsVideosOnPerso.Active = true) and (DM.cdsVideosOnPerso.RecordCount > 0));
   btVidOnlPCopiarLink.Enabled := ((DM.cdsVideosOnPerso.Active = true) and (DM.cdsVideosOnPerso.RecordCount > 0));
@@ -12463,7 +12500,7 @@ end;
 
 procedure TfmIndex.ExcluirTodas1Click(Sender: TObject);
 begin
-  if application.messagebox(PChar('Deseja realmente excluir todas coletâneas personalizadas?' + #13#10 + #13#10 + 'Nota: Isto não irá excluir os arquivos destas coletâneas, somente os links que apontam para elas.'), TITULO, mb_yesno + mb_iconquestion) <> 6 then
+  if application.messagebox(PChar('Deseja realmente excluir todas coletï¿½neas personalizadas?' + #13#10 + #13#10 + 'Nota: Isto nï¿½o irï¿½ excluir os arquivos destas coletï¿½neas, somente os links que apontam para elas.'), TITULO, mb_yesno + mb_iconquestion) <> 6 then
     Exit;
 
   if FileExists(dir_dados + 'coletaneasUsuario.xml') then
@@ -12632,15 +12669,15 @@ begin
     item.Caption := 'Monitor ' + inttostr(i + 1);
 
     item := lvMonitores.Items.Add;
-    item.Caption := 'Índice';
+    item.Caption := 'ï¿½ndice';
     item.SubItems.Add(inttostr(i));
 
     item := lvMonitores.Items.Add;
-    item.Caption := 'Dimensões';
+    item.Caption := 'Dimensï¿½es';
     item.SubItems.Add(inttostr(monitorInfo(i).Width) + ' x ' + inttostr(monitorInfo(i).Height));
 
     item := lvMonitores.Items.Add;
-    item.Caption := 'Posição';
+    item.Caption := 'Posiï¿½ï¿½o';
     item.SubItems.Add(inttostr(monitorInfo(i).Top) + ' (Vertical) x ' + inttostr(monitorInfo(i).Left) + ' (Horizontal)');
 
     item := lvMonitores.Items.Add;
@@ -12773,7 +12810,7 @@ begin
   end
   else
   begin
-    Application.MessageBox(PChar('Arquivo "'+arq+'" inválido!'),TITULO,mb_ok+mb_iconerror);
+    Application.MessageBox(PChar('Arquivo "'+arq+'" invï¿½lido!'),TITULO,mb_ok+mb_iconerror);
     DM.tmrSair.Enabled := True;
   end;
 //  showmessage(ext);
@@ -12941,7 +12978,7 @@ begin
     monitor := strtoint(lerParam(item_config, 'Monitor', '2'));
     if (Screen.MonitorCount < monitor) then
     begin
-      if (Application.MessageBox(PChar('Não foi possível localizar monitor '+inttostr(monitor)+'. Deseja abrir no monitor principal?'), TITULO, mb_yesno + mb_iconquestion) <> 6) then
+      if (Application.MessageBox(PChar('Nï¿½o foi possï¿½vel localizar monitor '+inttostr(monitor)+'. Deseja abrir no monitor principal?'), TITULO, mb_yesno + mb_iconquestion) <> 6) then
         Exit;
 
       monitor := 0;
@@ -13364,7 +13401,7 @@ var
   arq_e: string;
   imgList: TStringList;
 begin
-  url := saveDialog('arquivo', 'Apresentação LouvorJA (*.slja)|*.slja','','','',trim(nome)+'.slja');
+  url := saveDialog('arquivo', 'Apresentaï¿½ï¿½o LouvorJA (*.slja)|*.slja','','','',trim(nome)+'.slja');
   if url <> '' then
   begin
 
@@ -13403,7 +13440,7 @@ begin
             end
             else
             begin
-              Application.MessageBox('Esta música não possui playback!',TITULO,mb_ok+MB_ICONEXCLAMATION);
+              Application.MessageBox('Esta mï¿½sica nï¿½o possui playback!',TITULO,mb_ok+MB_ICONEXCLAMATION);
               Exit;
             end;
           end
@@ -13516,7 +13553,7 @@ begin
   begin
     if DBGrid2.DataSource.DataSet.FieldByName('TIPO_WEB').AsString = 'S' then
     begin
-      application.MessageBox('Não é possível exportar slides de músicas da web!', TITULO, mb_ok + MB_ICONEXCLAMATION);
+      application.MessageBox('Nï¿½o ï¿½ possï¿½vel exportar slides de mï¿½sicas da web!', TITULO, mb_ok + MB_ICONEXCLAMATION);
       exit;
     end;
     id := DBGrid2.DataSource.DataSet.FieldByName('ID').AsInteger;
@@ -13996,14 +14033,14 @@ begin
   if (DM.cdsVideosOnPerso.Active = false) or
     (DM.cdsVideosOnPerso.RecordCount <= 0) then
   begin
-    application.messagebox(PChar('Nenhum vídeo selecionado!'), TITULO, mb_ok + MB_ICONEXCLAMATION);
+    application.messagebox(PChar('Nenhum vï¿½deo selecionado!'), TITULO, mb_ok + MB_ICONEXCLAMATION);
     Exit;
   end;
 
   txt := DM.cdsVideosOnPerso.FieldByName('URL').AsString;
 
   Clipboard.AsText := txt;
-  application.messagebox(PChar('Link ''' + txt + ''' copiado para a Área de Transferência!'), TITULO, mb_ok + MB_ICONINFORMATION)
+  application.messagebox(PChar('Link ''' + txt + ''' copiado para a ï¿½rea de Transferï¿½ncia!'), TITULO, mb_ok + MB_ICONINFORMATION)
 end;
 
 procedure TfmIndex.copiaSlidesParaArquivo(url: string; cds: TClientDataSet);
@@ -14555,7 +14592,7 @@ begin
 
   if Trim(pwd) <> '' then
   begin
-    application.MessageBox('O administrador do sistema bloqueou o acesso à este recurso! Para continuar, será necessário colocar a senha de acesso!', titulo, mb_ok + MB_ICONINFORMATION);
+    application.MessageBox('O administrador do sistema bloqueou o acesso ï¿½ este recurso! Para continuar, serï¿½ necessï¿½rio colocar a senha de acesso!', titulo, mb_ok + MB_ICONINFORMATION);
 
     DM.pwd.Password := '';
     DM.pwd.Execute;
@@ -14577,7 +14614,7 @@ begin
     exit;
   end;
 
-  if (application.MessageBox(PChar('Deseja restaurar as configurações?'), titulo, mb_yesno + mb_iconquestion) <> 6) then
+  if (application.MessageBox(PChar('Deseja restaurar as configuraï¿½ï¿½es?'), titulo, mb_yesno + mb_iconquestion) <> 6) then
     Exit;
 
   tag := TComponent(Sender).tag;
@@ -15056,7 +15093,7 @@ begin
   ajustaTexto('BIBLIA');
   copiaDadosTelaExtendida;
 
-  gravaParam('Biblia', 'Versão',loadCol.Strings.Values['BIBLIA_P_VERSAO']);
+  gravaParam('Biblia', 'Versï¿½o',loadCol.Strings.Values['BIBLIA_P_VERSAO']);
   gravaParam('Biblia', 'Livro',loadCol.Strings.Values['BIBLIA_P_LIVRO']);
   gravaParam('Biblia', 'Livro Sigla',loadCol.Strings.Values['BIBLIA_P_LIVRO_SIGLA']);
   gravaParam('Biblia', 'Livro Nome',loadCol.Strings.Values['BIBLIA_P_LIVRO_NOME']);
@@ -15150,8 +15187,8 @@ begin
   begin
     if (QUERY.FieldByName('URL_INSTRUMENTAL').AsString = '') then
     begin
-//      application.MessageBox(PChar('Esta música não possui playback. Será aberto o áudio cantado!'), titulo, mb_ok + MB_ICONEXCLAMATION);
-      application.MessageBox(PChar('Esta música não possui playback!'), titulo, mb_ok + MB_ICONEXCLAMATION);
+//      application.MessageBox(PChar('Esta mï¿½sica nï¿½o possui playback. Serï¿½ aberto o ï¿½udio cantado!'), titulo, mb_ok + MB_ICONEXCLAMATION);
+      application.MessageBox(PChar('Esta mï¿½sica nï¿½o possui playback!'), titulo, mb_ok + MB_ICONEXCLAMATION);
 //      abreArquivoMusica(QUERY.FieldByName('ID').AsInteger,QUERY.FieldByName('ALBUM').AsString,QUERY.FieldByName('URL').AsString)
     end
     else abreArquivoMusica(QUERY.FieldByName('ID').AsInteger,QUERY.FieldByName('ALBUM').AsString,QUERY.FieldByName('URL_INSTRUMENTAL').AsString);
@@ -15650,9 +15687,9 @@ begin
   arquivo := '';
   descricao := '';
   case tag of
-    101, 102: begin arquivo := arquivos[0];descricao := 'Arquivo de Configuração'; end;
-    111, 112: begin arquivo := arquivos[1];descricao := 'Arquivo de Coletâneas Personalizadas'; end;
-    121, 122: begin arquivo := arquivos[2];descricao := 'Arquivo de Vídeos Online Personalizados'; end;
+    101, 102: begin arquivo := arquivos[0];descricao := 'Arquivo de Configuraï¿½ï¿½o'; end;
+    111, 112: begin arquivo := arquivos[1];descricao := 'Arquivo de Coletï¿½neas Personalizadas'; end;
+    121, 122: begin arquivo := arquivos[2];descricao := 'Arquivo de Vï¿½deos Online Personalizados'; end;
     131, 132: begin arquivo := arquivos[3];descricao := 'Arquivo de Liturgia'; end;
     141, 142: begin arquivo := arquivos[4];descricao := 'Arquivo de Favoritos'; end;
     151, 152: begin arquivo := arquivos[5];descricao := 'Arquivo de Categorias de Itens Agendados'; end;
@@ -15662,13 +15699,13 @@ begin
   if (tag = 101) or (tag = 111) or (tag = 121) or
      (tag = 131) or (tag = 141) or (tag = 151) or (tag = 161) then
   begin
-    if (application.MessageBox('Atenção: O arquivo importado irá sobrepor os dados atuais do sistema. Deseja continuar?',fmIndex.TITULO,mb_yesno+MB_ICONQUESTION) = 6) then
+    if (application.MessageBox('Atenï¿½ï¿½o: O arquivo importado irï¿½ sobrepor os dados atuais do sistema. Deseja continuar?',fmIndex.TITULO,mb_yesno+MB_ICONQUESTION) = 6) then
     begin
       arq := openDialog('arquivo', descricao+' ('+arquivo+')|'+arquivo, '',false,'','',arquivo);
       if arq <> '' then
       begin
         CopyFile(PChar(arq),PChar(dir_dados+ExtractFileName(arq)),false);
-        application.MessageBox('Arquivo importado com sucesso!'+#13#10+'O sistema será reiniciado para que as novas configurações tenham efeito!',TITULO,mb_ok+mb_iconinformation);
+        application.MessageBox('Arquivo importado com sucesso!'+#13#10+'O sistema serï¿½ reiniciado para que as novas configuraï¿½ï¿½es tenham efeito!',TITULO,mb_ok+mb_iconinformation);
 
         ShellExecute(Handle,'open', PChar(Application.ExeName), nil, nil, SW_SHOWNORMAL);
         Application.Terminate;
@@ -15681,11 +15718,11 @@ begin
   begin
     if not (FileExists(dir_dados+ExtractFileName(arquivo))) then
     begin
-      application.MessageBox(PChar('Não há dados para serem exportados!'),TITULO,mb_ok+mb_iconexclamation);
+      application.MessageBox(PChar('Nï¿½o hï¿½ dados para serem exportados!'),TITULO,mb_ok+mb_iconexclamation);
     end
     else
     begin
-      application.MessageBox(PChar('Selecione o diretório onde deverá ser salvo o arquivo '''+arquivo+'''!'),TITULO,mb_ok+mb_iconinformation);
+      application.MessageBox(PChar('Selecione o diretï¿½rio onde deverï¿½ ser salvo o arquivo '''+arquivo+'''!'),TITULO,mb_ok+mb_iconinformation);
       arq := openDialog('pasta');
       if arq <> '' then
       begin
