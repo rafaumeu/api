@@ -287,10 +287,13 @@ var
   txtModo: string;
   tocarAudio: Boolean;
   messageDraw: string;
+  messageStopwatch: string;
+  messageSlide: string;
   attemptCount: Integer;
   success: Boolean;
   isLocalRequest: Boolean;
   keyCode: Integer;
+  I: Integer;
 begin
   // Allow cross-origin requests from web applications
   AResponseInfo.CustomHeaders.Values['Access-Control-Allow-Origin'] := '*';
@@ -314,6 +317,7 @@ begin
       (ARequestInfo.Params.Values['token'] <>
         fmIndex.lerParam('Servidor', 'Token','')) then
     begin
+      AResponseInfo.ResponseNo := 401;
       AResponseInfo.ContentText :=
         '{"status":"error","message":"Invalid token","code":"INVALID_TOKEN"}';
       Exit;
@@ -374,12 +378,12 @@ begin
         if (fMusica.Visible) then
         begin
           fMusica.acaoSlide('prox');
-          AResponseInfo.ContentText := '{"status":"ok","message":"Advanced to the next slide"}';
+          AResponseInfo.ContentText := '{"status":"ok","message":"Advanced to the next slide","code":"ADVANCED_SLIDE"}';
           Exit;
         end
         else
         begin
-          AResponseInfo.ContentText := '{"status":"error","message":"No song playing","code":"NO_SONG_PLAYING"}';
+          AResponseInfo.ContentText := '{"status":"ok","message":"No song playing","code":"NO_SONG_PLAYING"}';
           Exit;
         end;
       end
@@ -395,7 +399,7 @@ begin
         else
         begin
           AResponseInfo.ContentText :=
-            '{"status":"error","message":"No song playing","code":"NO_SONG_PLAYING"}';
+            '{"status":"ok","message":"No song playing","code":"NO_SONG_PLAYING"}';
           Exit;
         end;
       end
@@ -410,7 +414,40 @@ begin
         else
         begin
           AResponseInfo.ContentText :=
-            '{"status":"error","message":"No song playing","code":"NO_SONG_PLAYING"}';
+            '{"status":"ok","message":"No song playing","code":"NO_SONG_PLAYING"}';
+          Exit;
+        end;
+      end
+      else if (ARequestInfo.Params.Values['action'] = 'get-slide') then
+      begin
+        if (fMusica <> nil) and (fMusica.Visible) then
+        begin
+          messageSlide := '';
+
+          if (ARequestInfo.Params.Values['slide'] = 'current') then
+          begin
+            messageSlide := fMusica.lblLetra.Caption;
+          end
+          else if (ARequestInfo.Params.Values['slide'] = 'next') then
+          begin
+            if (fMusica.lbLetras.Items.Count > fMusica.nslide) then
+              messageSlide := fMusica.lbLetras.Items[fMusica.nslide]
+            else
+              messageSlide := '< FIM >';
+          end;
+
+          messageSlide := StringReplace(messageSlide, '"', '\"', [rfReplaceAll]);
+
+          messageSlide := StringReplace(messageSlide, #13#10, '\n', [rfReplaceAll]);
+          messageSlide := StringReplace(messageSlide, #13, '\n', [rfReplaceAll]);
+          messageSlide := StringReplace(messageSlide, #10, '\n', [rfReplaceAll]);
+
+          AResponseInfo.ContentText := '{"status":"ok","message":"' + messageSlide + '","code":"SONG_PLAYING"}';
+          Exit;
+        end
+        else
+        begin
+          AResponseInfo.ContentText := '{"status":"ok","message":"","code":"NO_SONG_PLAYING"}';
           Exit;
         end;
       end
@@ -426,7 +463,7 @@ begin
         else
         begin
           AResponseInfo.ContentText :=
-            '{"status":"error","message":"No song playing","code":"NO_SONG_PLAYING"}';
+            '{"status":"ok","message":"No song playing","code":"NO_SONG_PLAYING"}';
           Exit;
         end;
       end
@@ -434,7 +471,7 @@ begin
       begin
         AResponseInfo.ResponseNo := 400;
         AResponseInfo.ContentText :=
-          '{"status":"error","message":"Missing or invalid action. Usage: /api/song-slides?action=next","code":"MISSING_ACTION"}';
+          '{"status":"error","message":"Missing or invalid action. Usage example: /api/song-slides?action=next","code":"MISSING_ACTION"}';
       end;
       Exit;
     end;
@@ -473,15 +510,51 @@ begin
 
         if not success then
         begin
+          AResponseInfo.ResponseNo := 400;
           AResponseInfo.ContentText := '{"status":"error","message":"Failed after 3 attempts, button not enabled","code":"BUTTON_NOT_ENABLED"}';
         end;
         Exit;
       end
       else if (ARequestInfo.Params.Values['action'] = 'draw') then
       begin
+
+        if fmIndex.lbSorteio.Items.Count = 0 then
+        begin
+          AResponseInfo.ResponseNo := 400;
+          AResponseInfo.ContentText :=
+            '{"status":"error","message":"Nenhum participante adicionado ao sorteio","code":"EMPTY_PARTICIPANTS"}';
+          Exit;
+        end;
+
         fmIndex.btSortearClick(fmIndex.btSortear);
-        AResponseInfo.ContentText := '{"status":"ok","action":"get-last","message":"Sorteando n�mero"}';
+
+        AResponseInfo.ContentText :=
+          '{"status":"ok","message":"Sorteando número"}';
+
         Exit;
+      end
+      else if (ARequestInfo.Params.Values['action'] = 'get-participants') then
+      begin
+
+        messageDraw := '';
+
+        for I := 0 to fmIndex.lbSorteio.Items.Count - 1 do
+        begin
+          if messageDraw <> '' then
+            messageDraw := messageDraw + ', ';
+
+          messageDraw := messageDraw + fmIndex.lbSorteio.Items[I].Caption;
+        end;
+
+        AResponseInfo.ContentText := '{"status":"ok","action":"participants","message":"' + StringReplace(messageDraw, '"', '\"', [rfReplaceAll]) +'"}';
+
+        Exit;
+      end
+      else
+      begin
+        AResponseInfo.ResponseNo := 400;
+        AResponseInfo.ContentText :=
+          '{"status":"error","message":"Missing or invalid action. Usage example: /api/drawing-number?action=draw","code":"MISSING_ACTION"}';
       end;
       Exit;
     end;
@@ -518,11 +591,82 @@ begin
       end
       else if (ARequestInfo.Params.Values['action'] = 'draw') then
       begin
-        fmIndex.btSortearNMClick(fmIndex.btSortearNM);
-        AResponseInfo.ContentText := '{"status":"ok","action":"get-last","message":"Sorteando nome"}';
+
+        if fmIndex.lbSorteioNM.Items.Count = 0 then
+        begin
+          AResponseInfo.ResponseNo := 400;
+          AResponseInfo.ContentText :=
+            '{"status":"error","message":"Nenhum nome adicionado ao sorteio","code":"EMPTY_PARTICIPANTS"}';
+          Exit;
+        end;
+
+        fmIndex.btSortearNMClick(fmIndex.btSortear);
+
+        AResponseInfo.ContentText :=
+          '{"status":"ok","message":"Sorteando nome"}';
+
         Exit;
+      end
+      else if (ARequestInfo.Params.Values['action'] = 'get-participants') then
+      begin
+
+        messageDraw := '';
+
+        for I := 0 to fmIndex.lbSorteioNM.Items.Count - 1 do
+        begin
+          if messageDraw <> '' then
+            messageDraw := messageDraw + ', ';
+
+          messageDraw := messageDraw + fmIndex.lbSorteioNM.Items[I].Caption;
+        end;
+
+        AResponseInfo.ContentText := '{"status":"ok","action":"participants","message":"' + StringReplace(messageDraw, '"', '\"', [rfReplaceAll]) +'"}';
+
+        Exit;
+      end
+      else
+      begin
+        AResponseInfo.ResponseNo := 400;
+        AResponseInfo.ContentText :=
+          '{"status":"error","message":"Missing or invalid action. Usage example: /api/drawing-name?action=draw","code":"MISSING_ACTION"}';
       end;
       Exit;
+    end;
+
+    // API: Control stopwatch
+    if arq = '/api/stopwatch' then
+    begin
+      if (ARequestInfo.Params.Values['action'] = 'get-time') then
+      begin
+        messageStopwatch := fmIndex.lmdCrono.Caption;
+        AResponseInfo.ContentText := '{"status":"ok","action":"get-time","message":"' + messageStopwatch + '"}';
+        success := True;
+        Exit;
+      end
+      else if (ARequestInfo.Params.Values['action'] = 'start') then
+      begin
+        fmIndex.btIniciarCronoClick(fmIndex.btIniciarCrono);
+        AResponseInfo.ContentText := '{"status":"ok","action":"start","message":"Iniciando cronÃ´metro"}';
+        Exit;
+      end
+      else if (ARequestInfo.Params.Values['action'] = 'stop') then
+      begin
+        fmIndex.btZerarCronoClick(fmIndex.btZerarCrono);
+        AResponseInfo.ContentText := '{"status":"ok","action":"stop","message":"Parando e zerando cronÃ´metro"}';
+        Exit;
+      end
+      else if (ARequestInfo.Params.Values['action'] = 'note') then
+      begin
+        fmIndex.btAnotTempoClick(fmIndex.btAnotTempo);
+        AResponseInfo.ContentText := '{"status":"ok","action":"note","message":"Anotando tempo"}';
+        Exit;
+      end
+      else
+      begin
+        AResponseInfo.ResponseNo := 400;
+        AResponseInfo.ContentText :=
+          '{"status":"error","message":"Missing or invalid action. Usage example: /api/stopwatch?action=start","code":"MISSING_ACTION"}';
+      end;
     end;
 
     // API: Open a song slide by its database ID
@@ -555,7 +699,7 @@ begin
       begin
         AResponseInfo.ResponseNo := 400;
         AResponseInfo.ContentText :=
-          '{"status":"error","message":"Missing or invalid song ID. Usage: /api/open-song?id=123","code":"MISSING_ID"}';
+          '{"status":"error","message":"Missing or invalid song ID. Usage example: /api/open-song?id=123","code":"MISSING_ID"}';
       end;
       Exit;
     end;
