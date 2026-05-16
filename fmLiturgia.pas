@@ -1,4 +1,4 @@
-unit fmLiturgia;
+ï»¿unit fmLiturgia;
 
 interface
 
@@ -141,6 +141,15 @@ var
   tipo: string;
   subitem: string;
   param: string;
+  itens: array of TParamItem;
+
+  procedure Add(const p, v: string);
+  begin
+    SetLength(itens, Length(itens)+1);
+    itens[High(itens)].Grupo := id;
+    itens[High(itens)].Param := p;
+    itens[High(itens)].Valor := v;
+  end;
 begin
   if (cbItens.ItemIndex < 0) then
   begin
@@ -178,28 +187,33 @@ begin
     5: tipo := 'site';
   end;
 
-  fmIndex.gravaParam(id, 'tipo', tipo, fmIndex.arq_liturgia);
-  fmIndex.gravaParam(id, 'item', txtItem.Text, fmIndex.arq_liturgia);
-  fmIndex.gravaParam(id, 'cor', ColorToString(csCor.ColorValue), fmIndex.arq_liturgia);
+  Add('tipo', tipo);
+  Add('item', txtItem.Text);
+  Add('cor', ColorToString(csCor.ColorValue));
 
+  try
+    fmIndex.gravaLog('btAddClick: pre-build id=' + id + ' pnlArquivo=' + BoolToStr(pnlArquivo.Visible, True) + ' edtDiretorio=' + edtDiretorio.Text + ' edtDiretorioInfo=' + edtDiretorioInfo.Text);
+  except
+    // silencioso
+  end;
 
   if (pnlAnotacoes.Visible) then
   begin
-    fmIndex.gravaParam(id, 'subitem', edtAnotacao.Text, fmIndex.arq_liturgia);
+    Add('subitem', edtAnotacao.Text);
   end
   else
   if (pnlItensAgendados.Visible) then
   begin
-    fmIndex.gravaParam(id, 'item', dblItem.Text, fmIndex.arq_liturgia);
-    fmIndex.gravaParam(id, 'subitem', '', fmIndex.arq_liturgia);
-    fmIndex.gravaParam(id, 'id', dblItem.KeyValue, fmIndex.arq_liturgia);
+    Add('item', dblItem.Text);
+    Add('subitem', '');
+    Add('id', dblItem.KeyValue);
   end
   else
   if (pnlSite.Visible) then
   begin
     urlSite.text := validaURL(urlSite.text);
-    fmIndex.gravaParam(id, 'subitem', 'Site '+urlSite.Text, fmIndex.arq_liturgia);
-    fmIndex.gravaParam(id, 'url', urlSite.Text, fmIndex.arq_liturgia);
+    Add('subitem', 'Site '+urlSite.Text);
+    Add('url', urlSite.Text);
   end
   else
   if (pnlArquivo.Visible) then
@@ -211,28 +225,28 @@ begin
 
     if (Copy(param,Length(param),1) = '\') then
     begin
-      fmIndex.gravaParam(id, 'subtipo', 'dir', fmIndex.arq_liturgia);
-      fmIndex.gravaParam(id, 'subitem', 'Pasta '+edtDiretorio.Text, fmIndex.arq_liturgia);
+      Add('subtipo', 'dir');
+      Add('subitem', 'Pasta '+edtDiretorio.Text);
     end
     else if FileExists(param) then
     begin
-      fmIndex.gravaParam(id, 'subtipo', 'arq', fmIndex.arq_liturgia);
-      fmIndex.gravaParam(id, 'subitem', 'Arquivo '+edtDiretorio.Text, fmIndex.arq_liturgia);
+      Add('subtipo', 'arq');
+      Add('subitem', 'Arquivo '+edtDiretorio.Text);
     end
     else if DirectoryExists(param) then
     begin
       edtDiretorio.Text := edtDiretorio.Text+'\';
-      fmIndex.gravaParam(id, 'subtipo', 'dir', fmIndex.arq_liturgia);
-      fmIndex.gravaParam(id, 'subitem', 'Pasta '+edtDiretorio.Text, fmIndex.arq_liturgia);
+      Add('subtipo', 'dir');
+      Add('subitem', 'Pasta '+edtDiretorio.Text);
     end
     else
     begin
-      fmIndex.gravaParam(id, 'subtipo', 'arq', fmIndex.arq_liturgia);
-      fmIndex.gravaParam(id, 'subitem', 'Arquivo '+edtDiretorio.Text, fmIndex.arq_liturgia);
+      Add('subtipo', 'arq');
+      Add('subitem', 'Arquivo '+edtDiretorio.Text);
     end;
 
-    fmIndex.gravaParam(id, 'dir', edtDiretorio.Text, fmIndex.arq_liturgia);
-    fmIndex.gravaParam(id, 'dir_info', edtDiretorioInfo.Text, fmIndex.arq_liturgia);
+    Add('dir', edtDiretorio.Text);
+    Add('dir_info', edtDiretorioInfo.Text);
   end
   else
   if (pnlHinos.Visible) then
@@ -242,30 +256,37 @@ begin
 
     if opcHinosOpc1.Checked then
     begin
-      fmIndex.gravaParam(id, 'escolha', '1', fmIndex.arq_liturgia);
-      fmIndex.gravaParam(id, 'musica', '-1', fmIndex.arq_liturgia);
-      fmIndex.gravaParam(id, 'subtipo', 'escolha', fmIndex.arq_liturgia);
-      subitem := 'Clique para escolher a música';
-      fmIndex.gravaParam(id, 'subitem', subitem, fmIndex.arq_liturgia);
+      Add('escolha', '1');
+      Add('musica', '-1');
+      Add('subtipo', 'escolha');
+      subitem := 'Clique para escolher a mÃºsica';
+      Add('subitem', subitem);
     end
     else
     begin
-      fmIndex.gravaParam(id, 'escolha', '0', fmIndex.arq_liturgia);
-      fmIndex.gravaParam(id, 'musica', IntToStr(dbLitHinoLista.KeyValue), fmIndex.arq_liturgia);
+      Add('escolha', '0');
+      Add('musica', IntToStr(dbLitHinoLista.KeyValue));
       if (qrHinos.FieldByName('TIPO_HASD').AsString = 'S')
-        then fmIndex.gravaParam(id, 'subtipo', 'hasd', fmIndex.arq_liturgia)
+        then Add('subtipo', 'hasd')
       else if (qrHinos.FieldByName('TIPO_JA').AsString = 'S')
-        then fmIndex.gravaParam(id, 'subtipo', 'ja', fmIndex.arq_liturgia)
-      else fmIndex.gravaParam(id, 'subtipo', 'div', fmIndex.arq_liturgia);
+        then Add('subtipo', 'ja')
+      else Add('subtipo', 'div');
 
       if (qrHinos.FieldByName('TIPO_HASD').AsString = 'S')
-        then subitem := 'Hino nº '
-        else subitem := 'Música ';
+        then subitem := 'Hino nÂº '
+        else subitem := 'MÃºsica ';
       subitem := subitem + qrHinos.FieldByName('NOME').AsString;
-      fmIndex.gravaParam(id, 'subitem', subitem, fmIndex.arq_liturgia);
+      Add('subitem', subitem);
     end;
   end;
 
+  fmIndex.gravaParamLote(fmIndex.arq_liturgia, itens);
+
+  try
+    fmIndex.gravaLog('btAddClick: salvando item ' + id + ' tipo=' + tipo);
+  except
+    // silencioso: log falhou -> continua
+  end;
 
   if fmIndex.lbLiturgia.Items.IndexOf(id) < 0 then
   begin
@@ -286,20 +307,27 @@ begin
 end;
 
 procedure TfLiturgia.cbItensChange(Sender: TObject);
+const
+  IDX_ANOTACAO       = 0;
+  IDX_ARQUIVO        = 1;
+  IDX_ITENSAGENDADOS = 3;
+  IDX_MUSICA         = 4;
+  IDX_SITE           = 5;
+var
+  idx: Integer;
 begin
-  lblItem.Visible := True;
-  txtItem.Visible := True;
-  if cbItens.ItemIndex < 0 then Exit;
+  idx := cbItens.ItemIndex;
 
-  pnlAnotacoes.Visible := (cbItens.Items[cbItens.ItemIndex] = 'Anotação');
-  pnlHinos.Visible := (cbItens.Items[cbItens.ItemIndex] = 'Música');
-  pnlSite.Visible := (cbItens.Items[cbItens.ItemIndex] = 'Site');
-  pnlArquivo.Visible := (cbItens.Items[cbItens.ItemIndex] = 'Arquivo/Diretório');
-  pnlItensAgendados.Visible := (cbItens.Items[cbItens.ItemIndex] = 'Itens Agendados');
+  pnlAnotacoes.Visible      := (idx = IDX_ANOTACAO);
+  pnlArquivo.Visible        := (idx = IDX_ARQUIVO);
+  pnlItensAgendados.Visible := (idx = IDX_ITENSAGENDADOS);
+  pnlHinos.Visible          := (idx = IDX_MUSICA);
+  pnlSite.Visible           := (idx = IDX_SITE);
 
   lblItem.Visible := not pnlItensAgendados.Visible;
   txtItem.Visible := not pnlItensAgendados.Visible;
 
+  if idx < 0 then Exit;
   executaOpcoes;
 end;
 
@@ -307,35 +335,81 @@ procedure TfLiturgia.executaOpcoes;
 var
   item: string;
 begin
-  if (pnlHinos.Visible) then
-  begin
-    opcHinosOpc1Click(nil);
-    qrHinos.Close;
-    qrHinos.Open;
-  end
-  else if pnlItensAgendados.Visible then
-  begin
-    item := '';
-    if (dblItem.KeyValue <> null) then
-      item := dblItem.KeyValue;
-    if not DM.cdsCategoriasItensAgendados.Active then
+  try
+    if (pnlHinos.Visible) then
     begin
-      DM.cdsCategoriasItensAgendados.CreateDataSet;
-      DM.cdsCategoriasItensAgendados.IndexName := '';
-      DM.cdsCategoriasItensAgendados.IndexFieldNames := 'NOME';
-      DM.cdsCategoriasItensAgendados.LogChanges := False;
-    end;
+      opcHinosOpc1Click(nil);
+      qrHinos.Close;
+      qrHinos.Open;
+    end
+    else if pnlItensAgendados.Visible then
+    begin
+      item := '';
+      if (dblItem.KeyValue <> null) then
+        item := dblItem.KeyValue;
+      if not DM.cdsCategoriasItensAgendados.Active then
+      begin
+        DM.cdsCategoriasItensAgendados.CreateDataSet;
+        DM.cdsCategoriasItensAgendados.IndexName := '';
+        DM.cdsCategoriasItensAgendados.IndexFieldNames := 'NOME';
+        DM.cdsCategoriasItensAgendados.LogChanges := False;
+      end;
 
-    if (FileExists(fmIndex.dir_dados + 'itensAgendadosCategorias.xml')) then
-      DM.cdsCategoriasItensAgendados.LoadFromFile(fmIndex.dir_dados + 'itensAgendadosCategorias.xml');
-    DM.cdsCategoriasItensAgendados.Open;
-    dblItem.KeyValue := item;
+      if (FileExists(fmIndex.dir_dados + 'itensAgendadosCategorias.xml')) then
+        DM.cdsCategoriasItensAgendados.LoadFromFile(fmIndex.dir_dados + 'itensAgendadosCategorias.xml');
+      DM.cdsCategoriasItensAgendados.Open;
+      dblItem.KeyValue := item;
+    end;
+  except
+    // Silencioso - erros em opÃ§Ãµes nÃ£o devem quebrar a UI
   end;
 end;
 
 procedure TfLiturgia.FormActivate(Sender: TObject);
 var
   tipo: string;
+  idx: Integer;
+  function FindIndexForTipo(const code: string): Integer;
+  var
+    i: Integer;
+    c: string;
+  begin
+    Result := -1;
+    if Trim(code) = '' then Exit;
+    // try direct code-index mapping (legacy behavior)
+    Result := AnsiIndexStr(code, ['anotacao','arquivo','categoria','itensagendados','musica','site']);
+    if (Result >= 0) and (Result < cbItens.Items.Count) then Exit;
+
+    // fallback: match by partial label (case-insensitive)
+    for i := 0 to cbItens.Items.Count - 1 do
+    begin
+      c := cbItens.Items[i];
+      if AnsiContainsText(c, 'Anot') and ((code = 'anotacao')) then
+      begin
+        Result := i; Exit;
+      end;
+      if (AnsiContainsText(c, 'Arquiv') or AnsiContainsText(c, 'Diretor') or AnsiContainsText(c, 'Diret')) and (code = 'arquivo') then
+      begin
+        Result := i; Exit;
+      end;
+      if AnsiContainsText(c, 'Categor') and (code = 'categoria') then
+      begin
+        Result := i; Exit;
+      end;
+      if (AnsiContainsText(c, 'Itens') or AnsiContainsText(c, 'Agend')) and (code = 'itensagendados') then
+      begin
+        Result := i; Exit;
+      end;
+      if (AnsiContainsText(c, 'MÃºsic') or AnsiContainsText(c, 'Musica') or AnsiContainsText(c, 'Hino')) and (code = 'musica') then
+      begin
+        Result := i; Exit;
+      end;
+      if AnsiContainsText(c, 'Site') and (code = 'site') then
+      begin
+        Result := i; Exit;
+      end;
+    end;
+  end;
 begin
   pnlAnotacoes.Visible := False;
   pnlHinos.Visible := False;
@@ -357,34 +431,66 @@ begin
     btDel.Visible := True;
   end;
 
-  tipo := fmIndex.lerParam(id, 'tipo', '', fmIndex.arq_liturgia);
-  if tipo = 'anotacao'
-    then edtAnotacao.Text := fmIndex.lerParam(id, 'subitem', '', fmIndex.arq_liturgia)
-    else edtAnotacao.Text := '';
-  if tipo = 'site'
-    then urlSite.Text := fmIndex.lerParam(id, 'url', '', fmIndex.arq_liturgia)
-    else urlSite.Text := '';
-  if tipo = 'arquivo' then
-  begin
-    edtDiretorio.Text := fmIndex.lerParam(id, 'dir', '', fmIndex.arq_liturgia);
-    edtDiretorioInfo.Text := fmIndex.lerParam(id, 'dir_info', '', fmIndex.arq_liturgia);
-  end
-  else
-  begin
-    edtDiretorio.Text := '';
-    edtDiretorioInfo.Text := '';
-  end;
-  if tipo = 'itensagendados'
-    then dblItem.KeyValue := fmIndex.lerParam(id, 'id', '', fmIndex.arq_liturgia)
-    else dblItem.KeyValue := '';
-  opcHinosOpc1.Checked := (fmIndex.lerParam(id, 'escolha', '0', fmIndex.arq_liturgia) = '1');
-  txtItem.Text := fmIndex.lerParam(id, 'item', '', fmIndex.arq_liturgia);
-  csCor.ColorValue := StringToColor(fmIndex.lerParam(id, 'cor', '$004F0000', fmIndex.arq_liturgia));
-  dbLitHinoLista.KeyValue := fmIndex.lerParam(id, 'musica', '-1', fmIndex.arq_liturgia);
-  cbItens.ItemIndex := AnsiIndexStr(fmIndex.lerParam(id, 'tipo', '$004F0000', fmIndex.arq_liturgia),
-                               ['anotacao', 'arquivo','categoria','itensagendados','musica','site']);
+  try
+    fmIndex.gravaLog('FormActivate: carrega item ' + id);
+    tipo := fmIndex.lerParam(id, 'tipo', '', fmIndex.arq_liturgia);
 
-  cbItensChange(Sender);
+    // Prefill simple controls that do not require datasets
+    if tipo = 'anotacao' then
+      edtAnotacao.Text := fmIndex.lerParam(id, 'subitem', '', fmIndex.arq_liturgia)
+    else
+      edtAnotacao.Text := '';
+
+    if tipo = 'site' then
+      urlSite.Text := fmIndex.lerParam(id, 'url', '', fmIndex.arq_liturgia)
+    else
+      urlSite.Text := '';
+
+    if tipo = 'arquivo' then
+    begin
+      edtDiretorio.Text := fmIndex.lerParam(id, 'dir', '', fmIndex.arq_liturgia);
+      edtDiretorioInfo.Text := fmIndex.lerParam(id, 'dir_info', '', fmIndex.arq_liturgia);
+    end
+    else
+    begin
+      edtDiretorio.Text := '';
+      edtDiretorioInfo.Text := '';
+    end;
+
+      opcHinosOpc1.Checked := (fmIndex.lerParam(id, 'escolha', '0', fmIndex.arq_liturgia) = '1');
+      txtItem.Text := fmIndex.lerParam(id, 'item', '', fmIndex.arq_liturgia);
+      csCor.ColorValue := StringToColor(fmIndex.lerParam(id, 'cor', '$004F0000', fmIndex.arq_liturgia));
+
+      // Map and set ItemIndex so cbItensChange opens datasets before KeyValue assignment
+      try
+        idx := FindIndexForTipo(tipo);
+        if idx >= 0 then
+          cbItens.ItemIndex := idx
+        else
+        begin
+          cbItens.ItemIndex := -1;
+          fmIndex.gravaLog('FormActivate: tipo desconhecido para item ' + id + ' -> "' + tipo + '"');
+        end;
+      except
+        cbItens.ItemIndex := -1;
+        fmIndex.gravaLog('FormActivate: erro ao mapear tipo para item ' + id);
+      end;
+
+    // Ensure datasets and lookup lists are initialized
+    cbItensChange(Sender);
+
+    // Now safe to assign DB lookup KeyValues
+    if tipo = 'itensagendados' then
+      dblItem.KeyValue := fmIndex.lerParam(id, 'id', '', fmIndex.arq_liturgia)
+    else
+      dblItem.KeyValue := '';
+
+    dbLitHinoLista.KeyValue := fmIndex.lerParam(id, 'musica', '-1', fmIndex.arq_liturgia);
+
+  except
+    cbItens.ItemIndex := -1;
+    try fmIndex.gravaLog('FormActivate: excecao ao carregar item ' + id); except end;
+  end;
 end;
 
 procedure TfLiturgia.FormKeyUp(Sender: TObject; var Key: Word;
