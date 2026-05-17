@@ -1721,6 +1721,9 @@ type
     bsSkinButton47: TbsSkinButton;
     pnlImagemCapaModelES: TPanel;
     imgImagemCapaModelES: TImage;
+    bsSkinPanel169: TbsSkinPanel;
+    bsSkinLinkLabel50: TbsSkinLinkLabel;
+    bsPngImageView70: TbsPngImageView;
     function VersaoExe: String;
     procedure FormCreate(Sender: TObject);
     procedure fExibeColetaneas(Tipo: string; ScrollBox: TbsSkinScrollBox);

@@ -7,7 +7,11 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, BusinessSkinForm, bsSkinBoxCtrls,
   Vcl.StdCtrls, Vcl.Mask, bsSkinCtrls, Vcl.ExtCtrls, idcontext, IdSocketHandle,
   IdCustomHTTPServer, IdBaseComponent, IdComponent, IdCustomTCPServer,
-  IdHTTPServer, bsribbon, bsSkinExCtrls, Vcl.Clipbrd, bsdbctrls;
+  IdHTTPServer, bsribbon, bsSkinExCtrls, Vcl.Clipbrd, bsdbctrls,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client;
 
 type
   TfTransmitir = class(TForm)
@@ -57,6 +61,7 @@ type
     bsSkinStdLabel1: TbsSkinStdLabel;
     seSrvToken: TbsSkinEdit;
     bsSkinSpeedButton1: TbsSkinSpeedButton;
+    qrBUSCA: TFDQuery;
     procedure seSrvUrlExit(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure IdHTTPServer1CommandGet(AContext: TIdContext;
@@ -294,12 +299,18 @@ var
   isLocalRequest: Boolean;
   keyCode: Integer;
   I: Integer;
+  searchTerm: String;
+  jsonResult: String;
+  primeiro: Boolean;
 begin
   // Allow cross-origin requests from web applications
   AResponseInfo.CustomHeaders.Values['Access-Control-Allow-Origin'] := '*';
   AResponseInfo.CustomHeaders.Values['Access-Control-Allow-Methods'] := 'GET, OPTIONS';
 
   arq := ARequestInfo.Document;
+  arq := Trim(arq);
+  if (arq <> '/') and arq.EndsWith('/') then
+    Delete(arq, Length(arq), 1);
 
   // Requests via localhost (127.0.0.1) are trusted — only processes on the
   // same machine can reach this binding. Token is only required for network access.
@@ -669,6 +680,48 @@ begin
       end;
     end;
 
+    // API: Search songs by title or author
+    // Usage: GET /api/search-songs?q=termo
+    if arq = '/api/search-songs' then
+    begin
+        searchTerm := Trim(ARequestInfo.Params.Values['q']);
+
+        if searchTerm = '' then
+        begin
+            AResponseInfo.ResponseNo := 400;
+            AResponseInfo.ContentText :=
+                '{"status":"error","message":"Missing search term","code":"MISSING_SEARCH_TERM"}';
+            Exit;
+        end;
+
+        qrBUSCA.Close;
+        qrBUSCA.ParamByName('VALOR').AsString := fmIndex.termo_busca(searchTerm);
+        qrBUSCA.Open;
+
+        jsonResult := '{"status":"ok","musicas":[';
+        primeiro := True;
+
+        while not qrBUSCA.Eof do
+        begin
+            if not primeiro then
+                jsonResult := jsonResult + ',';
+            primeiro := False;
+
+            jsonResult := jsonResult + '{';
+            jsonResult := jsonResult + '"id":' + qrBUSCA.FieldByName('ID').AsString + ',';
+            jsonResult := jsonResult + '"nome":"' + StringReplace(qrBUSCA.FieldByName('NOME').AsString, '"', '\"', [rfReplaceAll]) + '",';
+            jsonResult := jsonResult + '"album":"' + StringReplace(qrBUSCA.FieldByName('NOME_ALBUM_COM').AsString, '"', '\"', [rfReplaceAll]) + '"';
+            jsonResult := jsonResult + '}';
+
+            qrBUSCA.Next;
+        end;
+
+        jsonResult := jsonResult + ']}';
+        AResponseInfo.ContentText := jsonResult;
+
+        Exit;
+    end;
+
     // API: Open a song slide by its database ID
     // Usage: GET /api/open-song?id=123
     if arq = '/api/open-song' then
@@ -706,15 +759,16 @@ begin
   end;
 
   // Static file serving (existing behavior)
-  if (Trim(arq) = '') or (Trim(arq) = '/') then
-    arq := '/index.htm';
-  if (Trim(arq) = '/musica') or (Trim(arq) = '/musica/') or
-     (Trim(arq) = '/biblia') or (Trim(arq) = '/biblia/') then
-    arq := '/page.htm';
+  if (arq = '') or (arq = '/') then
+    arq := '/index.html';
+
+  if (arq = '/musica') or (arq = '/biblia') then
+    arq := '/mirror.html';
+
   url := fmIndex.dir_config+'server'+arq;
   if not FileExists(url) then
   begin
-    arq := '/pagina_nao_encontrada.htm';
+    arq := '/404.html';
     url := fmIndex.dir_config+'server'+arq;
   end;
   txt := TStringList.Create;
@@ -739,4 +793,5 @@ begin
 end;
 
 end.
+
 
