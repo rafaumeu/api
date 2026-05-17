@@ -15475,7 +15475,7 @@ object fmIndex: TfmIndex
           ScrollBars = ssVertical
           Align = alClient
           Color = clWhite
-          Font.Charset = ANSI_CHARSET
+          Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -12
           Font.Name = 'Tahoma'

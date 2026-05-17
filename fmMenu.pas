@@ -1,4 +1,4 @@
-unit fmMenu;
+﻿unit fmMenu;
 
 interface
 
@@ -26,6 +26,11 @@ type
     Top: Integer;
     Width: Integer;
     Height: Integer;
+  end;
+  TParamItem = record
+    Grupo: string;
+    Param: string;
+    Valor: string;
   end;
   TfmIndex = class(TForm)
     IdAntiFreeze1: TIdAntiFreeze;
@@ -1747,6 +1752,7 @@ type
     procedure txtDecrExit(Sender: TObject);
     function lerParam(Grupo, Param, Valor: string;Arquivo: string = ''; Diretorio:string = ''): string;
     procedure gravaParam(Grupo, Param, Valor: string;Arquivo: string = '');
+    procedure gravaParamLote(const Arquivo: string; const Itens: array of TParamItem);
     procedure gravaParamServer(Grupo, Param, Valor: string);
     procedure apagaParam(Grupo: string; Param: string = '';Arquivo: string = '');
     procedure cbMusicaChange(Sender: TObject);
@@ -2245,6 +2251,7 @@ type
     move_x,move_y:integer;
     move_panel: TPanel;
     move: Boolean;
+    FLogChamadas: Integer;  // contador para checagem de truncamento do louvorja.log
 
     const
       VERSAO_MIN_BD: integer = 140;
@@ -2260,6 +2267,11 @@ type
     procedure ApplicationDeactivate(Sender: TObject);
     procedure ApplicationActivate(Sender: TObject);
     procedure ForceDirectoriesRecursive(const Path: string);
+
+    //Helpers internos para acesso ao liturgia.ja (UTF-8 garantido + migração on-demand)
+    function caminhoLiturgia: string;
+    procedure garanteUtf8Liturgia;
+    function abreIniLiturgia: TMemIniFile;
 
   public
     { Public declarations }
@@ -2687,10 +2699,19 @@ end;
 procedure TfmIndex.salvaItensLiturgia;
 var
   semana: string;
+  itens: array[0..1] of TParamItem;
 begin
   semana := fmIndex.loadCol.Strings.Values['LITURGIA:SEMANA'];
-  gravaParam('Geral', semana, StringReplace(lbLiturgia.Items.Text, #13#10, ';', [rfIgnoreCase, rfReplaceAll]), arq_liturgia);
-  gravaParam('Geral', 'AlteraOrdem-'+semana, FormatDateTime('dd/mm/yyyy hh:mm:ss',now()), arq_liturgia);
+
+  itens[0].Grupo := 'Geral';
+  itens[0].Param := semana;
+  itens[0].Valor := StringReplace(lbLiturgia.Items.Text, #13#10, ';', [rfIgnoreCase, rfReplaceAll]);
+
+  itens[1].Grupo := 'Geral';
+  itens[1].Param := 'AlteraOrdem-' + semana;
+  itens[1].Valor := FormatDateTime('dd/mm/yyyy hh:mm:ss', now());
+
+  gravaParamLote(arq_liturgia, itens);
 end;
 
 procedure TfmIndex.SaveBase64ImageToFile(const Base64String, FilePath: string);
@@ -5808,36 +5829,11 @@ begin
 end;
 
 procedure TfmIndex.carregaLiturgia(semana: Integer);
-  procedure MigrarParaUtf8;
-  var
-    path: string;
-    fs: TFileStream;
-    bom: array[0..2] of Byte;
-    sl: TStringList;
-  begin
-    path := dir_dados + arq_liturgia;
-    if not FileExists(path) then Exit;
-    FillChar(bom, SizeOf(bom), 0);
-    fs := TFileStream.Create(path, fmOpenRead or fmShareDenyWrite);
-    try
-      if fs.Size >= 3 then fs.Read(bom, 3);
-    finally
-      fs.Free;
-    end;
-    if (bom[0] = $EF) and (bom[1] = $BB) and (bom[2] = $BF) then Exit;
-    sl := TStringList.Create;
-    try
-      sl.LoadFromFile(path);
-      sl.SaveToFile(path, TEncoding.UTF8);
-    finally
-      sl.Free;
-    end;
-  end;
 var
   itens: TStringList;
   i: integer;
 begin
-  MigrarParaUtf8;
+  garanteUtf8Liturgia;
   itens := TStringList.Create;
   itens.Delimiter := ';';
   itens.DelimitedText := lerParam('Geral', IntToStr(semana), '', arq_liturgia);
@@ -6152,8 +6148,9 @@ begin
     else dir := dir_dados;
 
   try
+    // Always use abreIniLiturgia for liturgia.ja to ensure UTF-8 and avoid ANSI APIs
     if Arquivo = arq_liturgia then
-      ArqIni := TMemIniFile.Create(dir + Arquivo, TEncoding.UTF8)
+      ArqIni := abreIniLiturgia
     else
       ArqIni := TIniFile.Create(dir + Arquivo);
     try
@@ -6162,7 +6159,14 @@ begin
       ArqIni.Free;
     end;
   except
-    //
+    on E: Exception do
+    begin
+      try
+        gravaLog('lerParam(' + Arquivo + ',' + Grupo + ',' + Param + '): ' + E.ClassName + ' - ' + E.Message);
+      except
+        // Silencioso - erro ao logar não deve quebrar a app
+      end;
+    end;
   end;
   result := vl;
 end;
@@ -6181,32 +6185,352 @@ begin
   result := link;
 end;
 
-procedure TfmIndex.gravaLog(txt:string);
+function TfmIndex.caminhoLiturgia: string;
 begin
-  mmLog.Lines.Add(FormatDateTime('dd/mm/yyyy HH:MM:SS.ZZZ', now()) + '    ' + txt);
+  Result := dir_dados + arq_liturgia;
+end;
+
+procedure TfmIndex.garanteUtf8Liturgia;
+var
+  path: string;
+  fs: TFileStream;
+  bom: array[0..2] of Byte;
+  sl: TStringList;
+  enc1252: TEncoding;
+begin
+  path := caminhoLiturgia;
+  if not FileExists(path) then Exit;
+  FillChar(bom, SizeOf(bom), 0);
+  try
+    fs := TFileStream.Create(path, fmOpenRead or fmShareDenyWrite);
+    try
+      if fs.Size >= 3 then fs.Read(bom, 3);
+    finally
+      fs.Free;
+    end;
+  except
+    Exit;
+  end;
+  // If file already has UTF-8 BOM, assume UTF-8 and exit
+  if (bom[0] = $EF) and (bom[1] = $BB) and (bom[2] = $BF) then Exit;
+
+  sl := TStringList.Create;
+  try
+    // First try reading as UTF-8 (no BOM). If it succeeds, assume file is valid UTF-8.
+    try
+      sl.LoadFromFile(path, TEncoding.UTF8);
+      // Successfully read as UTF-8; nothing to do.
+      Exit;
+    except
+      // Not valid UTF-8: fall back to legacy encoding (CP1252) and convert to UTF-8
+    end;
+
+    enc1252 := nil;
+    try
+      enc1252 := TEncoding.GetEncoding(1252);
+      sl.LoadFromFile(path, enc1252);
+      sl.SaveToFile(path, TEncoding.UTF8);
+    finally
+      enc1252.Free;
+    end;
+  finally
+    sl.Free;
+  end;
+end;
+
+function TfmIndex.abreIniLiturgia: TMemIniFile;
+var
+  path: string;
+  sl: TStringList;
+  enc1252: TEncoding;
+  backupPath: string;
+begin
+  path := caminhoLiturgia;
+  try
+    // Ensure file is converted to UTF-8 where possible
+    try
+      garanteUtf8Liturgia;
+    except
+      try gravaLog('abreIniLiturgia: garanteUtf8Liturgia falhou para ' + path); except end;
+    end;
+
+    try
+      gravaLog('abreIniLiturgia: opening ' + path + ' (ensured UTF-8)');
+    except
+      // best effort
+    end;
+
+    try
+      Result := TMemIniFile.Create(path, TEncoding.UTF8);
+      Exit;
+    except
+      on E: EEncodingError do
+      begin
+        try
+          gravaLog('abreIniLiturgia: EEncodingError creating TMemIniFile for ' + path + ' - ' + E.Message);
+        except end;
+
+        // Try a forced conversion: read as CP1252 and rewrite as UTF-8
+        try
+          sl := TStringList.Create;
+          try
+            enc1252 := TEncoding.GetEncoding(1252);
+            try
+              sl.LoadFromFile(path, enc1252);
+              sl.SaveToFile(path, TEncoding.UTF8);
+            finally
+              enc1252.Free;
+            end;
+          finally
+            sl.Free;
+          end;
+        except
+          try gravaLog('abreIniLiturgia: repair (CP1252->UTF8) failed for ' + path); except end;
+          // Backup corrupted file and create an empty one
+          try
+            backupPath := path + '.corrupt.' + FormatDateTime('yyyymmddhhnnsszzz', Now);
+            RenameFile(path, backupPath);
+            gravaLog('abreIniLiturgia: moved corrupted file to ' + backupPath);
+          except
+            try gravaLog('abreIniLiturgia: failed to backup corrupted file ' + path); except end;
+          end;
+          // create an empty file to continue
+          try
+            sl := TStringList.Create;
+            try
+              sl.SaveToFile(path, TEncoding.UTF8);
+            finally
+              sl.Free;
+            end;
+          except
+            // give up and re-raise original error
+            raise;
+          end;
+        end;
+
+        // Try creating again after repair/backout
+        try
+          Result := TMemIniFile.Create(path, TEncoding.UTF8);
+          Exit;
+        except
+          on E2: Exception do
+          begin
+            try gravaLog('abreIniLiturgia: second attempt failed for ' + path + ' - ' + E2.ClassName + ' - ' + E2.Message); except end;
+            // as last resort, backup and create empty ini
+            try
+              backupPath := path + '.corrupt.' + FormatDateTime('yyyymmddhhnnsszzz', Now);
+              if FileExists(path) then RenameFile(path, backupPath);
+            except
+              // ignore
+            end;
+            Result := TMemIniFile.Create(path, TEncoding.UTF8);
+            Exit;
+          end;
+        end;
+      end
+      else
+        raise;
+    end;
+  except
+    on E: Exception do
+    begin
+      try
+        gravaLog('abreIniLiturgia: erro ao abrir ' + path + ' - ' + E.ClassName + ' - ' + E.Message);
+      except end;
+      raise;
+    end;
+  end;
+end;
+
+procedure TfmIndex.gravaLog(txt:string);
+const
+  LIMITE_BYTES = 1048576;     // 1MB
+  ALVO_BYTES   = 730 * 1024;  // ~70% do limite
+var
+  linha, path: string;
+  tamanho, soma: Int64;
+  fs: TFileStream;
+  sl: TStringList;
+  i, corte: Integer;
+begin
+  linha := FormatDateTime('dd/mm/yyyy HH:MM:SS.ZZZ', now()) + '    ' + txt;
+
+  try
+    if mmLog <> nil then
+      mmLog.Lines.Add(linha);
+  except
+    // Silencioso se mmLog falhar
+  end;
+
+  // Persistência em disco só em modo desenvolvedor
+  if (pnlModDes = nil) or (not pnlModDes.Visible) then Exit;
+  if dir_dados = '' then Exit;
+
+  Inc(FLogChamadas);
+
+  path := dir_dados + 'louvorja.log';
+  try
+    TFile.AppendAllText(path, linha + sLineBreak, TEncoding.UTF8);
+
+    // Só checa truncamento a cada 100 chamadas para não pagar custo em todo log
+    if (FLogChamadas mod 100) <> 0 then Exit;
+
+    if not FileExists(path) then Exit;
+    fs := TFileStream.Create(path, fmOpenRead or fmShareDenyNone);
+    try
+      tamanho := fs.Size;
+    finally
+      fs.Free;
+    end;
+    if tamanho <= LIMITE_BYTES then Exit;
+
+    sl := TStringList.Create;
+    try
+      sl.LoadFromFile(path, TEncoding.UTF8);
+      soma := 0;
+      corte := 0;
+      for i := sl.Count - 1 downto 0 do
+      begin
+        Inc(soma, Length(sl[i]) + 2); // +2 = CRLF
+        if soma > ALVO_BYTES then
+        begin
+          corte := i + 1; // qtde de linhas iniciais a remover
+          Break;
+        end;
+      end;
+      for i := 1 to corte do
+        sl.Delete(0);
+      sl.SaveToFile(path, TEncoding.UTF8);
+    finally
+      sl.Free;
+    end;
+  except
+    // Silencioso por design: falha do log não pode quebrar o app nem causar recursão
+  end;
+end;
+
+procedure TfmIndex.gravaParamLote(const Arquivo: string; const Itens: array of TParamItem);
+var
+  ArqIni: TCustomIniFile;
+  i: Integer;
+  arq: string;
+  origPath, tempPath: string;
+  origIni, tempIni: TMemIniFile;
+  sections, keys: TStringList;
+
+  var k : integer;
+  var backup : string;
+begin
+  arq := Arquivo;
+  if arq = '' then
+    arq := 'config' + fIniciando.LANG + '.ja';
+
+  try
+    if arq = arq_liturgia then
+    begin
+      // Write atomically: copy existing INI to temp, apply changes, write temp and replace
+      origPath := dir_dados + arq;
+      tempPath := origPath + '.tmp';
+
+      // Ensure liturgia.ja is in UTF-8 before attempting to read it
+      try
+        garanteUtf8Liturgia;
+      except
+        try gravaLog('gravaParamLote: garanteUtf8Liturgia failed for ' + origPath); except end;
+      end;
+
+      tempIni := TMemIniFile.Create(tempPath, TEncoding.UTF8);
+      try
+        if FileExists(origPath) then
+        begin
+          try
+            origIni := TMemIniFile.Create(origPath, TEncoding.UTF8);
+            try
+              sections := TStringList.Create;
+              try
+                origIni.ReadSections(sections);
+                for i := 0 to sections.Count - 1 do
+                begin
+                  keys := TStringList.Create;
+                  try
+                    origIni.ReadSection(sections[i], keys);
+                    for k := 0 to keys.Count - 1 do
+                      tempIni.WriteString(sections[i], keys[k], origIni.ReadString(sections[i], keys[k], ''));
+                  finally
+                    keys.Free;
+                  end;
+                end;
+              finally
+                sections.Free;
+              end;
+            finally
+              origIni.Free;
+            end;
+          except
+            on E: Exception do
+            begin
+              // Orig file could be corrupt or unreadable; backup and continue with empty base
+              try
+                gravaLog('gravaParamLote: failed to read orig INI ' + origPath + ' - ' + E.ClassName + ' - ' + E.Message);
+              except end;
+              try
+                backup := origPath + '.corrupt.' + FormatDateTime('yyyymmddhhnnsszzz', Now);
+                if FileExists(origPath) then RenameFile(origPath, backup);
+                gravaLog('gravaParamLote: moved corrupted orig INI to ' + backup);
+              except
+                try gravaLog('gravaParamLote: failed to backup corrupted orig INI ' + origPath); except end;
+              end;
+              // proceed without copying original contents
+            end;
+          end;
+        end;
+
+        for i := 0 to High(Itens) do
+          tempIni.WriteString(Itens[i].Grupo, Itens[i].Param, Itens[i].Valor);
+
+        tempIni.UpdateFile;
+      finally
+        tempIni.Free;
+      end;
+
+      // Replace original atomically (replace if exists)
+      if not MoveFileEx(PChar(tempPath), PChar(origPath), MOVEFILE_REPLACE_EXISTING) then
+      begin
+        // Attempt fallback: delete original then rename
+        try
+          if FileExists(origPath) then
+            DeleteFile(origPath);
+          RenameFile(tempPath, origPath);
+        except
+          raise;
+        end;
+      end;
+    end
+    else
+    begin
+      ArqIni := TIniFile.Create(dir_dados + arq);
+      try
+        for i := 0 to High(Itens) do
+          ArqIni.WriteString(Itens[i].Grupo, Itens[i].Param, Itens[i].Valor);
+        ArqIni.UpdateFile;
+      finally
+        ArqIni.Free;
+      end;
+    end;
+  except
+    on E: Exception do
+      gravaLog('gravaParamLote(' + arq + '): ' + E.ClassName + ' - ' + E.Message);
+  end;
 end;
 
 procedure TfmIndex.gravaParam(Grupo, Param, Valor, Arquivo: string);
 var
-  ArqIni: TCustomIniFile;
+  item: TParamItem;
 begin
-  if Arquivo = '' then
-    Arquivo := 'config'+fIniciando.LANG+'.ja';
-
-  try
-    if Arquivo = arq_liturgia then
-      ArqIni := TMemIniFile.Create(dir_dados + Arquivo, TEncoding.UTF8)
-    else
-      ArqIni := TIniFile.Create(dir_dados + Arquivo);
-    try
-      ArqIni.WriteString(Grupo, Param, Valor);
-      ArqIni.UpdateFile;
-    finally
-      ArqIni.Free;
-    end;
-  except
-    //
-  end;
+  item.Grupo := Grupo;
+  item.Param := Param;
+  item.Valor := Valor;
+  gravaParamLote(Arquivo, [item]);
 end;
 
 procedure TfmIndex.gravaParamServer(Grupo, Param, Valor: string);
@@ -6353,18 +6677,23 @@ begin
   if Arquivo = '' then
     Arquivo := 'config'+fIniciando.LANG+'.ja';
 
-  if Arquivo = arq_liturgia then
-    ArqIni := TMemIniFile.Create(dir_dados + Arquivo, TEncoding.UTF8)
-  else
-    ArqIni := TIniFile.Create(dir_dados + Arquivo);
   try
-    if (trim(Param) <> '') then
-      ArqIni.DeleteKey(Grupo, Param)
+    if Arquivo = arq_liturgia then
+      ArqIni := abreIniLiturgia
     else
-      ArqIni.EraseSection(Grupo);
-    ArqIni.UpdateFile;
-  finally
-    ArqIni.Free;
+      ArqIni := TIniFile.Create(dir_dados + Arquivo);
+    try
+      if (trim(Param) <> '') then
+        ArqIni.DeleteKey(Grupo, Param)
+      else
+        ArqIni.EraseSection(Grupo);
+      ArqIni.UpdateFile;
+    finally
+      ArqIni.Free;
+    end;
+  except
+    on E: Exception do
+      gravaLog('apagaParam(' + Arquivo + ',' + Grupo + ',' + Param + '): ' + E.ClassName + ' - ' + E.Message);
   end;
 end;
 
