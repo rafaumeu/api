@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Controle Remoto - Louvor JA</title>
+
+	<style>
+		/* ============================================
+           RESET E ESTILOS GLOBAIS
+        ============================================ */
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			background: #efefef;
+			font-family: Arial, Helvetica, sans-serif;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			min-height: 100vh;
+			color: #666;
+		}
+
+		svg {
+			width: 16px;
+			height: 16px;
+		}
+
+		/* ============================================
+           LAYOUT PRINCIPAL
+        ============================================ */
+		.full {
+			width: 100%;
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+		}
+
+		section {
+			width: 100%;
+		}
+
+		header {
+			padding: 16px 20px;
+			display: flex;
+			align-items: center;
+			border-bottom: 1px solid #ddd;
+		}
+
+		header .main {
+			flex: 1;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+		}
+
+		main {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-between;
+			gap: 24px;
+			padding: 30px;
+		}
+
+		footer {
+			padding: 18px;
+			font-size: 13px;
+			color: #999;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 6px;
+		}
+
+		/* ============================================
+           TIPOGRAFIA
+        ============================================ */
+		h1 {
+			font-size: 25px;
+			font-weight: 600;
+		}
+
+		h2 {
+			font-size: 18px;
+			font-weight: 600;
+			color: #999;
+		}
+
+		/* ============================================
+           STATUS INDICATOR
+        ============================================ */
+		.dot {
+			background-color: rgb(255, 196, 0);
+			width: 14px;
+			height: 14px;
+			border-radius: 50%;
+			box-shadow: 0 0 10px rgba(255, 196, 0, .8);
+		}
+
+		body.api-error .dot {
+			background-color: #d43a3a;
+			box-shadow: 0 0 10px rgba(212, 58, 58, 0.8);
+		}
+
+		body.api-success .dot {
+			background-color: #3ad46b;
+			box-shadow: 0 0 10px rgba(58, 212, 107, .8);
+		}
+
+		/* ============================================
+           CONTROLES E BOTÕES
+        ============================================ */
+		.header-control {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 12px;
+			width: 100%;
+		}
+
+		.control {
+			display: grid;
+			grid-template-columns: repeat(3, auto);
+			grid-template-rows: repeat(3, auto);
+			gap: 12px;
+			align-items: center;
+			justify-items: center;
+		}
+
+		.bt {
+			width: 72px;
+			height: 72px;
+			border: 1px solid #CCC;
+			border-radius: 22px;
+			background: #fff;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-decoration: none;
+			color: #555;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, .08), inset 0 1px 0 rgba(255, 255, 255, .8);
+			transition: .15s;
+			user-select: none;
+			cursor: pointer;
+		}
+
+		.bt:hover {
+			transform: translateY(-2px);
+		}
+
+		.bt:active {
+			transform: scale(.95);
+		}
+
+		.bt svg {
+			width: 28px;
+			height: 28px;
+		}
+
+		.bt-rounded {
+			border-radius: 50%;
+		}
+
+		.bt-dark {
+			background: #222;
+			color: white;
+		}
+
+		.bt-lg {
+			width: 100px;
+			height: 100px;
+		}
+
+		.bt-lg svg {
+			width: 50px;
+			height: 50px;
+		}
+
+		.bt-text {
+			border: none;
+			outline: none;
+			cursor: pointer;
+			padding: 18px;
+			border-radius: 18px;
+			background: #2b3c86;
+			color: white;
+			font-size: 18px;
+			font-weight: 600;
+			box-shadow: 0 6px 16px rgba(0, 0, 0, .12);
+			transition: transform .12s ease, opacity .12s ease;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+		}
+
+		/* ============================================
+           MODAIS
+        ============================================ */
+		.modal-container {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.modal {
+			position: absolute;
+			z-index: 200;
+			background: #FFF;
+			padding: 20px;
+			border-radius: 10px;
+			width: 90%;
+			max-width: 500px;
+		}
+
+		.modal-bg {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: #222;
+			opacity: .5;
+			z-index: 100;
+		}
+
+		body:not(.invalid-token) div.invalid-token,
+		body:not(.failed-fetch) div.failed-fetch {
+			display: none;
+		}
+
+		/* ============================================
+           FORMULÁRIOS
+        ============================================ */
+		.form-group {
+			display: flex;
+			flex-direction: column;
+			gap: 14px;
+		}
+
+		.form-label {
+			font-size: 13px;
+			font-weight: 600;
+			color: #666;
+		}
+
+		.input,
+		.textarea,
+		.select {
+			width: 100%;
+			border: 1px solid #CCC;
+			outline: none;
+			background: #fff;
+			border-radius: 10px;
+			padding: 16px 18px;
+			font-size: 15px;
+			color: #444;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, .05), inset 0 1px 0 rgba(255, 255, 255, .8);
+			transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+		}
+
+		.input:focus,
+		.textarea:focus,
+		.select:focus {
+			transform: translateY(-1px);
+			box-shadow: 0 8px 20px rgba(0, 0, 0, .08), 0 0 0 3px rgba(80, 120, 255, .12);
+		}
+
+		.input::placeholder,
+		.textarea::placeholder {
+			color: #aaa;
+		}
+
+		.textarea {
+			min-height: 120px;
+			resize: vertical;
+		}
+
+		.select {
+			appearance: none;
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M8 11 3 6h10z'/%3E%3C/svg%3E");
+			background-repeat: no-repeat;
+			background-position: right 16px center;
+			background-size: 14px;
+			padding-right: 44px;
+		}
+
+		.input-token {
+			font-weight: 600;
+			letter-spacing: 6px;
+			text-align: center;
+			font-size: 22px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<!-- MODAL TOKEN INVÁLIDO -->
+	<div class="invalid-token modal-container">
+		<div class="modal">
+			<div class="form-group">
+				<label class="form-label">Digite o TOKEN para conectar:</label>
+				<input id="token" class="input input-token">
+				<button class="bt-text" onclick="ControleRemoto.conectar()">Conectar</button>
+			</div>
+		</div>
+		<div class="modal-bg"></div>
+	</div>
+
+	<!-- MODAL ERRO DE CONEXÃO -->
+	<div class="failed-fetch modal-container">
+		<div class="modal">
+			<div class="form-group">
+				<label class="form-label">Servidor n&atilde;o encontrado!</label>
+			</div>
+		</div>
+		<div class="modal-bg"></div>
+	</div>
+
+	<!-- CONTEÚDO PRINCIPAL -->
+	<section class="full">
+		<header>
+			<div style="width:14px"></div>
+			<div class="main">
+				<h1>LOUVOR JA</h1>
+				<h2>Controle Remoto</h2>
+			</div>
+			<div>
+				<div id="dot-status" class="dot"></div>
+			</div>
+		</header>
+
+		<main>
+			<div class="header-control">
+				<button class="bt ico-search" onclick="ControleRemoto.exibirModalBusca()"></button>
+				<button class="bt ico-x" onclick="ControleRemoto.enviarTecla(27)"></button>
+			</div>
+
+			<div class="control">
+				<div></div>
+				<button class="bt ico-up" onclick="ControleRemoto.enviarTecla(38)"></button>
+				<div></div>
+				<button class="bt ico-left" onclick="ControleRemoto.enviarTecla(37)"></button>
+				<button class="bt bt-dark bt-lg ico-play-pause" onclick="ControleRemoto.enviarTecla(32)"></button>
+				<button class="bt ico-right" onclick="ControleRemoto.enviarTecla(39)"></button>
+				<div></div>
+				<button class="bt ico-down" onclick="ControleRemoto.enviarTecla(40)"></button>
+				<div></div>
+			</div>
+			<div></div>
+		</main>
+
+		<footer>
+			<span class="ico-key"></span>
+			Token: <span id="token-info"></span>
+		</footer>
+	</section>
+
+	<script>
+		/**
+		 * Controle Remoto - Louvor JA
+		 * Sistema de controle remoto via API
+		 */
+
+		(function () {
+
+			// ============================================
+			// ICONES (SVG)
+			// ============================================
+			const ICONES = {
+				left: `<path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>`,
+				right: `<path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>`,
+				up: `<path d="M8 4a.5.5 0 0 1 .354.146l6 6a.5.5 0 0 1-.708.708L8 5.207l-5.646 5.647a.5.5 0 1 1-.708-.708l6-6A.5.5 0 0 1 8 4"/>`,
+				down: `<path d="M8 12a.5.5 0 0 1-.354-.146l-6-6a.5.5 0 1 1 .708-.708L8 10.793l5.646-5.647a.5.5 0 0 1 .708.708l-6 6A.5.5 0 0 1 8 12"/>`,
+				play: `<path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>`,
+				pause: `<path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>`,
+				'play-pause': `<g transform="translate(-1,0)"><path d="M8.804 8 3 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C2.713 12.69 2 12.345 2 11.692V4.308c0-.653.713-.998 1.233-.696z"/></g><g transform="translate(6,0)"><path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/></g>`,
+				search: `<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>`,
+				key: `<path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8m4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5"/><path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>`,
+				x: `<path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>`,
+			};
+
+			// ============================================
+			// VARIÁVEIS DE ESTADO
+			// ============================================
+			let estaTestando = false;
+			let intervaloPing = null;
+
+			// ============================================
+			// FUNÇÕES AUXILIARES
+			// ============================================
+
+			/**
+			 * Obtém o token armazenado no localStorage
+			 */
+			function obterToken() {
+				return localStorage.getItem('token') ?? "";
+			}
+
+			/**
+			 * Salva o token no localStorage
+			 */
+			function salvarToken(token) {
+				localStorage.setItem('token', token);
+			}
+
+			/**
+			 * Atualiza a exibição do token no footer
+			 */
+			function atualizarExibicaoToken() {
+				const tokenInfo = document.getElementById("token-info");
+				if (tokenInfo) {
+					tokenInfo.innerHTML = obterToken();
+				}
+			}
+
+			/**
+			 * Exibe alerta simples
+			 */
+			function exibirAlerta(mensagem) {
+				alert(mensagem);
+			}
+
+			/**
+			 * Renderiza os ícones nos elementos com classe 'ico-*'
+			 */
+			function renderizarIcones() {
+				document.querySelectorAll('[class*="ico-"]').forEach(el => {
+					const iconClass = [...el.classList].find(c => c.startsWith('ico-'));
+					if (!iconClass) return;
+
+					const iconName = iconClass.replace('ico-', '');
+					if (!ICONES[iconName]) return;
+
+					el.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 16 16">
+                            ${ICONES[iconName]}
+                        </svg>
+                    `;
+				});
+			}
+
+			// ============================================
+			// FUNÇÕES DE API
+			// ============================================
+
+			/**
+			 * Faz chamada para a API
+			 * @param {string} rota - Rota da API
+			 * @param {Function} callback - Função callback (opcional)
+			 */
+			async function chamarApi(rota, callback) {
+				const token = obterToken();
+				const separador = rota.includes('?') ? '&' : '?';
+				const url = `/api/${rota}${separador}token=${token}`;
+
+				try {
+					const response = await fetch(url, {
+						method: 'GET',
+						headers: { 'Accept': 'application/json' }
+					});
+
+					const data = await response.json();
+
+					if (!response.ok || data?.status === 'error') {
+						if (typeof callback === 'function') {
+							callback(false, data);
+						}
+						return null;
+					}
+
+					if (typeof callback === 'function') {
+						callback(true, data);
+					}
+					return data;
+
+				} catch (error) {
+					if (typeof callback === 'function') {
+						callback(false, error);
+					}
+					return null;
+				}
+			}
+
+			/**
+			 * Envia tecla para a API
+			 * @param {number} codigoTecla - Código da tecla
+			 */
+			async function enviarTecla(codigoTecla) {
+				await chamarApi('keyboard?key=' + encodeURIComponent(codigoTecla));
+			}
+
+			/**
+			 * Verifica o status da API (ping)
+			 * @param {boolean} exibirAlertaErro - Se deve exibir alerta em caso de erro
+			 */
+			async function verificarPing(exibirAlertaErro = false) {
+				await chamarApi('ping', (status, dados) => {
+					const body = document.body;
+
+					// Limpa classes de status
+					body.classList.remove('api-error', 'api-success', 'invalid-token', 'failed-fetch');
+
+					if (dados?.code === "INVALID_TOKEN") {
+						const tokenAtual = obterToken();
+
+						body.classList.add("api-error", "invalid-token");
+
+						if (exibirAlertaErro) {
+							exibirAlerta("TOKEN invalido!");
+						}
+					}
+					else if (!status) {
+						body.classList.add("api-error", "failed-fetch");
+					}
+					else {
+						body.classList.add("api-success");
+					}
+				});
+			}
+
+			/**
+			 * Testa a API periodicamente
+			 */
+			async function testarApi() {
+				if (estaTestando) return;
+
+				estaTestando = true;
+				await verificarPing();
+				estaTestando = false;
+			}
+
+			/**
+			 * Conecta com o token informado
+			 */
+			async function conectar() {
+				const tokenInput = document.getElementById("token");
+				const token = tokenInput?.value || "";
+
+				salvarToken(token);
+				atualizarExibicaoToken();
+				await verificarPing(true);
+			}
+
+
+			// ============================================
+			// FUNÇÕES DE BUSCA DE MÚSICAS
+			// ============================================
+
+			/**
+			 * Busca músicas na API
+			 * @param {string} termo - Termo de busca
+			 * @param {Function} callback - Função callback com os resultados
+			 */
+			async function buscarMusicas(termo, callback) {
+				if (!termo || termo.trim() === '') {
+					if (typeof callback === 'function') {
+						callback(false, { message: 'Termo de busca vazio' });
+					}
+					return;
+				}
+
+				await chamarApi('search-songs?q=' + encodeURIComponent(termo), (status, data) => {
+					if (typeof callback === 'function') {
+						callback(status, data);
+					}
+				});
+			}
+
+			/**
+			 * Abre uma música pelo ID
+			 * @param {number} songId - ID da música
+			 * @param {number} tag - Tag da música (1=normal, 2=playback, 3=somente áudio)
+			 */
+			async function abrirMusica(songId, tag = 1) {
+				await chamarApi(`open-song?id=${songId}&tag=${tag}`);
+			}
+
+			/**
+			 * Exibe o modal de busca de músicas
+			 */
+			function exibirModalBusca() {
+				// Remove modal existente se houver
+				const modalExistente = document.getElementById('modal-busca-musicas');
+				if (modalExistente) {
+					modalExistente.remove();
+				}
+
+				// Cria o modal
+				const modalHTML = `
+					<div id="modal-busca-musicas" class="modal-container" style="z-index: 1000;">
+						<div class="modal" style="width: 90%; max-width: 600px; max-height: 80vh;display:flex;flex-direction:column;">
+							<div class="modal-header" style="padding: 10px 0;">
+								<div class="form-group">
+									<label class="form-label">Buscar m&uacute;sica:</label>
+									<input type="text" id="busca-input" class="input" placeholder="Digite o nome da m&uacute;sica..." autocomplete="off">
+								</div>
+							</div>
+							<div class="modal-body" style="overflow:auto;">
+								<div id="resultados-busca" style="margin-top: 10px; max-height: 400px; "></div>
+							</div>
+							<div class="modal-footer" style="padding: 10px 0;">
+								<button class="bt-text" onclick="document.getElementById('modal-busca-musicas').remove()" style="width:100%;">
+									Fechar
+								</button>
+							</div>
+						</div>
+						<div class="modal-bg" onclick="document.getElementById('modal-busca-musicas').remove()"></div>
+					</div>
+				`;
+
+				document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+				const inputBusca = document.getElementById('busca-input');
+				const resultadosDiv = document.getElementById('resultados-busca');
+
+				let timeoutBusca;
+
+				inputBusca.addEventListener('input', function (e) {
+					clearTimeout(timeoutBusca);
+					const termo = e.target.value;
+
+					if (termo.length < 2) {
+						resultadosDiv.innerHTML = '<div style="padding: 10px; color: #999;">Digite pelo menos 2 caracteres...</div>';
+						return;
+					}
+
+					timeoutBusca = setTimeout(() => {
+						resultadosDiv.innerHTML = '<div style="padding: 10px; color: #999;">Buscando...</div>';
+
+						buscarMusicas(termo, (status, data) => {
+							console.log(data);
+							if (!status || !data.musicas || data.musicas.length === 0) {
+								resultadosDiv.innerHTML = '<div style="padding: 10px; color: #999;">Nenhuma m&uacute;sica encontrada</div>';
+								return;
+							}
+
+							let html = '<div style="display: flex; flex-direction: column; gap: 8px;">';
+							data.musicas.forEach(musica => {
+								html += `
+									<div style="padding: 12px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; background: #f9f9f9;" 
+										onclick="document.getElementById('modal-busca-musicas').remove();ControleRemoto.abrirMusica(${musica.id}, 1)">
+										<strong>${musica.nome.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</strong>
+										${musica.album ? `<br><small style="color: #666;">${musica.album.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</small>` : ''}
+									</div>
+								`;
+							});
+							html += '</div>';
+							resultadosDiv.innerHTML = html;
+						});
+					}, 500);
+				});
+
+				inputBusca.focus();
+			}
+
+			// ============================================
+			// INICIALIZAÇÃO
+			// ============================================
+
+			/**
+			 * Inicializa o sistema
+			 */
+			function inicializar() {
+				renderizarIcones();
+				atualizarExibicaoToken();
+
+				// Inicia verificação periódica
+				testarApi();
+				intervaloPing = setInterval(testarApi, 3000);
+			}
+
+			// ============================================
+			// EXPORTA FUNÇÕES PARA O ESCOPO GLOBAL
+			// ============================================
+			window.ControleRemoto = {
+				enviarTecla: enviarTecla,
+				conectar: conectar,
+				verificarPing: verificarPing,
+				buscarMusicas: buscarMusicas,
+				abrirMusica: abrirMusica,
+				exibirModalBusca: exibirModalBusca
+			};
+
+			// Inicializa quando o DOM estiver pronto
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', inicializar);
+			} else {
+				inicializar();
+			}
+
+		})();
+	</script>
+
+</body>
+
+</html>
