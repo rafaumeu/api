@@ -386,7 +386,7 @@ begin
     begin
       if (ARequestInfo.Params.Values['action'] = 'next') then
       begin
-        if (fMusica.Visible) then
+        if (fMusica <> nil) and (fMusica.Visible) then
         begin
           fMusica.acaoSlide('prox');
           AResponseInfo.ContentText := '{"status":"ok","message":"Advanced to the next slide","code":"ADVANCED_SLIDE"}';
