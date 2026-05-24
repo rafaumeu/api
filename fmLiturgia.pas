@@ -82,6 +82,7 @@ type
   public
     { Public declarations }
     id: string;
+    arquivoInicial: string;
   end;
 
 var
@@ -101,6 +102,8 @@ end;
 procedure TfLiturgia.edtDiretorioExit(Sender: TObject);
 begin
   edtDiretorio.Text := fmIndex.verificaURL(edtDiretorio.Text, edtDiretorioInfo, false);
+  edtDiretorio.SelStart := Length(edtDiretorio.Text);
+  edtDiretorio.Perform(EM_SCROLLCARET, 0, 0);
 end;
 
 procedure TfLiturgia.bsSkinSpeedButton1Click(Sender: TObject);
@@ -450,6 +453,8 @@ begin
     begin
       edtDiretorio.Text := fmIndex.lerParam(id, 'dir', '', fmIndex.arq_liturgia);
       edtDiretorioInfo.Text := fmIndex.lerParam(id, 'dir_info', '', fmIndex.arq_liturgia);
+      edtDiretorio.SelStart := Length(edtDiretorio.Text);
+      edtDiretorio.Perform(EM_SCROLLCARET, 0, 0);
     end
     else
     begin
@@ -490,6 +495,17 @@ begin
   except
     cbItens.ItemIndex := -1;
     try fmIndex.gravaLog('FormActivate: excecao ao carregar item ' + id); except end;
+  end;
+
+  // Pré-preenchimento via drag-and-drop de arquivo na liturgia
+  if (Trim(arquivoInicial) <> '') and (Trim(id) = '') then
+  begin
+    cbItens.ItemIndex := 1; // Arquivo
+    cbItensChange(nil);
+    edtDiretorio.Text := arquivoInicial;
+    edtDiretorioExit(nil);
+    arquivoInicial := '';
+    if txtItem.CanFocus then txtItem.SetFocus;
   end;
 end;
 

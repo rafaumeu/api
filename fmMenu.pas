@@ -2266,6 +2266,9 @@ type
     //Define tamanho da tel maximizada (evita que form fique embaixo da barra de tarefas)
     procedure WMGetMinmaxInfo(var Msg: TWMGetMinmaxInfo); message WM_GETMINMAXINFO;
 
+    //Aceita arquivos arrastados do Windows Explorer (drop na aba Liturgia)
+    procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
+
     //Define as ações para quando perder ou receber o foco
     procedure ApplicationDeactivate(Sender: TObject);
     procedure ApplicationActivate(Sender: TObject);
@@ -2375,10 +2378,13 @@ begin
   SetWindowLong(fmIndex.Handle,
                 GWL_STYLE,
                 GetWindowLong(Handle,GWL_STYLE) and not WS_CAPTION);
+
+  DragAcceptFiles(Self.Handle, True);
 end;
 
 procedure TfmIndex.FormDestroy(Sender: TObject);
 begin
+  DragAcceptFiles(Self.Handle, False);
   RichEdit1Exit(Sender);
   usaFontes(false);
   RecursiveDelete(dir_temp);
@@ -11985,6 +11991,37 @@ begin
   fLiturgia.Caption := 'Adicionar Item';
   fLiturgia.id := '';
   fLiturgia.ShowModal;
+end;
+
+procedure TfmIndex.WMDropFiles(var Msg: TWMDropFiles);
+var
+  numFiles, i, size: Integer;
+  buffer: array[0..MAX_PATH] of Char;
+begin
+  try
+    if not ((PageControl1.Visible) and (PageControl1.ActivePage = tsLiturgia)) then
+    begin
+      Msg.Result := 0;
+      Exit;
+    end;
+
+    numFiles := DragQueryFile(Msg.Drop, $FFFFFFFF, nil, 0);
+    for i := 0 to numFiles - 1 do
+    begin
+      size := DragQueryFile(Msg.Drop, i, nil, 0) + 1;
+      if size > SizeOf(buffer) then size := SizeOf(buffer);
+      DragQueryFile(Msg.Drop, i, buffer, size);
+
+      fIniciando.AppCreateForm(TfLiturgia, fLiturgia);
+      fLiturgia.Caption := 'Adicionar Item';
+      fLiturgia.id := '';
+      fLiturgia.arquivoInicial := buffer;
+      fLiturgia.ShowModal;
+    end;
+  finally
+    DragFinish(Msg.Drop);
+    Msg.Result := 0;
+  end;
 end;
 
 procedure TfmIndex.bsSkinSpeedButton8Click(Sender: TObject);
