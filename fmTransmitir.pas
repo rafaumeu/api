@@ -94,7 +94,106 @@ implementation
 {$R *.dfm}
 
 uses
-  fmMusica,fmMenu;
+  fmMusica, fmMenu;
+
+// ── Enumeração de interfaces de rede (iphlpapi) ─────────────────────────────
+
+// Prefixo "_" evita colisão de nomes com Winapi.IpTypes/IpHlpApi (não usadas aqui).
+// Os códigos de retorno usam ERROR_SUCCESS/ERROR_BUFFER_OVERFLOW de Winapi.Windows.
+const
+  _MAX_ADAPTER_NAME_LEN = 260;
+  _MAX_ADAPTER_DESC_LEN = 132;
+  _MAX_ADAPTER_ADDR_LEN = 8;
+
+type
+  TInterfaceInfo = record
+    Nome: string;
+    IP:   string;
+  end;
+
+  PIPAddrString = ^TIPAddrString;
+  TIPAddrString = record
+    Next:      PIPAddrString;
+    IPAddress: array[0..15] of AnsiChar;
+    IPMask:    array[0..15] of AnsiChar;
+    Context:   DWORD;
+  end;
+
+  PIPAdapterInfo = ^TIPAdapterInfo;
+  TIPAdapterInfo = record
+    Next:             PIPAdapterInfo;
+    ComboIndex:       DWORD;
+    AdapterName:      array[0.._MAX_ADAPTER_NAME_LEN-1] of AnsiChar;
+    Description:      array[0.._MAX_ADAPTER_DESC_LEN-1] of AnsiChar;
+    AddressLength:    UINT;
+    Address:          array[0.._MAX_ADAPTER_ADDR_LEN-1] of Byte;
+    Index:            DWORD;
+    AType:            UINT;
+    DhcpEnabled:      UINT;
+    CurrentIpAddress: PIPAddrString;
+    IpAddressList:    TIPAddrString;
+    GatewayList:      TIPAddrString;
+    DhcpServer:       TIPAddrString;
+    HaveWins:         BOOL;
+    PrimaryWins:      TIPAddrString;
+    SecondaryWins:    TIPAddrString;
+    LeaseObtained:    DWORD;
+    LeaseExpires:     DWORD;
+  end;
+
+function GetAdaptersInfo(pAdapterInfo: PIPAdapterInfo; pOutBufLen: PDWORD): DWORD;
+  stdcall; external 'iphlpapi.dll';
+
+// Redeclarada com retorno DWORD: a TrackPopupMenu padrão do Delphi retorna BOOL,
+// que não carrega o ID do item selecionado quando se usa TPM_RETURNCMD.
+function TrackPopupMenuResult(hMenu: HMENU; uFlags: UINT; x, y, nReserved: Integer;
+  hWnd: HWND; prcRect: PRect): DWORD; stdcall; external 'user32.dll' name 'TrackPopupMenu';
+
+// Retorna as interfaces IPv4 ativas (nome + IP). Array vazio em qualquer falha de
+// API ou ausência de adaptadores — o chamador trata isso caindo no GetIP.
+function EnumerarInterfaces: TArray<TInterfaceInfo>;
+var
+  BufLen: DWORD;
+  Buf: TBytes;
+  Adapter: PIPAdapterInfo;
+  AddrStr: PIPAddrString;
+  IP, Nome: string;
+  Count: Integer;
+begin
+  Result := [];
+  BufLen := 0;
+  if GetAdaptersInfo(nil, @BufLen) <> ERROR_BUFFER_OVERFLOW then
+    Exit;
+
+  SetLength(Buf, BufLen);
+  if GetAdaptersInfo(PIPAdapterInfo(Buf), @BufLen) <> ERROR_SUCCESS then
+    Exit;
+
+  Count := 0;
+  Adapter := PIPAdapterInfo(Buf);
+  while Adapter <> nil do
+  begin
+    Nome := string(PAnsiChar(@Adapter^.Description[0]));
+    AddrStr := @Adapter^.IpAddressList;
+    while AddrStr <> nil do
+    begin
+      IP := string(PAnsiChar(@AddrStr^.IPAddress[0]));
+      if (IP <> '') and (IP <> '0.0.0.0') and
+         (Copy(IP, 1, 4) <> '127.') and
+         (Copy(IP, 1, 8) <> '169.254.') then
+      begin
+        SetLength(Result, Count + 1);
+        Result[Count].Nome := Nome;
+        Result[Count].IP   := IP;
+        Inc(Count);
+      end;
+      AddrStr := AddrStr^.Next;
+    end;
+    Adapter := Adapter^.Next;
+  end;
+end;
+
+// ────────────────────────────────────────────────────────────────────────────
 
 procedure TfTransmitir.bsSkinButton2Click(Sender: TObject);
 begin
@@ -102,8 +201,39 @@ begin
 end;
 
 procedure TfTransmitir.btIPRedeClick(Sender: TObject);
+var
+  Interfaces: TArray<TInterfaceInfo>;
+  I: Integer;
+  Ponto: TPoint;
+  HPopup: HMENU;
+  Cmd: DWORD;
 begin
-  seSrvUrl.Text := fmIndex.GetIP;
+  Interfaces := EnumerarInterfaces;
+  if Length(Interfaces) = 0 then
+  begin
+    seSrvUrl.Text := fmIndex.GetIP;
+    Exit;
+  end;
+
+  HPopup := CreatePopupMenu;
+  try
+    for I := 0 to High(Interfaces) do
+      AppendMenu(HPopup, MF_STRING, UINT(I + 1),
+        PChar(Interfaces[I].Nome + '  –  ' + Interfaces[I].IP));
+
+    Ponto := btIPRede.ClientToScreen(Point(0, btIPRede.Height));
+    // TPM_RETURNCMD devolve o ID do item direto no retorno; TPM_NONOTIFY suprime
+    // o WM_COMMAND — essencial aqui, pois TbsBusinessSkinForm o intercepta e a
+    // seleção nunca chegaria a um handler de menu VCL convencional.
+    Cmd := TrackPopupMenuResult(HPopup,
+      TPM_RETURNCMD or TPM_NONOTIFY or TPM_LEFTALIGN or TPM_LEFTBUTTON,
+      Ponto.X, Ponto.Y, 0, Handle, nil);
+  finally
+    DestroyMenu(HPopup);
+  end;
+
+  if (Cmd >= 1) and (Cmd <= DWORD(Length(Interfaces))) then
+    seSrvUrl.Text := Interfaces[Cmd - 1].IP;
 end;
 
 procedure TfTransmitir.bsSkinSpeedButton1Click(Sender: TObject);
@@ -651,7 +781,7 @@ begin
       begin
         messageStopwatch := fmIndex.lmdCrono.Caption;
         AResponseInfo.ContentText := '{"status":"ok","action":"get-time","message":"' + messageStopwatch + '"}';
-        success := True;
+        // success := True;
         Exit;
       end
       else if (ARequestInfo.Params.Values['action'] = 'start') then
