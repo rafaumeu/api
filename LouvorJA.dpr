@@ -39,7 +39,8 @@ uses
   fmMonitorBibliaBusca in 'fmMonitorBibliaBusca.pas' {fMonitorBibliaBusca},
   fmMonitorBiblia in 'fmMonitorBiblia.pas' {fMonitorBiblia},
   fmMonitorMenuMusicas in 'fmMonitorMenuMusicas.pas' {fMonitorMenuMusicas},
-  fmIdentificaMonitores in 'fmIdentificaMonitores.pas' {fIdentificaMonitores};
+  fmIdentificaMonitores in 'fmIdentificaMonitores.pas' {fIdentificaMonitores},
+  fmCopiaLiturgiaDia in 'fmCopiaLiturgiaDia.pas';
 
 {$R *.res}
 
