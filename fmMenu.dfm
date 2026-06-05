@@ -11636,7 +11636,7 @@ object fmIndex: TfmIndex
       object bsRibbonGroup59: TbsRibbonGroup
         Left = 93
         Top = 0
-        Width = 235
+        Width = 342
         Height = 86
         HintImageIndex = 0
         TabOrder = 1
@@ -11666,8 +11666,47 @@ object fmIndex: TfmIndex
           ExplicitLeft = 176
           ExplicitTop = 0
         end
-        object btApagaLitSel: TbsSkinSpeedButton
+        object btCopiaLitSel: TbsSkinSpeedButton
           Left = 126
+          Top = 2
+          Width = 107
+          Height = 65
+          HintImageIndex = 0
+          SkinData = DM.bsSkinData1
+          SkinDataName = 'resizetoolbutton'
+          DefaultFont.Charset = DEFAULT_CHARSET
+          DefaultFont.Color = clWindowText
+          DefaultFont.Height = 13
+          DefaultFont.Name = 'Tahoma'
+          DefaultFont.Style = []
+          DefaultWidth = 0
+          DefaultHeight = 0
+          UseSkinFont = True
+          CheckedMode = False
+          ImageList = DM.ico_40x40
+          UseSkinSize = True
+          UseSkinFontColor = True
+          WidthWithCaption = 0
+          WidthWithoutCaption = 0
+          ImageIndex = 56
+          RepeatMode = False
+          RepeatInterval = 100
+          Transparent = True
+          Flat = True
+          AllowAllUp = False
+          Down = False
+          GroupIndex = 0
+          Caption = 'Copiar Selecionados'
+          ShowCaption = True
+          NumGlyphs = 1
+          Align = alRight
+          Spacing = 1
+          Layout = blGlyphTop
+          OnClick = btCopiaLitSelClick
+          ExplicitLeft = 126
+        end
+        object btApagaLitSel: TbsSkinSpeedButton
+          Left = 233
           Top = 2
           Width = 107
           Height = 65
@@ -11703,7 +11742,7 @@ object fmIndex: TfmIndex
           Spacing = 1
           Layout = blGlyphTop
           OnClick = btApagaLitSelClick
-          ExplicitLeft = 132
+          ExplicitLeft = 233
         end
         object GridPanel75: TGridPanel
           Left = 2

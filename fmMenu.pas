@@ -504,6 +504,7 @@ type
     bsSkinSpeedButton54: TbsSkinSpeedButton;
     bsSkinSpeedButton55: TbsSkinSpeedButton;
     bsRibbonDivider43: TbsRibbonDivider;
+    btCopiaLitSel: TbsSkinSpeedButton;
     btApagaLitSel: TbsSkinSpeedButton;
     imgCrono: TImage;
     imgEscSB: TImage;
@@ -1949,6 +1950,7 @@ type
     procedure bsSkinSpeedButton53Click(Sender: TObject);
     procedure bsSkinSpeedButton54Click(Sender: TObject);
     procedure bsSkinSpeedButton55Click(Sender: TObject);
+    procedure btCopiaLitSelClick(Sender: TObject);
     procedure btApagaLitSelClick(Sender: TObject);
     procedure bsSkinSpeedButton58Click(Sender: TObject);
     procedure bsSkinButton25Click(Sender: TObject);
@@ -2302,6 +2304,8 @@ type
 
     TITULO: PChar;
     arq_liturgia: string;
+    FLitClipboard: TStringList;
+    FLitClipboardSemana: Integer;
     senha_bd: string;
 
     externo: Boolean;
@@ -2321,7 +2325,8 @@ uses
   fmTransmitir, fmMusicaRetorno, fmMonitorRelogio, fmMonitorTextoInterativo,
   fmMonitorPainelDinamico, fmMonitorCronometro, fmMonitorSorteioNomes,
   fmMonitorSorteio, fmMonitorCronometroCulto, fmMonitorBibliaBusca,
-  fmMonitorBiblia, fmMonitorMenuMusicas, fmIdentificaMonitores;
+  fmMonitorBiblia, fmMonitorMenuMusicas, fmIdentificaMonitores,
+  fmCopiaLiturgiaDia;
 
 {$R *.dfm}
 
@@ -2380,6 +2385,8 @@ begin
                 GetWindowLong(Handle,GWL_STYLE) and not WS_CAPTION);
 
   DragAcceptFiles(Self.Handle, True);
+  FLitClipboard := TStringList.Create;
+  FLitClipboardSemana := 0;
 end;
 
 procedure TfmIndex.FormDestroy(Sender: TObject);
@@ -2388,6 +2395,7 @@ begin
   RichEdit1Exit(Sender);
   usaFontes(false);
   RecursiveDelete(dir_temp);
+  FreeAndNil(FLitClipboard);
 end;
 
 procedure TfmIndex.FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -11608,6 +11616,128 @@ begin
       if checkbox.Checked
         then apagaItemLiturgia(item);
     end;
+  end;
+end;
+
+procedure TfmIndex.btCopiaLitSelClick(Sender: TObject);
+var
+  i, k, dia: Integer;
+  item, novoId, semanaStr: string;
+  checkbox: TbsSkinCheckBox;
+  dlg: TfCopiaLiturgiaDia;
+  diaOrigem: Integer;
+  diasDestino: TArray<Integer>;
+  itensExistentes, existingIds, keys: TStringList;
+  iniRead: TMemIniFile;
+  params: array of TParamItem;
+
+  procedure AddParam(const grupo, param, valor: string);
+  begin
+    SetLength(params, Length(params) + 1);
+    params[High(params)].Grupo := grupo;
+    params[High(params)].Param := param;
+    params[High(params)].Valor := valor;
+  end;
+begin
+  FLitClipboard.Clear;
+  for i := 0 to lbLiturgia.Items.Count - 1 do
+  begin
+    item := lbLiturgia.Items[i];
+    checkbox := TbsSkinCheckBox(FindComponent(item + '_checkb'));
+    if Assigned(checkbox) and checkbox.Checked then
+      FLitClipboard.Add(item);
+  end;
+
+  if FLitClipboard.Count = 0 then
+  begin
+    Application.MessageBox('Selecione ao menos um item para copiar!', TITULO, MB_OK + MB_ICONINFORMATION);
+    Exit;
+  end;
+
+  diaOrigem := StrToIntDef(loadCol.Strings.Values['LITURGIA:SEMANA'], DayOfWeek(Now));
+  FLitClipboardSemana := diaOrigem;
+
+  dlg := TfCopiaLiturgiaDia.CreateDialog(Self, diaOrigem);
+  try
+    if dlg.ShowModal <> mrOk then Exit;
+    diasDestino := dlg.GetDiasSelecionados;
+
+    if Length(diasDestino) = 0 then
+    begin
+      Application.MessageBox('Selecione ao menos um dia de destino!', TITULO, MB_OK + MB_ICONINFORMATION);
+      Exit;
+    end;
+
+    for dia in diasDestino do
+    begin
+      semanaStr := IntToStr(dia);
+      itensExistentes := TStringList.Create;
+      try
+        if dlg.GetSobrescrever then
+        begin
+          existingIds := TStringList.Create;
+          try
+            existingIds.Delimiter := ';';
+            existingIds.DelimitedText := lerParam('Geral', semanaStr, '', arq_liturgia);
+            for k := 0 to existingIds.Count - 1 do
+              if Trim(existingIds[k]) <> '' then
+                apagaParam(existingIds[k], '', arq_liturgia);
+          finally
+            existingIds.Free;
+          end;
+        end
+        else
+        begin
+          itensExistentes.Delimiter := ';';
+          itensExistentes.DelimitedText := lerParam('Geral', semanaStr, '', arq_liturgia);
+          for k := itensExistentes.Count - 1 downto 0 do
+            if Trim(itensExistentes[k]) = '' then
+              itensExistentes.Delete(k);
+        end;
+
+        for i := 0 to FLitClipboard.Count - 1 do
+        begin
+          item := FLitClipboard[i];
+          novoId := 'item_' + FormatDateTime('yyyymmddhhnnsszzz', Now)
+                    + '_d' + semanaStr + '_i' + IntToStr(i);
+          SetLength(params, 0);
+
+          keys := TStringList.Create;
+          try
+            iniRead := abreIniLiturgia;
+            try
+              iniRead.ReadSection(item, keys);
+              for k := 0 to keys.Count - 1 do
+                if keys[k] <> 'checked' then
+                  AddParam(novoId, keys[k], iniRead.ReadString(item, keys[k], ''));
+            finally
+              iniRead.Free;
+            end;
+          finally
+            keys.Free;
+          end;
+
+          if Length(params) > 0 then
+            gravaParamLote(arq_liturgia, params);
+          itensExistentes.Add(novoId);
+        end;
+
+        gravaParam('Geral', semanaStr,
+          StringReplace(itensExistentes.Text, #13#10, ';', [rfIgnoreCase, rfReplaceAll]),
+          arq_liturgia);
+        gravaParam('Geral', 'AlteraOrdem-' + semanaStr,
+          FormatDateTime('dd/mm/yyyy hh:mm:ss', Now), arq_liturgia);
+      finally
+        itensExistentes.Free;
+      end;
+    end;
+
+    Application.MessageBox(
+      PChar('Itens copiados com sucesso para ' + IntToStr(Length(diasDestino)) + ' dia(s)!'),
+      TITULO, MB_OK + MB_ICONINFORMATION);
+
+  finally
+    dlg.Free;
   end;
 end;
 
