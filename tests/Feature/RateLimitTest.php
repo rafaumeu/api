@@ -11,38 +11,51 @@ class RateLimitTest extends TestCase
     {
         $key = "rate_limit:{$bucket}:{$ip}";
         Cache::forget($key);
+        Cache::forget("{$key}:tokens");
+        Cache::forget("{$key}:last_refill");
         Cache::forget("{$key}:reset_at");
     }
 
     private function prefillBucket(string $bucket, int $count, string $ip = '127.0.0.1'): void
     {
         $key = "rate_limit:{$bucket}:{$ip}";
-        Cache::put($key, $count, 60);
-        Cache::put("{$key}:reset_at", \Illuminate\Support\Carbon::now()->addSeconds(60)->timestamp, 61);
+        // No token bucket, preencher com 0 tokens (esgotado) = count requests ja feitas
+        Cache::put("{$key}:tokens", 0.0, 120);
+        Cache::put("{$key}:last_refill", (float) \Illuminate\Support\Carbon::now()->timestamp, 120);
+    }
+
+    private function setTokens(string $bucket, float $tokens, string $ip = '127.0.0.1'): void
+    {
+        $key = "rate_limit:{$bucket}:{$ip}";
+        Cache::put("{$key}:tokens", $tokens, 120);
+        Cache::put("{$key}:last_refill", (float) \Illuminate\Support\Carbon::now()->timestamp, 120);
     }
 
     // ──────────────────────────────────────────────
-    // Bucket: general
+    // Token bucket basics
     // ──────────────────────────────────────────────
 
-    public function test_rate_limit_increments_on_each_request(): void
+    public function test_rate_limit_allows_requests_within_burst(): void
     {
         $this->clearBucket('general');
 
         $this->get('/');
         $this->seeStatusCode(200);
 
-        $attempts = Cache::get('rate_limit:general:127.0.0.1', 0);
-        $this->assertEquals(1, $attempts);
+        $tokens = Cache::get('rate_limit:general:127.0.0.1:tokens');
+        $this->assertNotNull($tokens);
+        // Apos 1 request, tokens deve ser burst - 1
+        $burst = (int) env('RATE_LIMIT_BURST', 100);
+        $this->assertEqualsWithDelta($burst - 1, $tokens, 1.0);
 
         $this->clearBucket('general');
     }
 
-    public function test_rate_limit_returns_429_when_exceeded(): void
+    public function test_rate_limit_returns_429_when_tokens_exhausted(): void
     {
-        $maxRequests = (int) env('RATE_LIMIT_MAX', 300);
-
-        $this->prefillBucket('general', $maxRequests);
+        $this->clearBucket('general');
+        // Zerar tokens = bucket esgotado
+        $this->setTokens('general', 0.0);
 
         $this->get('/');
         $this->seeStatusCode(429);
@@ -52,18 +65,32 @@ class RateLimitTest extends TestCase
         $this->assertArrayHasKey('retry_after', $data);
         $this->assertEquals('general', $data['bucket']);
 
+        // Headers
+        $this->assertEquals('0', $this->response->headers->get('X-RateLimit-Remaining'));
+        $this->assertNotNull($this->response->headers->get('X-RateLimit-Reset'));
+
         $this->clearBucket('general');
     }
 
-    public function test_rate_limit_clears_after_decay(): void
+    public function test_rate_limit_tokens_refill_over_time(): void
     {
-        Cache::put('rate_limit:general:127.0.0.1', 100, 1);
-        Cache::put('rate_limit:general:127.0.0.1:reset_at', \Illuminate\Support\Carbon::now()->addSeconds(1)->timestamp, 2);
+        $this->clearBucket('general');
 
-        sleep(2);
+        $decay = (int) env('RATE_LIMIT_DECAY', 60);
+        $maxTokens = (int) env('RATE_LIMIT_MAX', 5000);
+
+        // Esgota tokens
+        $this->setTokens('general', 0.0);
+
+        // Simula 2 segundos de refluxo: seta last_refill no passado
+        $key = 'rate_limit:general:127.0.0.1';
+        $pastRefill = \Illuminate\Support\Carbon::now()->subSeconds(2)->timestamp;
+        Cache::put("{$key}:last_refill", (float) $pastRefill, 120);
 
         $this->get('/');
-        $this->seeStatusCode(200);
+        // Com 2s de refluxo, deve ter ~2 * (maxTokens/60) tokens = ~166
+        // Entao nao deve ser 429
+        $this->assertNotEquals(429, $this->response->getStatusCode());
 
         $this->clearBucket('general');
     }
@@ -76,6 +103,7 @@ class RateLimitTest extends TestCase
         $this->seeStatusCode(200);
         $this->assertNotNull($this->response->headers->get('X-RateLimit-Limit'));
         $this->assertNotNull($this->response->headers->get('X-RateLimit-Remaining'));
+        $this->assertNotNull($this->response->headers->get('X-RateLimit-Reset'));
         $this->assertNotNull($this->response->headers->get('X-RateLimit-Bucket'));
 
         $this->clearBucket('general');
@@ -87,11 +115,9 @@ class RateLimitTest extends TestCase
 
     public function test_file_route_uses_separate_bucket(): void
     {
-        $maxGeneral = (int) env('RATE_LIMIT_MAX', 300);
-        $maxFile = (int) env('RATE_LIMIT_FILE_MAX', 600);
-
-        // Esgota o bucket GENERAL ate o limite
-        $this->prefillBucket('general', $maxGeneral);
+        // Esgota o bucket GENERAL
+        $this->clearBucket('general');
+        $this->setTokens('general', 0.0);
 
         // File route usa bucket SEPARADO — nao deve ser 429
         $this->clearBucket('files');
@@ -99,9 +125,9 @@ class RateLimitTest extends TestCase
         $this->assertNotEquals(429, $this->response->getStatusCode());
 
         // Agora esgota o bucket FILES
-        $this->prefillBucket('files', $maxFile);
+        $this->clearBucket('files');
+        $this->setTokens('files', 0.0);
 
-        // File route agora deve ser 429
         $this->get('/file/test/image.jpg');
         $this->seeStatusCode(429);
         $data = $this->response->json();
@@ -132,15 +158,28 @@ class RateLimitTest extends TestCase
 
     public function test_metadata_route_uses_separate_bucket(): void
     {
-        $maxGeneral = (int) env('RATE_LIMIT_MAX', 300);
+        // Esgota GENERAL
+        $this->clearBucket('general');
+        $this->setTokens('general', 0.0);
 
-        // Esgota o bucket GENERAL
-        $this->prefillBucket('general', $maxGeneral);
-
-        // Version route usa bucket SEPARADO (metadata) — nao deve ser 429
+        // Metadata usa bucket separado
         $this->clearBucket('metadata');
         $this->get('/version');
         $this->assertNotEquals(429, $this->response->getStatusCode());
+
+        // Esgota METADATA
+        $this->clearBucket('metadata');
+        $this->setTokens('metadata', 0.0);
+
+        $this->get('/version');
+        $this->seeStatusCode(429);
+        $data = $this->response->json();
+        $this->assertEquals('metadata', $data['bucket']);
+
+        // General funciona
+        $this->clearBucket('general');
+        $this->get('/');
+        $this->seeStatusCode(200);
 
         $this->clearBucket('general');
         $this->clearBucket('metadata');
@@ -159,27 +198,19 @@ class RateLimitTest extends TestCase
 
     // ──────────────────────────────────────────────
     // Normalizacao de path com prefixo {lang}
-    // Rotas no grupo {lang} (musics, albums, etc) caem no bucket GENERAL.
-    // O normalizePath garante que /pt-BR/musics seja classificado como GENERAL
-    // (sem tratar o prefixo lang como parte do path).
     // ──────────────────────────────────────────────
 
     public function test_lang_prefix_route_hits_general_bucket(): void
     {
-        // Rotas com prefixo lang como /pt-BR/musics existem no router
-        // e devem cair no bucket GENERAL
         $this->clearBucket('general');
 
-        // Tenta fazer request para rota com lang prefix que existe no router
-        // O middleware lang pode barrar se o idioma nao for valido, mas o
-        // rate_limit middleware roda ANTES e deve classificar no bucket correto
+        // Rotas com prefixo lang como /en/musics caem no grupo {lang}
+        // do router. O rate_limit middleware roda antes e classifica no
+        // bucket GENERAL (normalizePath remove o prefixo).
         $this->get('/en/musics');
-        // Pode ser 200 ou outro erro do lang middleware, mas NAO deve ser 429
-        // com bucket 'files' ou 'metadata'
-        $bucket = $this->response->headers->get('X-RateLimit-Bucket');
 
-        // Se a request passou pelo rate_limit, o bucket deve ser 'general'
-        // (pode ser null se o lang middleware barrou antes)
+        $bucket = $this->response->headers->get('X-RateLimit-Bucket');
+        // Se passou pelo rate_limit, bucket deve ser general
         if ($bucket !== null) {
             $this->assertEquals('general', $bucket);
         }
@@ -189,7 +220,6 @@ class RateLimitTest extends TestCase
 
     public function test_no_lang_prefix_route_hits_correct_bucket(): void
     {
-        // Rotas fora do grupo lang (/, /file/*, /version) devem funcionar normalmente
         $this->clearBucket('files');
         $this->clearBucket('metadata');
         $this->clearBucket('general');
