@@ -154,6 +154,70 @@ class DatabaseJsonController extends Controller
     }
 
     /**
+     * Bundle ZIP de todos os arquivos JSON.
+     * Gera um ZIP em memória com todos os .json de public/db/json.
+     * Cache por 1 hora (3600s).
+     */
+    #[OA\Get(
+        path: '/db/bundle',
+        summary: 'Bundle ZIP de todos os JSON',
+        description: 'Gera e baixa um arquivo ZIP contendo todos os arquivos JSON da pasta public/db/json.',
+        tags: ['Database'],
+        security: [['ApiToken' => []]],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Arquivo ZIP',
+                content: new OA\MediaType(mediaType: 'application/zip')
+            ),
+            new OA\Response(response: 404, description: 'Nenhum arquivo JSON encontrado')
+        ]
+    )]
+    public function bundle()
+    {
+        $cacheKey = 'db.bundle.zip';
+
+        $zipContent = Cache::remember($cacheKey, 3600, function () {
+            $jsonDir = base_path('public/db/json');
+
+            if (!File::exists($jsonDir)) {
+                return null;
+            }
+
+            $files = File::files($jsonDir);
+            $jsonFiles = array_filter($files, fn ($f) => $f->getExtension() === 'json');
+
+            if (empty($jsonFiles)) {
+                return null;
+            }
+
+            $zip = new \ZipArchive();
+            $tempFile = tempnam(sys_get_temp_dir(), 'louvorja_bundle_');
+            $zip->open($tempFile, \ZipArchive::OVERWRITE);
+
+            foreach ($jsonFiles as $file) {
+                $zip->addFile($file->getPathname(), $file->getFilename());
+            }
+
+            $zip->close();
+            $content = file_get_contents($tempFile);
+            unlink($tempFile);
+
+            return $content;
+        });
+
+        if ($zipContent === null) {
+            return response()->json(['error' => 'Nenhum arquivo JSON encontrado'], 404);
+        }
+
+        return response($zipContent, 200, [
+            'Content-Type' => 'application/zip',
+            'Content-Disposition' => 'attachment; filename="louvorja-db-bundle.zip"',
+            'Content-Length' => strlen($zipContent),
+        ]);
+    }
+
+    /**
      * Exporta categorias únicas de uma tabela/coluna.
      * Cache por 10 minutos (600s).
      */
