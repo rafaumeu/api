@@ -142,14 +142,15 @@ class DatabaseJsonController extends Controller
         // ETag cache condicional: se o hash do arquivo bate com If-None-Match, retorna 304
         $hash = \App\Helpers\GenerateStaticJsons::getHash($filename);
         if ($hash && $request->header('If-None-Match') === $hash) {
-            return response()->noContent(304);
+            return response('', 304);
         }
 
         $data = json_decode(File::get($filePath), true);
 
-        // Extrai campo _meta.data se existir (JSONs gerados pelo GenerateStaticJsons)
-        if (isset($data['_meta']['data'])) {
-            $data = $data['_meta']['data'];
+        // Extrai campo 'data' se existir como array (JSONs gerados pelo GenerateStaticJsons
+        // possuem envelope _meta + data). Remove _meta e usa data diretamente.
+        if (isset($data['data']) && is_array($data['data'])) {
+            $data = $data['data'];
         }
 
         $perPage = (int) $request->get('per_page', 50);

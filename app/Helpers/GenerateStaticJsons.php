@@ -26,9 +26,9 @@ class GenerateStaticJsons
      */
     private static function jsonDir(): string
     {
-        $path = app()->basePath('public/db/json');
-        if (!File::exists($path)) {
-            File::makeDirectory($path, 0755, true);
+        $path = app()->basePath('public/db/json') . '/';
+        if (!File::exists(rtrim($path, '/'))) {
+            File::makeDirectory(rtrim($path, '/'), 0755, true);
         }
         return $path;
     }
