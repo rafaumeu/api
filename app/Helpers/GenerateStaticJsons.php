@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Facades\File;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\Models\Language;
@@ -341,7 +342,7 @@ class GenerateStaticJsons
         $payload = [
             '_meta' => [
                 'hash' => $hash,
-                'generated_at' => now()->toIso8601String(),
+                'generated_at' => Carbon::now()->toIso8601String(),
             ],
             'data' => $data,
         ];
