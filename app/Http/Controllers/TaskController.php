@@ -282,8 +282,23 @@ class TaskController extends Controller
         description: 'Gera arquivos JSON estáticos (categorias, albums, musics, hinario, collections online) a partir do banco de dados para uso offline pelo app desktop/web. Os arquivos são salvos em public/db/json/ com hash MD5 para versionamento via ETag.',
         tags: ['Admin - Tarefas'],
         security: [['bearerAuth' => []]],
+        parameters: [
+            new OA\Parameter(
+                name: 'force',
+                in: 'query',
+                schema: new OA\Schema(type: 'string', enum: ['true', 'false']),
+                description: 'Força regeneração ignorando version check'
+            ),
+        ],
         responses: [
-            new OA\Response(response: 200, description: 'JSONs gerados com sucesso', content: new OA\JsonContent(type: 'object')),
+            new OA\Response(response: 200, description: 'JSONs gerados com sucesso', content: new OA\JsonContent(
+                type: 'object',
+                properties: [
+                    new OA\Property(property: 'status', type: 'string', example: 'success'),
+                    new OA\Property(property: 'files_generated', type: 'integer', example: 42),
+                    new OA\Property(property: 'logs', type: 'array', items: new OA\Items(type: 'object')),
+                ]
+            )),
             new OA\Response(response: 401, description: 'Não autenticado')
         ]
     )]

@@ -37,6 +37,7 @@ class DatabaseJsonController extends Controller
                             new OA\Property(property: 'file', type: 'string', example: 'config.json'),
                             new OA\Property(property: 'table', type: 'string', example: 'config'),
                             new OA\Property(property: 'path', type: 'string', example: '/db/config'),
+                            new OA\Property(property: 'hash', type: 'string', description: 'MD5 hash do arquivo para cache ETag', example: 'a1b2c3d4e5f6...'),
                         ]
                     )
                 )
@@ -100,6 +101,9 @@ class DatabaseJsonController extends Controller
             new OA\Response(
                 response: 200,
                 description: 'Registros paginados',
+                headers: [
+                    new OA\Header(header: 'ETag', description: 'MD5 hash do arquivo para cache condicional', schema: new OA\Schema(type: 'string')),
+                ],
                 content: new OA\JsonContent(
                     type: 'object',
                     properties: [
@@ -121,6 +125,7 @@ class DatabaseJsonController extends Controller
                     ]
                 )
             ),
+            new OA\Response(response: 304, description: 'Não modificado (ETag coincide com If-None-Match)'),
             new OA\Response(response: 404, description: 'Arquivo não encontrado')
         ]
     )]
@@ -350,6 +355,17 @@ class DatabaseJsonController extends Controller
      * Recria todos os arquivos JSON estaticos gerados do banco.
      * Chama DataBase::export_json() para gerar pt_categories.json, pt_musics.json, etc.
      */
+    #[OA\Get(
+        path: '/db/export',
+        summary: 'Recriar JSONs do banco',
+        description: 'Recria todos os arquivos JSON estáticos gerados a partir do banco de dados.',
+        tags: ['Database'],
+        security: [['ApiToken' => []]],
+        responses: [
+            new OA\Response(response: 200, description: 'JSONs recriados com sucesso'),
+            new OA\Response(response: 500, description: 'Erro ao recriar arquivos'),
+        ]
+    )]
     public function export()
     {
         try {
