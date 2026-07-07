@@ -50,10 +50,13 @@ class DatabaseJsonController extends Controller
             $files = [];
             if (File::exists($jsonDir)) {
                 foreach (File::files($jsonDir) as $file) {
+                    $filename = $file->getFilename();
+                    $hash = \App\Helpers\GenerateStaticJsons::getHash($filename);
                     $files[] = [
-                        'file' => $file->getFilename(),
+                        'file' => $filename,
                         'table' => $file->getFilenameWithoutExtension(),
                         'path' => '/db/' . $file->getFilenameWithoutExtension(),
+                        'hash' => $hash,
                     ];
                 }
             }
@@ -123,34 +126,48 @@ class DatabaseJsonController extends Controller
     )]
     public function table(Request $request, string $table)
     {
-        $cacheKey = "db.table.{$table}.page.{$request->get('page', 1)}.per_page.{$request->get('per_page', 50)}";
+        $jsonDir = base_path('public/db/json');
+        $filename = "{$table}.json";
+        $filePath = "{$jsonDir}/{$filename}";
 
-        return Cache::remember($cacheKey, 300, function () use ($request, $table) {
-            $jsonDir = base_path('public/db/json');
-            $filePath = "{$jsonDir}/{$table}.json";
+        if (!File::exists($filePath)) {
+            return response()->json(['error' => 'Table not found'], 404);
+        }
 
-            if (!File::exists($filePath)) {
-                return response()->json(['error' => 'Table not found'], 404);
-            }
+        // ETag cache condicional: se o hash do arquivo bate com If-None-Match, retorna 304
+        $hash = \App\Helpers\GenerateStaticJsons::getHash($filename);
+        if ($hash && $request->header('If-None-Match') === $hash) {
+            return response()->noContent(304);
+        }
 
-            $data = json_decode(File::get($filePath), true);
+        $data = json_decode(File::get($filePath), true);
 
-            $perPage = (int) $request->get('per_page', 50);
-            $page = (int) $request->get('page', 1);
-            $total = count($data);
-            $offset = ($page - 1) * $perPage;
-            $items = array_slice($data, $offset, $perPage);
+        // Extrai campo _meta.data se existir (JSONs gerados pelo GenerateStaticJsons)
+        if (isset($data['_meta']['data'])) {
+            $data = $data['_meta']['data'];
+        }
 
-            return response()->json([
-                'data' => $items,
-                'meta' => [
-                    'total' => $total,
-                    'per_page' => $perPage,
-                    'current_page' => $page,
-                    'last_page' => (int) ceil($total / $perPage),
-                ]
-            ]);
-        });
+        $perPage = (int) $request->get('per_page', 50);
+        $page = (int) $request->get('page', 1);
+        $total = count($data);
+        $offset = ($page - 1) * $perPage;
+        $items = array_slice($data, $offset, $perPage);
+
+        $response = response()->json([
+            'data' => $items,
+            'meta' => [
+                'total' => $total,
+                'per_page' => $perPage,
+                'current_page' => $page,
+                'last_page' => (int) ceil($total / $perPage),
+            ]
+        ]);
+
+        if ($hash) {
+            $response->header('ETag', $hash);
+        }
+
+        return $response;
     }
 
     /**
